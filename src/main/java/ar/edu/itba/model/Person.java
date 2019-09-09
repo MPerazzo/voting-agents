@@ -41,7 +41,7 @@ public class Person {
     }
 
     public void update(final Subject s, final MediaId mediaId, final Map<PoliticalParty, Double> impact) {
-        if (!interests.containsKey(s))
+        if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
