@@ -5,6 +5,7 @@ import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.handlers.*;
+import ar.edu.itba.utils.Metrics;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,8 @@ public class Main {
         u.setPersons(persons);
         PoliticalParty ruler = PoliticalParty.LEFT;
 
+        Metrics.printPartiesState(persons);
+
         int currentTime = 0;
         while (currentTime < executionTime) {
             final List<News> news = Media.generateNews();
@@ -43,5 +46,7 @@ public class Main {
 
             currentTime += dt;
         }
+
+        Metrics.printPartiesState(persons);
     }
 }

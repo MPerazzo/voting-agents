@@ -40,6 +40,18 @@ public class Person {
         this.politicalOrientation = politicalOrientation;
     }
 
+    public PoliticalParty getPoliticalOrientation() {
+        double maxValue = 0;
+        PoliticalParty p = null;
+        for (final Map.Entry<PoliticalParty, Double> e : politicalOrientation.entrySet()) {
+            if (e.getValue() > maxValue) {
+                maxValue = e.getValue();
+                p = e.getKey();
+            }
+        }
+        return p;
+    }
+
     public void update(final Subject s, final MediaId mediaId, final Map<PoliticalParty, Double> impact) {
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
