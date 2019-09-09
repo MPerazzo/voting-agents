@@ -1,4 +1,4 @@
-package ar.edu.itba.profile;
+package ar.edu.itba.model.profile;
 
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.enums.MediaId;
