@@ -1,4 +1,4 @@
-package ar.edu.itba.model.utils;
+package ar.edu.itba.utils;
 
 public class Random {
 

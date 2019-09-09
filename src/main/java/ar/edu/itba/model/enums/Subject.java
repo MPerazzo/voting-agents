@@ -1,6 +1,6 @@
 package ar.edu.itba.model.enums;
 
-import ar.edu.itba.model.utils.Random;
+import ar.edu.itba.utils.Random;
 
 public enum Subject {
     POLITICS,

@@ -1,7 +1,7 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.utils.Random;
+import ar.edu.itba.utils.Random;
 
 import java.util.HashMap;
 import java.util.List;

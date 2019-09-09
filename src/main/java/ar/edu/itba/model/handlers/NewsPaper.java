@@ -4,7 +4,7 @@ import ar.edu.itba.model.News;
 import ar.edu.itba.model.enums.MediaId;
 import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.enums.Subject;
-import ar.edu.itba.model.utils.Random;
+import ar.edu.itba.utils.Random;
 
 import java.util.HashMap;
 import java.util.LinkedList;

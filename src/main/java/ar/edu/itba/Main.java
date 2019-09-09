@@ -3,9 +3,11 @@ package ar.edu.itba;
 import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
+import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.handlers.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -24,18 +26,20 @@ public class Main {
         Friendship.generateFriendships(persons);
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
+        PoliticalParty ruler = PoliticalParty.LEFT;
 
         int currentTime = 0;
         while (currentTime < executionTime) {
             final List<News> news = Media.generateNews();
-            u.updatePersons(news);
+            if (!news.isEmpty())
+                u.updatePersons(news);
 
-            if (dt % (DAY * 5) == 0) {
-                EconomicAction e = EconomicMinistry.generateEconomicAction();
-                u.updatePersons(e);
-            }
+            Optional<EconomicAction> e = EconomicMinistry.generateEconomicAction(ruler);
+            if (e.isPresent())
+                u.updatePersons(e.get());
 
-            u.updatePersons();
+            if (!news.isEmpty() | e.isPresent())
+                u.updatePersons();
 
             currentTime += dt;
         }

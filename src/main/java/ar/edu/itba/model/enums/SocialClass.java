@@ -13,7 +13,7 @@ public enum SocialClass {
         this.end = end;
     }
 
-    static SocialClass getSocialClass(final double wellness) throws Exception {
+    public static SocialClass getSocialClass(final double wellness) throws Exception {
         for (final SocialClass s : SocialClass.values()) {
             if (wellness >= s.start && wellness < s.end)
                 return s;
