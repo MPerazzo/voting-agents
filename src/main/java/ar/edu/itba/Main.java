@@ -6,6 +6,7 @@ import ar.edu.itba.model.Person;
 import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.handlers.*;
 import ar.edu.itba.utils.Metrics;
+import processing.core.PApplet;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class Main {
     private static final int YEAR = DAY * 365;
 
     //seconds
-    private final static long executionTime = YEAR * 2;
+    private final static long executionTime = DAY * 4;
     private final static long dt = DAY;
 
     public static void main(String[] args) throws Exception {
@@ -47,6 +48,7 @@ public class Main {
             currentTime += dt;
         }
 
+        PApplet.main("ar.edu.itba.processing.Sketch", args);
         Metrics.printPartiesState(persons);
     }
 }
