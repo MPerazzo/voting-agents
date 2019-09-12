@@ -22,9 +22,11 @@ public class Main {
     private final static long executionTime = DAY * 4;
     private final static long dt = DAY;
 
+    private static final int POPULATION = 100;
+
     public static void main(String[] args) throws Exception {
 
-        final List<Person> persons = Profiler.generatePersons(100);
+        final List<Person> persons = Profiler.generatePersons(POPULATION);
         Friendship.generateFriendships(persons);
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
