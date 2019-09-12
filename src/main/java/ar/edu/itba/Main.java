@@ -31,8 +31,8 @@ public class Main {
         while (currentTime < executionTime) {
             final List<News> news = Media.generateNews();
             if (!news.isEmpty()) {
-                u.updatePersons(news);
-                u.updatePersons();
+//                u.updatePersons(news);
+//                u.updatePersons();
             }
             currentTime += dt;
 

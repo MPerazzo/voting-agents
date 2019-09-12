@@ -1,5 +1,5 @@
 {
-	"executionTime": 730,
+	"executionTime": 1,
 	"dt": 1,
 	"population": [
 		100
@@ -19,19 +19,19 @@
 			"parties": [
 				{
 					"name": "left",
-					"minScore": 0.5,
-					"maxScore": 1
+					"minScore": 0,
+					"maxScore": 0.1
 				},
 				{
 					"name": "right",
-					"minScore": -0.5,
-					"maxScore": 0.2
+					"minScore": 0,
+					"maxScore": 0.1
 				}
 			]
 		},
 		{
 			"name": "clarin",
-			"prob": 0.3,
+			"prob": 0,
 			"parties": [
 				{
 					"name": "left",
@@ -66,8 +66,8 @@
 				},
 				{
 					"name": "right",
-					"minScore": 0,
-					"maxScore": 2
+					"minScore": 5,
+					"maxScore": 10
 				}
 			],
 			"mediaTrust": [

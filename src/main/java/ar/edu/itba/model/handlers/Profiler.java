@@ -29,7 +29,7 @@ public class Profiler {
         return persons;
     }
 
-    public List<Person> getPersons() {
+    public static List<Person> getPersons() {
         return persons;
     }
 
