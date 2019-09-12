@@ -8,6 +8,7 @@ import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.handlers.UpdateManager;
 import ar.edu.itba.utils.Metrics;
+import ar.edu.itba.utils.Random;
 import processing.core.PApplet;
 
 import java.util.List;
@@ -25,14 +26,13 @@ public class Main {
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
 
-        Metrics.printPartiesState(persons);
-
         int currentTime = 0;
         while (currentTime < executionTime) {
+            Metrics.printPartiesState(persons);
             final List<News> news = Media.generateNews();
             if (!news.isEmpty()) {
-//                u.updatePersons(news);
-//                u.updatePersons();
+                u.updatePersons(news);
+                u.updatePersons();
             }
             currentTime += dt;
 
@@ -40,7 +40,6 @@ public class Main {
         }
         
         PApplet.main("ar.edu.itba.processing.Sketch", args);
-        Metrics.printPartiesState(persons);
     }
 
     private static void init() throws Exception {

@@ -57,6 +57,10 @@ public class Configuration {
     private void validatePopulation() throws Exception {
         if (inputData.getPopulation().size() != inputData.getProfiles().size())
             throw new Exception("Population entries must be equal than profiles available");
+        for (final int number : inputData.getPopulation()) {
+            if (number < 0)
+                throw new Exception("Population number can not be negative");
+        }
     }
 
     private void validateElection() throws Exception {

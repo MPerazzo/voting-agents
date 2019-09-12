@@ -22,6 +22,6 @@ public class Metrics {
             m.put(p.getPoliticalOrientation(), m.get(p.getPoliticalOrientation()) + 1);
 
         for (final Map.Entry<String, Integer> e : m.entrySet())
-            System.out.println("Party party " + e.getKey() + " has " + e.getValue() + " persons");
+            System.out.println("Party " + e.getKey() + " has " + e.getValue() + " persons");
     }
 }

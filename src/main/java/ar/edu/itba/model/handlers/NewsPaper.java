@@ -23,7 +23,7 @@ public class NewsPaper {
 
     public Optional<News> generateNews() {
         final double r = Random.generateDouble();
-        if (r < prob)
+        if (r > prob)
             return Optional.empty();
         final String s = getRandomSubject();
         final Map<String, Double> impact = new HashMap<>();

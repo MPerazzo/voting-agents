@@ -1,8 +1,9 @@
 {
-	"executionTime": 1,
+	"executionTime": 20,
 	"dt": 1,
 	"population": [
-		100
+		100,
+		25
 	],
 	"election": {
 		"initialRuler": "left",
@@ -19,36 +20,38 @@
 			"parties": [
 				{
 					"name": "left",
-					"minScore": 0,
-					"maxScore": 0.1
+					"minScore": 0.5,
+					"maxScore": 1
 				},
 				{
 					"name": "right",
-					"minScore": 0,
-					"maxScore": 0.1
+					"minScore": -0.5,
+					"maxScore": 0
 				}
 			]
 		},
 		{
 			"name": "clarin",
-			"prob": 0,
+			"prob": 1,
 			"parties": [
 				{
 					"name": "left",
-					"minScore": -5.25,
-					"maxScore": -1
+					"minScore": -0.2,
+					"maxScore": 0.2
 				},
 				{
 					"name": "right",
-					"minScore": 2,
-					"maxScore": 6
+					"minScore": 5,
+					"maxScore": 7.5
 				}
 			]
 		}
 	],
 	"subjects": [
 		"cultural",
-		"sports"
+		"education",
+		"sports",
+		"economic"
 	],
 	"profiles": [
 		{
@@ -66,6 +69,60 @@
 				},
 				{
 					"name": "right",
+					"minScore": 2,
+					"maxScore": 4
+				}
+			],
+			"mediaTrust": [
+				{
+					"name": "clarin",
+					"rational": 0.05
+				},
+				{
+					"name": "pagina12",
+					"rational": 0.4
+				}
+			],
+			"friendshipConfig": {
+				"minRational": 0.02,
+				"maxRational": 0.1,
+				"minFriends": 4,
+				"maxFriends": 12
+			},
+			"interests": [
+				{
+					"name": "education",
+					"rational": 0.5
+				},
+				{
+					"name": "cultural",
+					"rational": 0.3
+				},
+								{
+					"name": "sports",
+					"rational": 0.1
+				},
+								{
+					"name": "economic",
+					"rational": 0.5
+				}
+			]
+		},
+		{
+			"name": "businessman",
+			"economic": {
+				"lowProb": 0.1,
+				"midProb": 0.6,
+				"highProb": 0.3
+			},
+			"parties": [
+				{
+					"name": "left",
+					"minScore": -2,
+					"maxScore": 2
+				},
+				{
+					"name": "right",
 					"minScore": 5,
 					"maxScore": 10
 				}
@@ -73,27 +130,35 @@
 			"mediaTrust": [
 				{
 					"name": "clarin",
-					"rational": 0.2
+					"rational": 0.3
 				},
 				{
 					"name": "pagina12",
-					"rational": 0.7
+					"rational": 0.01
 				}
 			],
 			"friendshipConfig": {
-				"minRational": 0.1,
-				"maxRational": 0.3,
-				"minFriends": 4,
-				"maxFriends": 8
+				"minRational": 0.02,
+				"maxRational": 0.1,
+				"minFriends": 2,
+				"maxFriends": 5
 			},
 			"interests": [
 				{
-					"name": "sports",
+					"name": "education",
 					"rational": 0.1
 				},
 				{
 					"name": "cultural",
-					"rational": 0.9
+					"rational": 0.1
+				},
+								{
+					"name": "sports",
+					"rational": 0.2
+				},
+				{
+					"name": "economic",
+					"rational": 0.4
 				}
 			]
 		}

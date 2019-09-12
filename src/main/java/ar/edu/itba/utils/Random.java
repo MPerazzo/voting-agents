@@ -9,16 +9,13 @@ public class Random {
     }
 
     public static double generateDouble(final double min, final double max) {
-        if (min >= max) {
+        if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
         }
         return min + (max - min) * r.nextDouble();
     }
 
     public static double generateDoubleSigned(final double min, final double max) {
-        if (min >= max) {
-            throw new IllegalArgumentException("max must be greater than min");
-        }
         return (r.nextBoolean() ? 1 : -1) * generateDouble(min, max);
     }
 
@@ -28,7 +25,7 @@ public class Random {
 
     public static int generateInt(int min, int max) {
 
-        if (min >= max) {
+        if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
         }
 

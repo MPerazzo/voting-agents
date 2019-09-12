@@ -41,7 +41,7 @@ public class Sketch extends PApplet {
             for (int i = 0, l=0; l < e.getValue(); i = i+25, l = l+5) {
 
                 arc(15+i,32+j,20, 20, PI, 2*PI);
-                circle(15+i, 15+j, 20);
+//                circle(15+i, 15+j, 20);
 
             }
             j+=30;

@@ -48,7 +48,7 @@ public class Person {
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
         for (final Map.Entry<String, Double> e : impact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
-            politicalOrientation.put(e.getKey(), multiplier * (oldValue + e.getValue()));
+            politicalOrientation.put(e.getKey(), oldValue + multiplier * e.getValue());
         }
     }
 

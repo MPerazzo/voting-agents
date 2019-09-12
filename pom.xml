@@ -32,6 +32,12 @@
       <artifactId>gson</artifactId>
       <version>${gson.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.processing</groupId>
+      <artifactId>core</artifactId>
+      <version>3.3.6</version>
+    </dependency>
+
   </dependencies>
 
   <build>
