@@ -29,6 +29,10 @@ public class Profiler {
         return persons;
     }
 
+    public static List<Person> getPersons() {
+        return persons;
+    }
+
     public static void setProfiles(final Map<Profile, Integer> l) {
         profiles = l;
     }
