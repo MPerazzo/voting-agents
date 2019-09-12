@@ -1,5 +1,6 @@
 package ar.edu.itba;
 
+import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.config.Configuration;
@@ -9,6 +10,7 @@ import ar.edu.itba.model.handlers.UpdateManager;
 import ar.edu.itba.utils.Metrics;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -35,6 +37,8 @@ public class Main {
                 u.updatePersons();
             }
             currentTime += dt;
+
+            Optional<String> result = Election.generateElection(persons, executionTime);
         }
         Metrics.printPartiesState(persons);
     }

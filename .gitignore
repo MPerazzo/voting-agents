@@ -23,7 +23,6 @@
 hs_err_pid*
 
 # Config & output files
-*.json
 *.txt
 *.tsv
 
