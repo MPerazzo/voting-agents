@@ -2,6 +2,7 @@ package ar.edu.itba.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Election {
@@ -16,10 +17,13 @@ public class Election {
         period = p;
     }
 
-    public static String generateElection(final List<Person> persons) {
-        Map<String, Long> parties = persons.stream().collect(Collectors.groupingBy(Person::getPoliticalOrientation, Collectors.counting()));
-        parties.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
-        return null;
+    public static Optional<String> generateElection(final List<Person> persons, final long executionTime) {
+        if (executionTime % period != 0)
+            return Optional.empty();
+        final Map<String, Long> parties = persons.stream().collect(Collectors.groupingBy(Person::getPoliticalOrientation, Collectors.counting()));
+        final String electedParty = parties.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+        ruler = electedParty;
+        return Optional.of(electedParty);
     }
 
     public static String getRuler() {

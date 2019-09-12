@@ -1,0 +1,102 @@
+{
+	"executionTime": 730,
+	"dt": 1,
+	"population": [
+		100
+	],
+	"election": {
+		"initialRuler": "left",
+		"period": 150
+	},
+	"parties": [
+		"left",
+		"right"
+	],
+	"media": [
+		{
+			"name": "pagina12",
+			"prob": 0,
+			"parties": [
+				{
+					"name": "left",
+					"minScore": 0.5,
+					"maxScore": 1
+				},
+				{
+					"name": "right",
+					"minScore": -0.5,
+					"maxScore": 0.2
+				}
+			]
+		},
+		{
+			"name": "clarin",
+			"prob": 0.3,
+			"parties": [
+				{
+					"name": "left",
+					"minScore": -5.25,
+					"maxScore": -1
+				},
+				{
+					"name": "right",
+					"minScore": 2,
+					"maxScore": 6
+				}
+			]
+		}
+	],
+	"subjects": [
+		"cultural",
+		"sports"
+	],
+	"profiles": [
+		{
+			"name": "teacher",
+			"economic": {
+				"lowProb": 0.2,
+				"midProb": 0.6,
+				"highProb": 0.2
+			},
+			"parties": [
+				{
+					"name": "left",
+					"minScore": 5,
+					"maxScore": 10
+				},
+				{
+					"name": "right",
+					"minScore": 0,
+					"maxScore": 2
+				}
+			],
+			"mediaTrust": [
+				{
+					"name": "clarin",
+					"rational": 0.2
+				},
+				{
+					"name": "pagina12",
+					"rational": 0.7
+				}
+			],
+			"friendshipConfig": {
+				"minRational": 0.1,
+				"maxRational": 0.3,
+				"minFriends": 4,
+				"maxFriends": 8
+			},
+			"interests": [
+				{
+					"name": "sports",
+					"rational": 0.1
+				},
+				{
+					"name": "cultural",
+					"rational": 0.9
+				}
+			]
+		}
+	
+	]
+}
