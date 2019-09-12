@@ -1,9 +1,6 @@
 package ar.edu.itba.model;
 
-import ar.edu.itba.model.enums.MediaId;
-import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.enums.SocialClass;
-import ar.edu.itba.model.enums.Subject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,15 +12,15 @@ public class Person {
     private final int id;
     private double economicWellness;
     private SocialClass socialClass;
-    private  Map<PoliticalParty, Double> politicalOrientation;
+    private Map<String, Double> politicalOrientation;
 
     //Multipliers
-    private final Map<MediaId, Double> mediaTrust;
+    private final Map<String, Double> mediaTrust;
     private Map<Person, Double> friendsTrust;
-    private final Map<Subject, Double> interests;
+    private final Map<String, Double> interests;
 
-    public Person(final int id, final double economicWellness, final Map<PoliticalParty, Double> politicalOrientation,
-                  final Map<MediaId, Double> mediaTrust, final Map<Subject, Double> interests) throws Exception {
+    public Person(final int id, final double economicWellness, final Map<String, Double> politicalOrientation,
+                  final Map<String, Double> mediaTrust, final Map<String, Double> interests) throws Exception {
         this.id = id;
         this.economicWellness = economicWellness;
         this.socialClass = SocialClass.getSocialClass(economicWellness);
@@ -36,48 +33,40 @@ public class Person {
         this.friendsTrust = friendsTrust;
     }
 
-    public void setPoliticalOrientation(Map<PoliticalParty, Double> politicalOrientation) {
+    public void setPoliticalOrientation(Map<String, Double> politicalOrientation) {
         this.politicalOrientation = politicalOrientation;
     }
 
-    public PoliticalParty getPoliticalOrientation() {
-        double maxValue = 0;
-        PoliticalParty p = null;
-        for (final Map.Entry<PoliticalParty, Double> e : politicalOrientation.entrySet()) {
-            if (e.getValue() > maxValue) {
-                maxValue = e.getValue();
-                p = e.getKey();
-            }
-        }
-        return p;
+    public String getPoliticalOrientation() {
+        return politicalOrientation.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
     }
 
-    public void update(final Subject s, final MediaId mediaId, final Map<PoliticalParty, Double> impact) {
+    public void update(final String s, final String mediaId, final Map<String, Double> impact) {
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
-        for (final Map.Entry<PoliticalParty, Double> e : impact.entrySet()) {
+        for (final Map.Entry<String, Double> e : impact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
             politicalOrientation.put(e.getKey(), multiplier * (oldValue + e.getValue()));
         }
     }
 
-    public void update(final PoliticalParty ruler, final Map<SocialClass, Double> impact) {
+    public void update(final String ruler, final Map<SocialClass, Double> impact) {
         final double newValue = impact.get(socialClass);
         final double oldValue = politicalOrientation.get(ruler);
         politicalOrientation.put(ruler, newValue + oldValue);
     }
 
-    public Map<PoliticalParty, Double> update() {
-        final Map<PoliticalParty, Double> m = new HashMap<>();
+    public Map<String, Double> update() {
+        final Map<String, Double> m = new HashMap<>();
 
         //init map
-        for (final Map.Entry<PoliticalParty, Double> e : politicalOrientation.entrySet())
+        for (final Map.Entry<String, Double> e : politicalOrientation.entrySet())
             m.put(e.getKey(), e.getValue());
 
         for (final Person p : friendsTrust.keySet()) {
-            for (final Map.Entry<PoliticalParty, Double> e : p.politicalOrientation.entrySet()) {
+            for (final Map.Entry<String, Double> e : p.politicalOrientation.entrySet()) {
                 final double friendPoliticalOrientation = p.politicalOrientation.get(e.getKey());
                 final double multiplier = friendsTrust.get(p);
                 final double oldValue = m.get(e.getKey());

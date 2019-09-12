@@ -4,6 +4,10 @@ public class Random {
 
     final static java.util.Random r = new java.util.Random();
 
+    private Random() {
+
+    }
+
     public static double generateDouble(final double min, final double max) {
         if (min >= max) {
             throw new IllegalArgumentException("max must be greater than min");

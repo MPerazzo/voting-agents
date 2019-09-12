@@ -1,37 +1,42 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.News;
-import ar.edu.itba.model.enums.MediaId;
-import ar.edu.itba.model.enums.PoliticalParty;
-import ar.edu.itba.model.enums.Subject;
+import ar.edu.itba.model.config.profile.Party;
 import ar.edu.itba.utils.Random;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NewsPaper {
 
-    private static final double MIN_SCORE = 0D;
-    private static final double MAX_SCORE = 0.5D;
-
-    private final MediaId id;
+    private final String id;
+    private final double prob;
+    private final List<Party> parties;
+    private final List<String> subjects;
     private final List<News> news = new LinkedList<>();
 
-    public NewsPaper(final MediaId id) {
+    public NewsPaper(final String id, final double prob, final List<Party> parties, final List<String> subjects) {
         this.id = id;
+        this.prob = prob;
+        this.parties = parties;
+        this.subjects = subjects;
     }
 
-    public News generateNews() {
-        final Subject s = Subject.getRandomSubject();
-        final Map<PoliticalParty, Double> impact = new HashMap<>();
-        for (final PoliticalParty p : PoliticalParty.values())
-            impact.put(p, Random.generateDoubleSigned(MIN_SCORE, MAX_SCORE));
+    public Optional<News> generateNews() {
+        final double r = Random.generateDouble();
+        if (r < prob)
+            return Optional.empty();
+        final String s = getRandomSubject();
+        final Map<String, Double> impact = new HashMap<>();
+        for (final Party p : parties)
+            impact.put(p.getName(), Random.generateDouble(p.getMinScore(), p.getMaxScore()));
 
         final News n = new News(s, id, impact);
         news.add(n);
 
-        return n;
+        return Optional.of(n);
+    }
+
+    private String getRandomSubject() {
+        return subjects.get(Random.generateInt(0, subjects.size() - 1));
     }
 }

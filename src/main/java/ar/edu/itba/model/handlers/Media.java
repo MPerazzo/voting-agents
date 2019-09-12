@@ -1,29 +1,31 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.News;
-import ar.edu.itba.model.enums.MediaId;
-import ar.edu.itba.utils.Random;
+import ar.edu.itba.model.config.ConfigMedia;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class Media {
     private final static List<NewsPaper> sources = new LinkedList<>();
-    private static final double PROB = 0.5;
+
+    private Media () {
+
+    }
+
+    public static void setSources(final List<ConfigMedia> media, final List<String> subjects) {
+        for (final ConfigMedia m : media)
+            sources.add(new NewsPaper(m.getName(), m.getProb(), m.getParties(), subjects));
+    }
 
     public static List<News> generateNews() {
         final List<News> news = new LinkedList<>();
         for (NewsPaper p : sources) {
-                if (Random.generateDouble() > PROB) {
-                final News n = p.generateNews();
-                news.add(n);
-            }
+            final Optional<News> n = p.generateNews();
+            if (n.isPresent())
+                news.add(n.get());
         }
         return news;
-    }
-
-    static {
-        for (final MediaId m : MediaId.values())
-            sources.add(new NewsPaper(m));
     }
 }
