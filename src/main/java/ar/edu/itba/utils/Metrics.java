@@ -1,7 +1,7 @@
 package ar.edu.itba.utils;
 
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.enums.PoliticalParty;
+import ar.edu.itba.model.config.Configuration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,15 +9,19 @@ import java.util.Map;
 
 public class Metrics {
 
-    public static void printPartiesState(final List<Person> persons) {
-        final Map<PoliticalParty, Integer> m = new HashMap<>();
-        for (final PoliticalParty p : PoliticalParty.values())
+    private Metrics() {
+
+    }
+
+    public static void printPartiesState(final List<Person> persons) throws Exception {
+        final Map<String, Integer> m = new HashMap<>();
+        for (final String p : Configuration.getInstance().getPoliticalParties())
             m.put(p, 0);
 
         for (final Person p : persons)
             m.put(p.getPoliticalOrientation(), m.get(p.getPoliticalOrientation()) + 1);
 
-        for (final Map.Entry<PoliticalParty, Integer> e : m.entrySet())
-            System.out.println("Political party " + e.getKey() + " has " + e.getValue() + " persons");
+        for (final Map.Entry<String, Integer> e : m.entrySet())
+            System.out.println("Party party " + e.getKey() + " has " + e.getValue() + " persons");
     }
 }

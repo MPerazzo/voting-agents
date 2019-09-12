@@ -1,7 +1,6 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.EconomicAction;
-import ar.edu.itba.model.enums.PoliticalParty;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.utils.Random;
 
@@ -9,23 +8,32 @@ import java.util.*;
 
 public class EconomicMinistry {
 
-    private static final double MIN_SCORE = 2D;
-    private static final double MAX_SCORE = 4D;
+    private static double prob;
+    private static double minScore;
+    private static double maxScore;
 
-    private static final double PROB = 0.2;
+    private static final List<EconomicAction> actions = new LinkedList<>();
 
-    private static final List<EconomicAction> economicActions = new LinkedList<>();
+    private EconomicMinistry() {
 
-    public static Optional<EconomicAction> generateEconomicAction(final PoliticalParty ruler) {
+    }
 
-        if (Random.generateDouble() > PROB)
+    public static void setProperties(final double p, final double mins, final double maxs) {
+        prob = p;
+        minScore = mins;
+        maxScore = maxs;
+    }
+
+    public static Optional<EconomicAction> generateEconomicAction(final String ruler) {
+
+        if (Random.generateDouble() > prob)
             return Optional.empty();
 
         Map<SocialClass, Double> impact = new HashMap<>();
         for (final SocialClass s : SocialClass.values())
-            impact.put(s, Random.generateDoubleSigned(MIN_SCORE, MAX_SCORE));
+            impact.put(s, Random.generateDoubleSigned(minScore, maxScore));
         final EconomicAction e = new EconomicAction(ruler, impact);
-        economicActions.add(e);
+        actions.add(e);
         return Optional.of(e);
     }
 }

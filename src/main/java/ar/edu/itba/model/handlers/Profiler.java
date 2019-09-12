@@ -1,19 +1,35 @@
 package ar.edu.itba.model.handlers;
 
+import ar.edu.itba.model.config.profile.Profile;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.profile.TeacherProfile;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Profiler {
 
-    private final static int id = 1;
-    private final static TeacherProfile teacherProfile = TeacherProfile.getInstance();
-    private final static List<Person> persons = new LinkedList<>();
+    private static int id = 1;
+    private static Map<Profile, Integer> profiles;
+    private static final List<Person> persons = new LinkedList<>();
 
-    public static List<Person> generatePersons(final int n) throws Exception {
-        persons.addAll(teacherProfile.generatePersons(n, id));
+    private Profiler() {
+    }
+
+    public static List<Person> generatePersons() throws Exception {
+        final Map<Profile, List<Person>> m = new HashMap<>();
+        for (final Map.Entry<Profile, Integer> e : profiles.entrySet()) {
+            final List<Person> profilePersons = e.getKey().generatePersons(e.getValue(), id);
+            m.put(e.getKey(), profilePersons);
+            persons.addAll(profilePersons);
+            id += e.getValue();
+        }
+        Friendship.generateFriendships(m, persons);
         return persons;
+    }
+
+    public static void setProfiles(final Map<Profile, Integer> l) {
+        profiles = l;
     }
 }

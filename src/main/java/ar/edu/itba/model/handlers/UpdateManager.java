@@ -3,8 +3,6 @@ package ar.edu.itba.model.handlers;
 import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.enums.PoliticalParty;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,13 +33,13 @@ public class UpdateManager {
         }
     }
 
-    public void updatePersons(final EconomicAction economicAction) {
+    public void updatePersons(final EconomicAction action) {
         for (final Person p : persons)
-            p.update(economicAction.getRuler(), economicAction.getImpact());
+            p.update(action.getRuler(), action.getImpact());
     }
 
     public void updatePersons() {
-        final Map<Person, Map<PoliticalParty, Double>> currentState = new HashMap<>();
+        final Map<Person, Map<String, Double>> currentState = new HashMap<>();
 
         for (final Person p : persons)
             currentState.put(p, p.update());

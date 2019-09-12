@@ -1,6 +1,8 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Person;
+import ar.edu.itba.model.config.profile.FriendshipConfig;
+import ar.edu.itba.model.config.profile.Profile;
 import ar.edu.itba.utils.Random;
 
 import java.util.HashMap;
@@ -9,23 +11,27 @@ import java.util.Map;
 
 public class Friendship {
 
-    private static int MIN_FRIENDS = 1;
-    private static int MAX_FRIENDS = 8;
+    private Friendship() {
 
-    public static void generateFriendships(final List<Person> persons) {
-        for (final Person p : persons) {
-            final Map<Person, Double> friendsTrust = generateFriendships(p, persons);
-            p.setFriendsTrust(friendsTrust);
+    }
+
+    public static void generateFriendships(final Map<Profile, List<Person>> profilePersons, final List<Person> persons) {
+        for (final Map.Entry<Profile, List<Person>> e : profilePersons.entrySet()) {
+            for (final Person p : e.getValue())
+                p.setFriendsTrust(generateFriendships(p, persons, e.getKey().getFriendshipConfig()));
         }
     }
 
-    private static Map<Person, Double> generateFriendships(final Person p, final List<Person> persons) {
+    private static Map<Person, Double> generateFriendships(final Person p, final List<Person> persons,
+                                                           final FriendshipConfig friendshipConfig) {
         final Map<Person, Double> friendsTrust = new HashMap<>();
-        final int f = Random.generateInt(MIN_FRIENDS, MAX_FRIENDS);
+        final int f = Random.generateInt(friendshipConfig.getMinFriends(), friendshipConfig.getMaxFriends());
         for (int i = 0 ; i < f ; i++) {
-            final Person friend = persons.get(Random.generateInt(0, persons.size() - 1));
-            if (!friendsTrust.containsKey(friend) && !friend.equals(p))
-                friendsTrust.put(friend, Random.generateDouble());
+            Person friend;
+            do {
+                 friend = persons.get(Random.generateInt(0, persons.size() - 1));
+            } while(friendsTrust.containsKey(friend) || friend.equals(p));
+            friendsTrust.put(friend, Random.generateDouble(friendshipConfig.getMinRational(), friendshipConfig.getMaxRational()));
         }
         return friendsTrust;
     }

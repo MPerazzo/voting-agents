@@ -1,56 +1,48 @@
 package ar.edu.itba;
 
-import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.enums.PoliticalParty;
-import ar.edu.itba.model.handlers.*;
+import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.handlers.Media;
+import ar.edu.itba.model.handlers.Profiler;
+import ar.edu.itba.model.handlers.UpdateManager;
 import ar.edu.itba.utils.Metrics;
 import processing.core.PApplet;
 
 import java.util.List;
-import java.util.Optional;
 
 public class Main {
 
-    private static final int MINUTE = 60;
-    private static final int HOUR = MINUTE * 60;
-    private static final int DAY = HOUR * 24;
-    private static final int YEAR = DAY * 365;
-
-    //seconds
-    private final static long executionTime = DAY * 4;
-    private final static long dt = DAY;
-
-    private static final int POPULATION = 100;
+    private static long executionTime;
+    private static long dt;
 
     public static void main(String[] args) throws Exception {
 
-        final List<Person> persons = Profiler.generatePersons(POPULATION);
-        Friendship.generateFriendships(persons);
+        init();
+        final List<Person> persons = Profiler.generatePersons();
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
-        PoliticalParty ruler = PoliticalParty.LEFT;
 
         Metrics.printPartiesState(persons);
 
         int currentTime = 0;
         while (currentTime < executionTime) {
             final List<News> news = Media.generateNews();
-            if (!news.isEmpty())
+            if (!news.isEmpty()) {
                 u.updatePersons(news);
-
-            Optional<EconomicAction> e = EconomicMinistry.generateEconomicAction(ruler);
-            if (e.isPresent())
-                u.updatePersons(e.get());
-
-            if (!news.isEmpty() | e.isPresent())
                 u.updatePersons();
-
+            }
             currentTime += dt;
         }
-
+        
         PApplet.main("ar.edu.itba.processing.Sketch", args);
         Metrics.printPartiesState(persons);
+    }
+
+    private static void init() throws Exception {
+        final Configuration configuration = Configuration.getInstance();
+        configuration.init();
+        executionTime = configuration.getExecutionTime();
+        dt = configuration.getDt();
     }
 }
