@@ -39,4 +39,12 @@ public class NewsPaper {
     private String getRandomSubject() {
         return subjects.get(Random.generateInt(0, subjects.size() - 1));
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<News> getNews() {
+        return news;
+    }
 }

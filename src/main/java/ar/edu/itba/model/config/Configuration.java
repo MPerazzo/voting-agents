@@ -27,7 +27,7 @@ public class Configuration {
     public void init() {
         Media.setSources(inputData.getMedia(), inputData.getSubjects());
         Profiler.setProfiles(generateProfilerMap());
-        ar.edu.itba.model.Election.setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod());
+        ar.edu.itba.model.Election.setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
     }
     
     private Map<Profile, Integer> generateProfilerMap() {

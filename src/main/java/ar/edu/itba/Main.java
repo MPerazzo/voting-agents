@@ -11,6 +11,7 @@ import ar.edu.itba.utils.Metrics;
 import ar.edu.itba.utils.Random;
 import processing.core.PApplet;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +23,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         init();
+
         final List<Person> persons = Profiler.generatePersons();
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
 
         int currentTime = 0;
+
         while (currentTime < executionTime) {
             Metrics.printPartiesState(persons);
+
+
             final List<News> news = Media.generateNews();
             if (!news.isEmpty()) {
                 u.updatePersons(news);
@@ -38,7 +43,7 @@ public class Main {
 
             Optional<String> result = Election.generateElection(persons, executionTime);
         }
-        
+
         PApplet.main("ar.edu.itba.processing.Sketch", args);
     }
 

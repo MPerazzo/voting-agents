@@ -25,8 +25,8 @@
 				},
 				{
 					"name": "right",
-					"minScore": -0.5,
-					"maxScore": 0
+					"minScore": 0.5,
+					"maxScore": 1
 				}
 			]
 		},
@@ -36,8 +36,8 @@
 			"parties": [
 				{
 					"name": "left",
-					"minScore": -0.2,
-					"maxScore": 0.2
+					"minScore": 5,
+					"maxScore": 7.5
 				},
 				{
 					"name": "right",

@@ -28,4 +28,7 @@ public class Media {
         }
         return news;
     }
+
+    public static List<NewsPaper> getSources(){ return sources;}
+
 }
