@@ -29,10 +29,8 @@ public class Main {
         u.setPersons(persons);
 
         int currentTime = 0;
-
         while (currentTime < executionTime) {
             Metrics.printPartiesState(persons);
-
 
             final List<News> news = Media.generateNews();
             if (!news.isEmpty()) {
@@ -43,7 +41,6 @@ public class Main {
 
             Optional<String> result = Election.generateElection(persons, executionTime);
         }
-
         PApplet.main("ar.edu.itba.processing.Sketch", args);
     }
 

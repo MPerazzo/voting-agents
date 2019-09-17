@@ -44,8 +44,6 @@ public class Sketch extends PApplet {
 
             int l = Math.toIntExact(e.getValue())*10/100;
 
-            System.out.println(l);
-
             for (int k=0; k<l ; k++) {
 
                 fill(redColor,greenColor,blueColor);
@@ -66,20 +64,20 @@ public class Sketch extends PApplet {
             }
         }
         int  y1=50, y2=25;
-        for(final Map.Entry<String, Long> e : parties.entrySet()){
-            int x1=5, x2=5, i=0;
+        for(final Map.Entry<String, Integer> e : typeOfNews.entrySet()){
+            int x=5, i=0;
 
             for (int k=0; k<e.getValue() ; k++) {
                 //line
                 stroke(1);
                 strokeWeight(2);
-                line(x1+i, y1+j, x2+i, y2+j);
+                line(x+i, y1+j, x+i, y2+j);
 
                 //text
                 fill(1);
                 textSize (22);
                 textAlign(RIGHT);
-                text(e.getKey(),width-50,j+y1-5);
+                text(e.getKey(),width - 100,j+y1-5);
 
                 i+=4;
             }
