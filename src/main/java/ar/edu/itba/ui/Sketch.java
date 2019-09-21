@@ -1,8 +1,7 @@
-package ar.edu.itba.processing;
+package ar.edu.itba.ui;
 
 import ar.edu.itba.model.Election;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.config.profile.Party;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.NewsPaper;
 import ar.edu.itba.model.handlers.Profiler;
@@ -23,7 +22,7 @@ public class Sketch extends PApplet {
     PFont f;
 
     /*public static void main(String[] args){
-        PApplet.main("ar.edu.itba.processing.Sketch", args);
+        PApplet.main("ar.edu.itba.ui.Sketch", args);
     }*/
 
 

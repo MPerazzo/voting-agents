@@ -31,4 +31,9 @@ public class Media {
 
     public static List<NewsPaper> getSources(){ return sources;}
 
+    public static void clear() {
+        for (final NewsPaper newsPaper : sources)
+            newsPaper.getNews().clear();
+    }
+
 }

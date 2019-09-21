@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class Configuration {
 
+    private static final double EPSILON = 0.0001;
+
     private static Configuration instance;
 
     private InputData inputData;
@@ -113,7 +115,7 @@ public class Configuration {
     }
 
     private void validateProfileEconomic(final Economic e) throws Exception {
-        if (e.getLowProb() + e.getMidProb() + e.getHighProb() != 1D)
+        if (Math.abs(e.getLowProb() + e.getMidProb() + e.getHighProb() - 1D) >= EPSILON)
             throw new Exception("Profile Sum of economic probabilities must be 1");
     }
 
@@ -183,4 +185,6 @@ public class Configuration {
     public List<String> getPoliticalParties() {
         return inputData.getParties();
     }
+
+    public List<String> getSubjects() { return inputData.getSubjects(); }
 }

@@ -7,6 +7,7 @@ import ar.edu.itba.model.config.Configuration;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.handlers.UpdateManager;
+import ar.edu.itba.ui.ElectionNewsInfluence;
 import ar.edu.itba.utils.Metrics;
 import ar.edu.itba.utils.Random;
 import processing.core.PApplet;
@@ -39,9 +40,12 @@ public class Main {
             }
             currentTime += dt;
 
-            Optional<String> result = Election.generateElection(persons, executionTime);
+            Optional<String> result = Election.generateElection(persons, currentTime);
+            if (!result.isEmpty()) {
+                ElectionNewsInfluence.compute();
+                Media.clear();
+            }
         }
-        PApplet.main("ar.edu.itba.processing.Sketch", args);
     }
 
     private static void init() throws Exception {
