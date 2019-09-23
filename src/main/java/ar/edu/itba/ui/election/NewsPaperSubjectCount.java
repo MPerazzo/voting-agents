@@ -28,7 +28,7 @@ public class NewsPaperSubjectCount extends BaseStackedChart {
         final CategoryDataset dataset = createDataset();
         final JFreeChart chart = createChart(dataset, electionCount);
         chart.getCategoryPlot().getRangeAxis().setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        return generateChartPanel(chart);
+        return generateChartPanel(chart, true);
     }
 
     protected CategoryDataset createDataset() throws Exception {

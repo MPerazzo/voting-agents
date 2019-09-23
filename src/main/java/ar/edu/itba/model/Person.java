@@ -37,8 +37,12 @@ public class Person {
         this.politicalOrientation = politicalOrientation;
     }
 
-    public String getPoliticalOrientation() {
+    public String getPoliticalParty() {
         return politicalOrientation.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+    }
+
+    public Map<String, Double> getPoliticalOrientation() {
+        return politicalOrientation;
     }
 
     public void update(final News n) {

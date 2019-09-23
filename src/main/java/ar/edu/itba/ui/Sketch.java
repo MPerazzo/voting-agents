@@ -31,7 +31,7 @@ public class Sketch extends PApplet {
 
         //DRAW PERSONS
         List<Person> personList = Profiler.getPersons();
-        Map<String, Long> parties = personList.stream().collect(Collectors.groupingBy(Person::getPoliticalOrientation, Collectors.counting()));
+        Map<String, Long> parties = personList.stream().collect(Collectors.groupingBy(Person::getPoliticalParty, Collectors.counting()));
         int  j=0;
 
         for (final Map.Entry<String, Long> e : parties.entrySet()) {

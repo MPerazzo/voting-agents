@@ -12,6 +12,7 @@ public class ElectionNewsInfluence extends JFrame {
         final ElectionNewsInfluence frame = new ElectionNewsInfluence("Election " + electionCount + " - News Influence");
         frame.getContentPane().add(new NewsPaperSubjectCount().generateChartPanel(electionCount), BorderLayout.EAST);
         frame.getContentPane().add(new NewsPaperPartyScoreChart().generateChartPanel(electionCount), BorderLayout.WEST);
+        frame.getContentPane().add(new PartyScoreChart().generateChartPanel(electionCount), BorderLayout.SOUTH);
         frame.pack();
         RefineryUtilities.centerFrameOnScreen(frame);
         frame.setVisible(true);

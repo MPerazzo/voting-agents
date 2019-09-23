@@ -19,7 +19,7 @@ public class Metrics {
             m.put(p, 0);
 
         for (final Person p : persons)
-            m.put(p.getPoliticalOrientation(), m.get(p.getPoliticalOrientation()) + 1);
+            m.put(p.getPoliticalParty(), m.get(p.getPoliticalParty()) + 1);
 
         for (final Map.Entry<String, Integer> e : m.entrySet())
             System.out.println("Party " + e.getKey() + " has " + e.getValue() + " persons");
