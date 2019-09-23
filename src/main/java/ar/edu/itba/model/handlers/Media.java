@@ -19,7 +19,7 @@ public class Media {
             sources.add(new NewsPaper(m.getName(), m.getProb(), m.getParties(), subjects));
     }
 
-    public static List<News> generateNews() {
+    public static List<News> generateNews() throws Exception {
         final List<News> news = new LinkedList<>();
         for (NewsPaper p : sources) {
             final Optional<News> n = p.generateNews();

@@ -41,15 +41,23 @@ public class Person {
         return politicalOrientation.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
     }
 
-    public void update(final String s, final String mediaId, final Map<String, Double> impact) {
+    public void update(final News n) {
+        final String s = n.getSubject();
+        final String mediaId = n.getMedia();
+        final Map<String, Double> impact = n.getImpact();
+        final Map<String, Double> impactDifferential = new HashMap<>();
+
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
         for (final Map.Entry<String, Double> e : impact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
-            politicalOrientation.put(e.getKey(), oldValue + multiplier * e.getValue());
+            final double differential = multiplier * e.getValue();
+            politicalOrientation.put(e.getKey(), oldValue + differential);
+            impactDifferential.put(e.getKey(), differential);
         }
+        n.updateImpactDifferential(impactDifferential);
     }
 
     public void update(final String ruler, final Map<SocialClass, Double> impact) {

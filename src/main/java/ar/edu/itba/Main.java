@@ -7,12 +7,9 @@ import ar.edu.itba.model.config.Configuration;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.handlers.UpdateManager;
-import ar.edu.itba.ui.ElectionNewsInfluence;
+import ar.edu.itba.ui.election.ElectionNewsInfluence;
 import ar.edu.itba.utils.Metrics;
-import ar.edu.itba.utils.Random;
-import processing.core.PApplet;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

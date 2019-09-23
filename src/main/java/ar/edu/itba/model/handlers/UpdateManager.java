@@ -29,7 +29,7 @@ public class UpdateManager {
     public void updatePersons(final List<News> news) {
         for (final Person p : persons) {
             for (final News n : news)
-                p.update(n.getSubject(), n.getMedia(), n.getImpact());
+                p.update(n);
         }
     }
 

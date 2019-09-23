@@ -21,7 +21,7 @@ public class NewsPaper {
         this.subjects = subjects;
     }
 
-    public Optional<News> generateNews() {
+    public Optional<News> generateNews() throws Exception {
         final double r = Random.generateDouble();
         if (r > prob)
             return Optional.empty();
