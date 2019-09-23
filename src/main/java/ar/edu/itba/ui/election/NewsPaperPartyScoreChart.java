@@ -9,6 +9,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,12 +34,25 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
                     .collect(Collectors.toMap(Map.Entry::getKey,
                     Map.Entry::getValue,
                     (v1,v2) -> v1 + v2));
-            data[i++] = partiesImpactDifferential.values().stream().mapToDouble(v -> v).toArray();
+            final Map<String, Double> normalizedDifferential = normalize(partiesImpactDifferential);
+            data[i++] = normalizedDifferential.values().stream().mapToDouble(v -> v).toArray();
         }
 
         String[] politicalPartiesId = Configuration.getInstance().getPoliticalParties().stream().toArray(String[]::new);
         String[] newsPapersId = newsPapers.stream().map(newsPaper -> newsPaper.getId()).toArray(String[]::new);
         return DatasetUtilities.createCategoryDataset(newsPapersId, politicalPartiesId, data);
+    }
+
+    private Map<String, Double> normalize(final Map<String, Double> partiesImpactDifferential) throws Exception {
+        final Map<String, Double> normalizedDifferential = new HashMap<>();
+
+        for (final String party : Configuration.getInstance().getPoliticalParties())
+            normalizedDifferential.put(party, 0D);
+
+        for (final Map.Entry<String, Double> e : partiesImpactDifferential.entrySet())
+            normalizedDifferential.put(e.getKey(), e.getValue());
+
+        return normalizedDifferential;
     }
 
     protected JFreeChart createChart(final CategoryDataset dataset, final int electionCount) throws Exception {

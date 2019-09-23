@@ -11,8 +11,10 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class BaseStackedChart extends BaseChart {
     private static final List<Color> colors = generateColors();

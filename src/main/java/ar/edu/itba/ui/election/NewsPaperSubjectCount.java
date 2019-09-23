@@ -48,11 +48,6 @@ public class NewsPaperSubjectCount extends BaseStackedChart {
         return DatasetUtilities.createCategoryDataset(newsPapersId, subjectsId, data);
     }
 
-    protected JFreeChart createChart(final CategoryDataset dataset, final int electionCount) throws Exception {
-        return super.createChart(dataset, "Election " + electionCount + " - Subject count by newspaper",
-                "Subject", "Count");
-    }
-
     private Map<String, Long> normalize(final Map<String, Long> subjectsCount) throws Exception {
         final Map<String, Long> normalizedCount = new HashMap<>();
 
@@ -63,5 +58,10 @@ public class NewsPaperSubjectCount extends BaseStackedChart {
             normalizedCount.put(e.getKey(), e.getValue());
 
         return normalizedCount;
+    }
+
+    protected JFreeChart createChart(final CategoryDataset dataset, final int electionCount) throws Exception {
+        return super.createChart(dataset, "Election " + electionCount + " - Subject count by newspaper",
+                "Subject", "Count");
     }
 }
