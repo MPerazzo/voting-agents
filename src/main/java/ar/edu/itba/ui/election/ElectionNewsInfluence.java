@@ -10,9 +10,8 @@ public class ElectionNewsInfluence extends JFrame {
 
     public static void compute() throws Exception {
         final ElectionNewsInfluence frame = new ElectionNewsInfluence("Election " + electionCount + " - News Influence");
-        frame.getContentPane().add(new NewsPaperSubjectCount().generateChartPanel(electionCount), BorderLayout.EAST);
         frame.getContentPane().add(new NewsPaperPartyScoreChart().generateChartPanel(electionCount), BorderLayout.WEST);
-        frame.getContentPane().add(new PartyScoreChart().generateChartPanel(electionCount), BorderLayout.SOUTH);
+        frame.getContentPane().add(new PartyCountChart().generateChartPanel(electionCount), BorderLayout.EAST);
         frame.pack();
         RefineryUtilities.centerFrameOnScreen(frame);
         frame.setVisible(true);

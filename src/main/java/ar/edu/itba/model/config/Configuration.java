@@ -185,6 +185,4 @@ public class Configuration {
     public List<String> getPoliticalParties() {
         return inputData.getParties();
     }
-
-    public List<String> getSubjects() { return inputData.getSubjects(); }
 }

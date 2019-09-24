@@ -5,6 +5,7 @@ import ar.edu.itba.model.enums.SocialClass;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Person {
 
@@ -24,12 +25,42 @@ public class Person {
         this.id = id;
         this.economicWellness = economicWellness;
         this.socialClass = SocialClass.getSocialClass(economicWellness);
-        this.politicalOrientation = politicalOrientation;
+        this.politicalOrientation = normalize(politicalOrientation);
         this.mediaTrust = mediaTrust;
         this.interests = interests;
     }
 
-    public void setFriendsTrust(Map<Person, Double> friendsTrust) {
+    //only called once
+    private Map<String, Double> normalize(final Map<String, Double> scoreMap) {
+        final double total = scoreMap.values().stream().collect(Collectors.summingDouble(d -> d.doubleValue()));
+        final Map<String, Double> normalized = new HashMap<>();
+        for (final Map.Entry<String, Double> e : scoreMap.entrySet())
+            normalized.put(e.getKey(), ((e.getValue() / total) * 100));
+        return normalized;
+    }
+
+    private Map<String, Double> netImpact(final Map<String, Double> impact) {
+        final Map<String, Double> netImpact = new HashMap<>();
+
+        for (final Map.Entry<String, Double> e : impact.entrySet())
+            netImpact.put(e.getKey(), 0D);
+
+        final int parties = impact.size();
+        for (final Map.Entry<String, Double> e1 : impact.entrySet()) {
+            for (final Map.Entry<String, Double> e2 : impact.entrySet()) {
+                final double oldValue = netImpact.get(e2.getKey());
+                final double sign = Math.signum(e1.getValue());
+                if (!e1.getKey().equals(e2.getKey()))
+                    netImpact.put(e2.getKey(), oldValue - sign * e1.getValue()/(parties - 1));
+                else
+                    netImpact.put(e2.getKey(), oldValue +  sign * e1.getValue());
+
+            }
+        }
+        return netImpact;
+    }
+
+    public void setFriendsTrust(final Map<Person, Double> friendsTrust) {
         this.friendsTrust = friendsTrust;
     }
 
@@ -49,17 +80,17 @@ public class Person {
         final String s = n.getSubject();
         final String mediaId = n.getMedia();
         final Map<String, Double> impact = n.getImpact();
+        final Map<String, Double> netImpact = netImpact(n.getImpact());
         final Map<String, Double> impactDifferential = new HashMap<>();
 
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
-        for (final Map.Entry<String, Double> e : impact.entrySet()) {
+        for (final Map.Entry<String, Double> e : netImpact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
-            final double differential = multiplier * e.getValue();
-            politicalOrientation.put(e.getKey(), oldValue + differential);
-            impactDifferential.put(e.getKey(), differential);
+            politicalOrientation.put(e.getKey(), oldValue + multiplier * e.getValue());
+            impactDifferential.put(e.getKey(), impact.get(e.getKey()));
         }
         n.updateImpactDifferential(impactDifferential);
     }

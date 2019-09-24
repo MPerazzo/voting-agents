@@ -13,10 +13,12 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class PartyScoreChart extends BaseChart{
+public class PartyCountChart extends BaseChart{
 
     public ChartPanel generateChartPanel(int electionCount) throws Exception {
         final CategoryDataset dataset = createDataset();
@@ -27,22 +29,33 @@ public class PartyScoreChart extends BaseChart{
     @Override
     protected CategoryDataset createDataset() throws Exception {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        final Map<String, Double> partyScore = Profiler.getPersons().stream().map(p -> p.getPoliticalOrientation()).flatMap(m -> m.entrySet().stream())
-        .collect(Collectors.toMap(Map.Entry::getKey,
-                Map.Entry::getValue,
-                (v1,v2) -> v1 + v2));
-        for (final Map.Entry<String, Double> e : partyScore.entrySet())
+        final Map<String, Long> partyVoters = Profiler.getPersons().stream().map(p -> p.getPoliticalParty())
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        for (final Map.Entry<String, Long> e : normalize(partyVoters).entrySet())
             dataset.addValue(e.getValue(), "", e.getKey());
         return dataset;
+    }
+
+    private Map<String, Long> normalize(final Map<String, Long> partyVoters) throws Exception {
+        final Map<String, Long> normalizedVoters = new HashMap<>();
+
+        for (final String party : Configuration.getInstance().getPoliticalParties())
+            normalizedVoters.put(party, 0L);
+
+        for (final Map.Entry<String, Long> e : partyVoters.entrySet())
+            normalizedVoters.put(e.getKey(), e.getValue());
+
+        return normalizedVoters;
     }
 
     @Override
     protected JFreeChart createChart(CategoryDataset dataset, int electionCount) throws Exception {
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
         BarRenderer.setDefaultBarPainter(new StandardBarPainter());
-        final JFreeChart chart = ChartFactory.createBarChart("Election " + electionCount + " - total score by party",
+        final JFreeChart chart = ChartFactory.createBarChart("Election " + electionCount + " - voter by party",
                                     "Party",
-                                    "Score",
+                                    "Count",
                                     dataset,
                                     PlotOrientation.VERTICAL,
                                     false,
@@ -55,8 +68,7 @@ public class PartyScoreChart extends BaseChart{
         final BarRenderer br = (BarRenderer) chart.getCategoryPlot().getRenderer();
         final Color barsColor = new Color(140, 140, 140);
 
-        int i = 0;
-        for (final String p : Configuration.getInstance().getPoliticalParties())
+        for (int i = 0 ; i < Configuration.getInstance().getPoliticalParties().size() ; i++)
             br.setSeriesPaint(i++, barsColor);
 
         return chart;
