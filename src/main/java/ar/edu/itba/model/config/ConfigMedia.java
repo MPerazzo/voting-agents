@@ -1,13 +1,15 @@
 package ar.edu.itba.model.config;
 
-import ar.edu.itba.model.config.profile.Party;
+import ar.edu.itba.model.config.profile.MediaParty;
 
 import java.util.List;
 
 public class ConfigMedia {
     private String name;
     private double prob;
-    private List<Party> parties;
+    private double minPercentage;
+    private double maxPercentage;
+    private List<MediaParty> parties;
 
     public String getName() {
         return name;
@@ -17,7 +19,15 @@ public class ConfigMedia {
         return prob;
     }
 
-    public List<Party> getParties() {
+    public double getMinPercentage() {
+        return minPercentage;
+    }
+
+    public double getMaxPercentage() {
+        return maxPercentage;
+    }
+
+    public List<MediaParty> getParties() {
         return parties;
     }
 }

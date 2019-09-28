@@ -16,7 +16,8 @@ public class Media {
 
     public static void setSources(final List<ConfigMedia> media, final List<String> subjects) {
         for (final ConfigMedia m : media)
-            sources.add(new NewsPaper(m.getName(), m.getProb(), m.getParties(), subjects));
+            sources.add(new NewsPaper(m.getName(), m.getProb(), m.getMinPercentage(), m.getMaxPercentage(),
+                    m.getParties(), subjects));
     }
 
     public static List<News> generateNews() throws Exception {

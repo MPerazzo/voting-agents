@@ -31,9 +31,10 @@ public class PartyCountChart extends BaseChart{
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         final Map<String, Long> partyVoters = Profiler.getPersons().stream().map(p -> p.getPoliticalParty())
         .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        final Map<String, Long> normalizedPartyVoters = normalize(partyVoters);
 
-        for (final Map.Entry<String, Long> e : normalize(partyVoters).entrySet())
-            dataset.addValue(e.getValue(), "", e.getKey());
+        for (final String party : normalizedPartyVoters.keySet())
+            dataset.addValue(normalizedPartyVoters.get(party), "", party);
         return dataset;
     }
 
@@ -54,7 +55,7 @@ public class PartyCountChart extends BaseChart{
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
         BarRenderer.setDefaultBarPainter(new StandardBarPainter());
         final JFreeChart chart = ChartFactory.createBarChart("Election " + electionCount + " - voter by party",
-                                    "Party",
+                                    "ProfileParty",
                                     "Count",
                                     dataset,
                                     PlotOrientation.VERTICAL,

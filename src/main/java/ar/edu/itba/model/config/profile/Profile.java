@@ -13,7 +13,7 @@ public class Profile {
 
     private String name;
     private Economic economic;
-    private List<Party> parties;
+    private List<ProfileParty> parties;
     private List<MediaTrust> mediaTrust;
     private FriendshipConfig friendshipConfig;
     private List<Interest> interests;
@@ -52,7 +52,7 @@ public class Profile {
 
     private Map<String, Double> generatePoliticalOrientation()  {
         final Map<String, Double> politicalOrientation = new HashMap();
-        for (final Party p : parties)
+        for (final ProfileParty p : parties)
             politicalOrientation.put(p.getName(), Random.generateDouble(p.getMinScore(), p.getMaxScore()));
         return politicalOrientation;
     }
@@ -80,7 +80,7 @@ public class Profile {
         return economic;
     }
 
-    public List<Party> getParties() {
+    public List<ProfileParty> getParties() {
         return parties;
     }
 

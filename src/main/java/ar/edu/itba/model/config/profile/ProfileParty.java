@@ -1,7 +1,6 @@
 package ar.edu.itba.model.config.profile;
 
-public class Party {
-   // private int id;
+public class ProfileParty {
     private String name;
     private double minScore;
     private double maxScore;

@@ -1,23 +1,18 @@
 package ar.edu.itba.model;
 
-import ar.edu.itba.model.config.Configuration;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class News {
     private final String subject;
     private final String media;
-    private final Map<String, Double> impact;
-    private final Map<String, Double> impactDifferential;
+    private final String party;
 
-    public News(String subject, String media, Map<String, Double> impact) throws Exception {
+    private final double impact;
+    private double realImpact;
+
+    public News(final String subject, final String media, final String party, final double impact) {
         this.subject = subject;
         this.media = media;
+        this.party = party;
         this.impact = impact;
-        this.impactDifferential = new HashMap<>();
-        for (final String party : Configuration.getInstance().getPoliticalParties())
-            impactDifferential.put(party, 0D);
     }
 
     public String getSubject() {
@@ -28,16 +23,17 @@ public class News {
         return media;
     }
 
-    public Map<String, Double> getImpact() {
+    public String getParty() { return party; }
+
+    public double getImpact() {
         return impact;
     }
 
-    public Map<String, Double> getImpactDifferential() {
-        return impactDifferential;
+    public double getRealImpact() {
+        return realImpact;
     }
 
-    public void updateImpactDifferential(final Map<String, Double> impactDifferential) {
-        for (final Map.Entry<String, Double> e : impactDifferential.entrySet())
-            this.impactDifferential.put(e.getKey(), this.impactDifferential.get(e.getKey()) + impactDifferential.get(e.getKey()));
+    public void updateRealImpact(final double realImpact) {
+        this.realImpact += realImpact;
     }
 }

@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 public class Person {
 
+    final static double EPSILON = 0.01;
+    final static double MAX = 100;
+    final static double MIN = 0;
+
     //Internal Status
     private final int id;
     private double economicWellness;
@@ -39,25 +43,46 @@ public class Person {
         return normalized;
     }
 
-    private Map<String, Double> netImpact(final Map<String, Double> impact) {
+    private Map<String, Double> getImpact(final String party, final double thresholdImpact) throws Exception {
         final Map<String, Double> netImpact = new HashMap<>();
 
-        for (final Map.Entry<String, Double> e : impact.entrySet())
-            netImpact.put(e.getKey(), 0D);
-
-        final int parties = impact.size();
-        for (final Map.Entry<String, Double> e1 : impact.entrySet()) {
-            for (final Map.Entry<String, Double> e2 : impact.entrySet()) {
-                final double oldValue = netImpact.get(e2.getKey());
-                final double sign = Math.signum(e1.getValue());
-                if (!e1.getKey().equals(e2.getKey()))
-                    netImpact.put(e2.getKey(), oldValue - sign * e1.getValue()/(parties - 1));
-                else
-                    netImpact.put(e2.getKey(), oldValue +  sign * e1.getValue());
-
+        int divisor = politicalOrientation.size() - 1;
+        final double sign = Math.signum(thresholdImpact);
+        for (final String p : politicalOrientation.keySet()) {
+            if (p.equals(party))
+                netImpact.put(p, thresholdImpact);
+            else {
+                final double differential = -sign * thresholdImpact / divisor;
+                if (isBetweenBounds(politicalOrientation.get(party) + differential))
+                    netImpact.put(p, differential);
+                else {
+                    netImpact.put(p, 0D);
+                    divisor--;
+                }
             }
         }
+        if (divisor == 0)
+            throw new Exception("Illegal state");
         return netImpact;
+    }
+
+    private double impactThreshold(final String party, final double impact) {
+        if (politicalOrientation.get(party) + impact > MAX)
+            return MAX - politicalOrientation.get(party);
+        if (politicalOrientation.get(party) + impact < MIN)
+            return - politicalOrientation.get(party);
+        return impact;
+    }
+
+    private boolean isBetweenBounds(final double value) {
+        return value >= MIN
+                || value <= MAX;
+    }
+
+    private boolean isInBounds(final double value) {
+        if (!(Math.abs(value - MAX) <= EPSILON || Math.abs(value) <= EPSILON))
+            return true;
+        return false;
     }
 
     public void setFriendsTrust(final Map<Person, Double> friendsTrust) {
@@ -76,23 +101,34 @@ public class Person {
         return politicalOrientation;
     }
 
-    public void update(final News n) {
+    public void update(final News n) throws Exception {
         final String s = n.getSubject();
         final String mediaId = n.getMedia();
-        final Map<String, Double> impact = n.getImpact();
-        final Map<String, Double> netImpact = netImpact(n.getImpact());
-        final Map<String, Double> impactDifferential = new HashMap<>();
+        final String party = n.getParty();
 
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
+        if (!isInBounds(politicalOrientation.get(party)))
+            return;
+
+        final double thresholdImpact = impactThreshold(party, n.getImpact());
+        final Map<String, Double> impact = getImpact(party, thresholdImpact);
+
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
-        for (final Map.Entry<String, Double> e : netImpact.entrySet()) {
+        for (final Map.Entry<String, Double> e : impact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
             politicalOrientation.put(e.getKey(), oldValue + multiplier * e.getValue());
-            impactDifferential.put(e.getKey(), impact.get(e.getKey()));
         }
-        n.updateImpactDifferential(impactDifferential);
+
+        verify();
+        n.updateRealImpact(thresholdImpact * multiplier);
+    }
+
+    private void verify() throws Exception {
+        final double sum = politicalOrientation.values().stream().reduce(0D, Double::sum);
+        if (Math.abs(sum - MAX) > EPSILON)
+            throw new Exception("Illegal state");
     }
 
     public void update(final String ruler, final Map<SocialClass, Double> impact) {

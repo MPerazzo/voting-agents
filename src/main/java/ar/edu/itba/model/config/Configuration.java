@@ -6,6 +6,7 @@ import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.config.profile.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jdk.jshell.spi.ExecutionControlProvider;
 
 import java.io.*;
 import java.util.*;
@@ -81,11 +82,27 @@ public class Configuration {
         final List<ConfigMedia> media = inputData.getMedia();
         validateNoRep(media.stream().map(m -> m.getName()).collect(Collectors.toList()), "Media can not be repeated");
         for (final ConfigMedia m : media) {
-            validateRational(m.getProb());
-            validateNoRep(m.getParties().stream().map(p -> p.getName()).collect(Collectors.toList()), "Media parties can not have elements repeated");
-            for (final Party p : m.getParties()) {
-                if (!inputData.getParties().contains(p.getName()))
-                    throw new Exception("Media party " + p.getName() + " does not belong to an available party");
+            try {
+                final double minPercentage = m.getMinPercentage();
+                final double maxPercentage = m.getMaxPercentage();
+                validatePercentage(minPercentage);
+                validatePercentage(maxPercentage);
+                if (minPercentage > maxPercentage)
+                    throw new Exception("max percentage must be greater or equal than min percentage");
+                validateRational(m.getProb());
+                validateNoRep(m.getParties().stream().map(p -> p.getName()).collect(Collectors.toList()), "Media parties can not have elements repeated");
+                double probSum = 0;
+                for (final MediaParty p : m.getParties()) {
+                    if (!inputData.getParties().contains(p.getName()))
+                        throw new Exception("Media party " + p.getName() + " does not belong to an available party");
+                    probSum += p.getProb();
+                }
+                if (Math.abs(probSum - 1D) > EPSILON)
+                    throw new Exception("Sum of parties probability must be 1");
+            }
+            catch (final Exception e) {
+                e.printStackTrace();
+                throw new Exception("Media " + m.getName() + " is invalid");
             }
         }
     }
@@ -119,13 +136,13 @@ public class Configuration {
             throw new Exception("Profile Sum of economic probabilities must be 1");
     }
 
-    private void validateProfileParties(final List<Party> parties) throws Exception {
+    private void validateProfileParties(final List<ProfileParty> parties) throws Exception {
         validateNoRep(parties.stream().map(p -> p.getName()).collect(Collectors.toList()), "Profile Parties can not have elements repeated");
-        for (final Party p : parties) {
+        for (final ProfileParty p : parties) {
             if (!inputData.getParties().contains(p.getName()))
-                throw new Exception("Profile Party name " + p.getName() + " does not belong to an available party");
+                throw new Exception("Profile ProfileParty name " + p.getName() + " does not belong to an available party");
             if (p.getMinScore() > p.getMaxScore())
-                throw new Exception("Profile Party max score must be greater than min score");
+                throw new Exception("Profile ProfileParty max score must be greater than min score");
         }
     }
 
@@ -166,6 +183,11 @@ public class Configuration {
     private void validateRational(final double r) throws Exception {
         if (r < 0 || r > 1)
             throw new Exception("Rational " + r + " must be between 0 and 1");
+    }
+
+    private void validatePercentage(final double r) throws Exception{
+        if (r < 0 || r > 100)
+            throw new Exception("Percentage " + r + " must be between 0 and 100");
     }
 
     public static Configuration getInstance() throws Exception {

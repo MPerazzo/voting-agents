@@ -26,7 +26,7 @@ public class UpdateManager {
         this.persons = persons;
     }
 
-    public void updatePersons(final List<News> news) {
+    public void updatePersons(final List<News> news) throws Exception {
         for (final Person p : persons) {
             for (final News n : news)
                 p.update(n);
