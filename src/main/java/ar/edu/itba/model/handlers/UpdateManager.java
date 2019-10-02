@@ -38,7 +38,7 @@ public class UpdateManager {
             p.update(action.getRuler(), action.getImpact());
     }
 
-    public void updatePersons() {
+    public void updatePersons() throws Exception {
         final Map<Person, Map<String, Double>> currentState = new HashMap<>();
 
         for (final Person p : persons)
