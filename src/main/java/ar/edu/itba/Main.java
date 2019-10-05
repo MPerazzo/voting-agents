@@ -10,6 +10,7 @@ import ar.edu.itba.model.handlers.UpdateManager;
 import ar.edu.itba.ui.election.ElectionNewsInfluence;
 import ar.edu.itba.utils.Metrics;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class Main {
         u.setPersons(persons);
 
         int currentTime = 0;
+        final List<ElectionNewsInfluence> electionsUI = new LinkedList<>();
         while (currentTime < executionTime) {
             Metrics.printPartiesState(persons);
 
@@ -39,10 +41,14 @@ public class Main {
 
             Optional<String> result = Election.generateElection(persons, currentTime);
             if (!result.isEmpty()) {
-                ElectionNewsInfluence.compute();
+                final ElectionNewsInfluence electionUI = new ElectionNewsInfluence();
+                electionUI.compute();
+                electionsUI.add(electionUI);
                 Media.clear();
             }
         }
+        for (int i = electionsUI.size() - 1 ; i >= 0 ; i--)
+            electionsUI.get(i).showOnScreen();
     }
 
     private static void init() throws Exception {

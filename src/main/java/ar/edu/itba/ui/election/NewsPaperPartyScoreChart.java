@@ -6,6 +6,8 @@ import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.NewsPaper;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 
@@ -19,8 +21,8 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
 
     public ChartPanel generateChartPanel(final int electionCount) throws Exception {
         final CategoryDataset dataset = createDataset();
-        final JFreeChart chart = createChart(dataset, electionCount);
-        return generateChartPanel(chart, true);
+        chart = createChart(dataset, electionCount);
+        return generateChartPanel(true);
     }
 
     protected CategoryDataset createDataset() throws Exception {
@@ -56,6 +58,14 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
 
     protected JFreeChart createChart(final CategoryDataset dataset, final int electionCount) throws Exception {
         return super.createChart(dataset, "Election " + electionCount + " - score by newspaper and party",
-                "ProfileParty", "Score");
+                "Party", "Score");
+    }
+
+    public double getChartHeight() {
+    return chart.getCategoryPlot().getRangeAxis().getUpperBound();
+    }
+
+    public void setChartHeight(final double maxValue) {
+        chart.getCategoryPlot().getRangeAxis().setRange(0D, maxValue);
     }
 }

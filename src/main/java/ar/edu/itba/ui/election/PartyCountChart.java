@@ -6,6 +6,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
@@ -18,12 +20,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class PartyCountChart extends BaseChart{
+public class PartyCountChart extends BaseChart {
 
     public ChartPanel generateChartPanel(int electionCount) throws Exception {
         final CategoryDataset dataset = createDataset();
-        final JFreeChart chart = createChart(dataset, electionCount);
-        return generateChartPanel(chart, false);
+        chart = createChart(dataset, electionCount);
+        return generateChartPanel(false);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class PartyCountChart extends BaseChart{
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
         BarRenderer.setDefaultBarPainter(new StandardBarPainter());
         final JFreeChart chart = ChartFactory.createBarChart("Election " + electionCount + " - voter by party",
-                                    "ProfileParty",
+                                    "Party",
                                     "Count",
                                     dataset,
                                     PlotOrientation.VERTICAL,
@@ -71,8 +73,13 @@ public class PartyCountChart extends BaseChart{
 
         for (int i = 0 ; i < Configuration.getInstance().getPoliticalParties().size() ; i++)
             br.setSeriesPaint(i++, barsColor);
-
         return chart;
+    }
+
+    public void setChartHeight(final double maxValue) {
+        final CategoryPlot plot = chart.getCategoryPlot();
+        final ValueAxis yAxis = plot.getRangeAxis();
+        yAxis.setRange(0D, maxValue);
     }
 }
 

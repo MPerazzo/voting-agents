@@ -12,7 +12,9 @@ import java.awt.*;
 
 public abstract class BaseChart {
 
-    public ChartPanel generateChartPanel(final JFreeChart chart, boolean legend) {
+    protected JFreeChart chart;
+
+    public ChartPanel generateChartPanel(boolean legend) {
         Font tickFont = new Font("Dialog", Font.PLAIN, 13);
         Font labelFont = new Font("Dialog", Font.PLAIN, 15);
         final CategoryPlot categoryPlot = chart.getCategoryPlot();
