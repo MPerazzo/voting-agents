@@ -115,12 +115,13 @@ public class Person {
         final String mediaId = n.getMedia();
         final String party = n.getParty();
         final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
-        final double thresholdImpact = impactThreshold(politicalOrientation, party, n.getImpact() * multiplier);
+        final double thresholdImpact = impactThreshold(politicalOrientation, party, n.getImpact());
+        final double realImpact = thresholdImpact * multiplier;
 
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
             return;
 
-        final Map<String, Double> impact = getImpact(politicalOrientation, party, thresholdImpact);
+        final Map<String, Double> impact = getImpact(politicalOrientation, party, realImpact);
 
         for (final Map.Entry<String, Double> e : impact.entrySet()) {
             final double oldValue = politicalOrientation.get(e.getKey());
@@ -128,7 +129,8 @@ public class Person {
         }
 
         verify(politicalOrientation);
-        n.updateRealImpact(thresholdImpact);
+        n.updateTotalImpact(thresholdImpact);
+        n.updateRealImpact(realImpact);
     }
 
     private void verify(final Map<String, Double> m) throws Exception {

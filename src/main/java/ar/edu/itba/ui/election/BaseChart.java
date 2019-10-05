@@ -12,7 +12,13 @@ import java.awt.*;
 
 public abstract class BaseChart {
 
+    protected String title;
+
     protected JFreeChart chart;
+
+    public BaseChart(String title) {
+        this.title = title;
+    }
 
     public ChartPanel generateChartPanel(boolean legend) {
         Font tickFont = new Font("Dialog", Font.PLAIN, 13);
@@ -34,5 +40,5 @@ public abstract class BaseChart {
     }
 
     protected abstract CategoryDataset createDataset() throws Exception;
-    protected abstract JFreeChart createChart(final CategoryDataset dataset, final int electionCount) throws Exception;
+    protected abstract JFreeChart createChart(final CategoryDataset dataset) throws Exception;
 }

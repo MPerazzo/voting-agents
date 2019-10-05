@@ -22,9 +22,13 @@ import java.util.stream.Collectors;
 
 public class PartyCountChart extends BaseChart {
 
-    public ChartPanel generateChartPanel(int electionCount) throws Exception {
+    public PartyCountChart(final String title) {
+        super(title);
+    }
+
+    public ChartPanel generateChartPanel() throws Exception {
         final CategoryDataset dataset = createDataset();
-        chart = createChart(dataset, electionCount);
+        chart = createChart(dataset);
         return generateChartPanel(false);
     }
 
@@ -53,10 +57,10 @@ public class PartyCountChart extends BaseChart {
     }
 
     @Override
-    protected JFreeChart createChart(CategoryDataset dataset, int electionCount) throws Exception {
+    protected JFreeChart createChart(final CategoryDataset dataset) throws Exception {
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
         BarRenderer.setDefaultBarPainter(new StandardBarPainter());
-        final JFreeChart chart = ChartFactory.createBarChart("Election " + electionCount + " - voter by party",
+        final JFreeChart chart = ChartFactory.createBarChart(title,
                                     "Party",
                                     "Count",
                                     dataset,

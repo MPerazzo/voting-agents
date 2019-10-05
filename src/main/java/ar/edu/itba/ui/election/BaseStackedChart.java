@@ -17,6 +17,10 @@ import java.util.List;
 public abstract class BaseStackedChart extends BaseChart {
     private static final List<Color> colors = generateColors();
 
+    public BaseStackedChart(final String title) {
+        super(title);
+    }
+
     protected JFreeChart createChart(final CategoryDataset dataset, final String title, final String labelX,
                                      final String labelY) throws Exception {
 

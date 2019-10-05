@@ -6,6 +6,7 @@ public class News {
     private final String party;
 
     private final double impact;
+    private double totalImpact;
     private double realImpact;
 
     public News(final String subject, final String media, final String party, final double impact) {
@@ -29,6 +30,10 @@ public class News {
         return impact;
     }
 
+    public double getTotalImpact() {
+        return totalImpact;
+    }
+
     public double getRealImpact() {
         return realImpact;
     }
@@ -36,4 +41,9 @@ public class News {
     public void updateRealImpact(final double realImpact) {
         this.realImpact += realImpact;
     }
+
+    public void updateTotalImpact(final double thresholdImpact) {
+        this.totalImpact += thresholdImpact;
+    }
+
 }
