@@ -4,6 +4,7 @@ import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.handlers.Friendship;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.handlers.UpdateManager;
@@ -45,6 +46,7 @@ public class Main {
                 electionUI.compute();
                 electionsUI.add(electionUI);
                 Media.clear();
+                Friendship.clear();
             }
         }
         for (int i = electionsUI.size() - 1 ; i >= 0 ; i--)

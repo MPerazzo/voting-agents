@@ -2,6 +2,7 @@ package ar.edu.itba.ui.election;
 
 import ar.edu.itba.model.config.Configuration;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.CategoryPlot;
@@ -19,6 +20,11 @@ public abstract class BaseStackedChart extends BaseChart {
 
     public BaseStackedChart(final String title) {
         super(title);
+    }
+
+    @Override
+    public ChartPanel generateChartPanel() throws Exception {
+        return createChartPanel(true);
     }
 
     protected JFreeChart createChart(final CategoryDataset dataset, final String title, final String labelX,

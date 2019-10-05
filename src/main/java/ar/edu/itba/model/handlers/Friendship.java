@@ -1,6 +1,7 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Person;
+import ar.edu.itba.model.config.Configuration;
 import ar.edu.itba.model.config.profile.FriendshipConfig;
 import ar.edu.itba.model.config.profile.Profile;
 import ar.edu.itba.utils.Random;
@@ -11,8 +12,9 @@ import java.util.Map;
 
 public class Friendship {
 
-    private Friendship() {
+    private static final Map<String, Double> friendshipScores = new HashMap<>();
 
+    private Friendship() {
     }
 
     public static void generateFriendships(final Map<Profile, List<Person>> profilePersons, final List<Person> persons) {
@@ -34,5 +36,20 @@ public class Friendship {
             friendsTrust.put(friend, Random.generateDouble(friendshipConfig.getMinRational(), friendshipConfig.getMaxRational()));
         }
         return friendsTrust;
+    }
+
+    public static void updateScore(final String party, final double score) {
+        if (!friendshipScores.containsKey(party))
+            friendshipScores.put(party, 0D);
+        else
+            friendshipScores.put(party, friendshipScores.get(party) + score);
+    }
+
+    public static void clear() {
+        friendshipScores.clear();
+    }
+
+    public static Map<String, Double> getFriendshipScores() {
+        return friendshipScores;
     }
 }

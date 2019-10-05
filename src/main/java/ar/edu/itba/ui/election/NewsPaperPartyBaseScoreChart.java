@@ -21,12 +21,6 @@ public abstract class NewsPaperPartyBaseScoreChart extends BaseStackedChart {
         super(title);
     }
 
-    public ChartPanel generateChartPanel() throws Exception {
-        final CategoryDataset dataset = createDataset();
-        chart = createChart(dataset);
-        return generateChartPanel(true);
-    }
-
     protected CategoryDataset createDataset(final Function<News, Double> f) throws Exception {
         final int politicalParties = Configuration.getInstance().getPoliticalParties().size();
         final List<NewsPaper> newsPapers = Media.getSources();
@@ -36,37 +30,17 @@ public abstract class NewsPaperPartyBaseScoreChart extends BaseStackedChart {
         for (final NewsPaper newsPaper : newsPapers) {
             final Map<String, Double> partiesImpactDifferential = newsPaper.getNews().stream().
                     collect(Collectors.toMap(News::getParty, f, (v1, v2) -> v1 + v2));
-            final Map<String, Double> normalizedDifferential = normalize(partiesImpactDifferential);
-            data[i++] = normalizedDifferential.values().stream().mapToDouble(v -> v).toArray();
+            normalizeDoubleMap(partiesImpactDifferential);
+            data[i++] = partiesImpactDifferential.entrySet().stream().sorted(Map.Entry.comparingByKey()).mapToDouble(e -> e.getValue()).toArray();
         }
 
-        String[] politicalPartiesId = Configuration.getInstance().getPoliticalParties().stream()
-                .collect(Collectors.toSet()).toArray(String[]::new);
+        String[] politicalPartiesId = Configuration.getInstance().getPoliticalParties().stream().sorted()
+                .toArray(String[]::new);
         String[] newsPapersId = newsPapers.stream().map(newsPaper -> newsPaper.getName()).toArray(String[]::new);
         return DatasetUtilities.createCategoryDataset(newsPapersId, politicalPartiesId, data);
     }
 
-    private Map<String, Double> normalize(final Map<String, Double> partiesImpactDifferential) throws Exception {
-        final Map<String, Double> normalizedDifferential = new HashMap<>();
-
-        for (final String party : Configuration.getInstance().getPoliticalParties())
-            normalizedDifferential.put(party, 0D);
-
-        for (final Map.Entry<String, Double> e : partiesImpactDifferential.entrySet())
-            normalizedDifferential.put(e.getKey(), e.getValue());
-
-        return normalizedDifferential;
-    }
-
     protected JFreeChart createChart(final CategoryDataset dataset) throws Exception {
         return super.createChart(dataset, title, "Party", "Score");
-    }
-
-    public double getChartHeight() {
-        return chart.getCategoryPlot().getRangeAxis().getUpperBound();
-    }
-
-    public void setChartHeight(final double maxValue) {
-        chart.getCategoryPlot().getRangeAxis().setRange(0D, maxValue);
     }
 }

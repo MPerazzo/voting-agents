@@ -1,6 +1,7 @@
 package ar.edu.itba.model;
 
 import ar.edu.itba.model.enums.SocialClass;
+import ar.edu.itba.model.handlers.Friendship;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -156,7 +157,9 @@ public class Person {
             final String party = p.getPoliticalParty();
             final double value = p.getPoliticalOrientation().get(party);
             final double multiplier = friendsTrust.get(p);
-            final Map<String, Double> differential = getImpact(m, party, impactThreshold(m, party, multiplier * value));
+            final double realImpact = impactThreshold(m, party, multiplier * value);
+            Friendship.updateScore(party, realImpact);
+            final Map<String, Double> differential = getImpact(m, party, realImpact);
             differential.forEach((k, v) -> m.merge(k, v, Double::sum));
         }
         verify(m);
