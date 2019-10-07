@@ -17,6 +17,7 @@ public class Profile {
     private List<MediaTrust> mediaTrust;
     private FriendshipConfig friendshipConfig;
     private List<Interest> interests;
+    private double skepticism;
 
     public List<Person> generatePersons(final int n, int idStart) throws Exception {
         int i = 0;
@@ -31,7 +32,13 @@ public class Profile {
         final Map<String, Double> politicalOrientation = generatePoliticalOrientation();
         final Map<String, Double> mediaTrust = generateMediaTrust();
         final Map<String, Double> interests = generateInterests();
-        return new Person(id, economicWellness, politicalOrientation, mediaTrust, interests);
+        final double skepticism = generateSkepticism();
+        return new Person(id, economicWellness, politicalOrientation, mediaTrust, interests, skepticism);
+    }
+
+    private double generateSkepticism() {
+        skepticism = Random.generateDouble();
+        return skepticism;
     }
 
     private double generateEconomicWellness(double lowProb, double midProb, double highProb) {

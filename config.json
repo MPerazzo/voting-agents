@@ -1,167 +1,150 @@
 {
-	"executionTime": 20,
+	"executionTime": 300,
 	"dt": 1,
 	"population": [
-		100,
-		25
+		100
 	],
 	"election": {
-		"initialRuler": "left",
-		"period": 150
+		"initialRuler": "bakongo",
+		"period": 100
 	},
 	"parties": [
-		"left",
-		"right"
+		"bakongo",
+		"lumumbista",
+		"simba"
 	],
 	"media": [
 		{
-			"name": "pagina12",
-			"prob": 0,
+			"name": "potentiel",
+			"prob": 0.5,
+			"minPercentage": 0,
+			"maxPercentage": 1,
 			"parties": [
 				{
-					"name": "left",
-					"minScore": 0.5,
-					"maxScore": 1
+					"name": "bakongo",
+					"prob": 0.34
 				},
 				{
-					"name": "right",
-					"minScore": 0.5,
-					"maxScore": 1
+					"name": "lumumbista",
+					"prob": 0.33
+				},
+				{
+					"name": "simba",
+					"prob": 0.33
 				}
 			]
 		},
 		{
-			"name": "clarin",
-			"prob": 1,
+			"name": "palmares",
+			"prob": 0.5,
+			"minPercentage": 0,
+			"maxPercentage": 1,
 			"parties": [
 				{
-					"name": "left",
-					"minScore": 5,
-					"maxScore": 7.5
+					"name": "bakongo",
+					"prob": 0.33
 				},
 				{
-					"name": "right",
-					"minScore": 5,
-					"maxScore": 7.5
+					"name": "lumumbista",
+					"prob": 0.34
+				},
+				{
+					"name": "simba",
+					"prob": 0.33
+				}
+			]
+		},
+		{
+			"name": "avenir",
+			"prob": 0.5,
+			"minPercentage": 0,
+			"maxPercentage": 1,
+			"parties": [
+				{
+					"name": "bakongo",
+					"prob": 0.33
+				},
+				{
+					"name": "lumumbista",
+					"prob": 0.33
+				},
+				{
+					"name": "simba",
+					"prob": 0.34
 				}
 			]
 		}
 	],
 	"subjects": [
-		"cultural",
+		"medical",
 		"education",
-		"sports",
+		"cultural",
 		"economic"
 	],
 	"profiles": [
 		{
-			"name": "teacher",
+			"name": "undecided",
 			"economic": {
-				"lowProb": 0.2,
-				"midProb": 0.6,
-				"highProb": 0.2
+				"lowProb": 0,
+				"midProb": 1,
+				"highProb": 0
 			},
 			"parties": [
 				{
-					"name": "left",
-					"minScore": 5,
-					"maxScore": 10
+					"name": "bakongo",
+					"minScore": 2,
+					"maxScore": 4
 				},
 				{
-					"name": "right",
+					"name": "lumumbista",
+					"minScore": 2,
+					"maxScore": 4
+				},
+				{
+					"name": "simba",
 					"minScore": 2,
 					"maxScore": 4
 				}
 			],
 			"mediaTrust": [
 				{
-					"name": "clarin",
-					"rational": 0.05
-				},
-				{
-					"name": "pagina12",
-					"rational": 0.4
-				}
-			],
-			"friendshipConfig": {
-				"minRational": 0.02,
-				"maxRational": 0.1,
-				"minFriends": 4,
-				"maxFriends": 12
-			},
-			"interests": [
-				{
-					"name": "education",
+					"name": "potentiel",
 					"rational": 0.5
 				},
 				{
-					"name": "cultural",
-					"rational": 0.3
-				},
-								{
-					"name": "sports",
-					"rational": 0.1
-				},
-								{
-					"name": "economic",
+					"name": "palmares",
 					"rational": 0.5
-				}
-			]
-		},
-		{
-			"name": "businessman",
-			"economic": {
-				"lowProb": 0.1,
-				"midProb": 0.6,
-				"highProb": 0.3
-			},
-			"parties": [
-				{
-					"name": "left",
-					"minScore": -2,
-					"maxScore": 2
 				},
 				{
-					"name": "right",
-					"minScore": 5,
-					"maxScore": 10
-				}
-			],
-			"mediaTrust": [
-				{
-					"name": "clarin",
-					"rational": 0.3
-				},
-				{
-					"name": "pagina12",
-					"rational": 0.01
+					"name": "avenir",
+					"rational": 0.5
 				}
 			],
 			"friendshipConfig": {
-				"minRational": 0.02,
-				"maxRational": 0.1,
+				"minRational": 0.0001,
+				"maxRational": 0.0005,
 				"minFriends": 2,
-				"maxFriends": 5
+				"maxFriends": 6
 			},
 			"interests": [
 				{
+					"name": "medical",
+					"rational": 0.5
+				},
+				{
 					"name": "education",
-					"rational": 0.1
+					"rational": 0.5
 				},
 				{
 					"name": "cultural",
-					"rational": 0.1
-				},
-								{
-					"name": "sports",
-					"rational": 0.2
+					"rational": 0.5
 				},
 				{
 					"name": "economic",
-					"rational": 0.4
+					"rational": 0.5
 				}
 			]
 		}
-	
+
 	]
 }

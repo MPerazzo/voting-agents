@@ -5,6 +5,7 @@ import ar.edu.itba.model.config.profile.MediaParty;
 import ar.edu.itba.model.config.profile.ProfileParty;
 import ar.edu.itba.utils.Random;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class NewsPaper {
@@ -34,8 +35,9 @@ public class NewsPaper {
         final String s = getRandomSubject();
         final double impact = Random.generateDouble(minPercentage, maxPercentage);
         final String party = generateParty(parties);
+        final LocalDate date = LocalDate.now();
 
-        final News n = new News(s, name, party, impact);
+        final News n = new News(s, name, party, impact, date);
         news.add(n);
 
         return Optional.of(n);

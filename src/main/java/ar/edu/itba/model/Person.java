@@ -26,14 +26,17 @@ public class Person {
     private Map<Person, Double> friendsTrust;
     private final Map<String, Double> interests;
 
+    private final double skepticism;
+
     public Person(final int id, final double economicWellness, final Map<String, Double> politicalOrientation,
-                  final Map<String, Double> mediaTrust, final Map<String, Double> interests) throws Exception {
+                  final Map<String, Double> mediaTrust, final Map<String, Double> interests, final double skepticism) throws Exception {
         this.id = id;
         this.economicWellness = economicWellness;
         this.socialClass = SocialClass.getSocialClass(economicWellness);
         this.politicalOrientation = normalize(politicalOrientation);
         this.mediaTrust = mediaTrust;
         this.interests = interests;
+        this.skepticism = skepticism;
     }
 
     //only called once
