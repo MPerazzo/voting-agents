@@ -25,6 +25,12 @@ public class Oracle extends Creator{
         this.impactTolerance= impactTolerance;
     }
 
+    public static Oracle getInstance() throws IllegalStateException{
+        if (instance == null){
+            throw new IllegalStateException();
+        }
+        return instance;
+    }
 
     public static Oracle getInstance(final double prob, final int dayTolerance,final double impactTolerance, final double minPercentage, final double maxPercentage, final List<MediaParty> parties, final List<String> subjects) {
         if (instance == null){

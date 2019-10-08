@@ -53,7 +53,8 @@ public class NewsPaper extends Creator{
             return Optional.empty();
 
         Random random = new Random();
-        Event e = Oracle.getInstance(0, 0, 0, 0, 0, null, null).getEvents().get(time).get(random.generateInt(0, Oracle.getInstance(0,0,0,0,0,null,null).getEvents().get(time).size()));
+        Event e = Oracle.getInstance().getEvents().get(time).get(random.generateInt(0, Oracle.getInstance().getEvents().get(time).size()));
+        
         final String subject = e.getSubject();
         final String party = e.getParty();
         final int date = e.getDate();
