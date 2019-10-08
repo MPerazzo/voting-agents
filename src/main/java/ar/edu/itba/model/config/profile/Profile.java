@@ -12,12 +12,12 @@ import java.util.Map;
 public class Profile {
 
     private String name;
+    private ProfileOracle oracle;
     private Economic economic;
     private List<ProfileParty> parties;
     private List<MediaTrust> mediaTrust;
     private FriendshipConfig friendshipConfig;
     private List<Interest> interests;
-    private double skepticism;
 
     public List<Person> generatePersons(final int n, int idStart) throws Exception {
         int i = 0;
@@ -32,13 +32,12 @@ public class Profile {
         final Map<String, Double> politicalOrientation = generatePoliticalOrientation();
         final Map<String, Double> mediaTrust = generateMediaTrust();
         final Map<String, Double> interests = generateInterests();
-        final double skepticism = generateSkepticism();
+        final double skepticism = generateSkepticism(oracle.getMinRational(), oracle.getMaxRational());
         return new Person(id, economicWellness, politicalOrientation, mediaTrust, interests, skepticism);
     }
 
-    private double generateSkepticism() {
-        skepticism = Random.generateDouble();
-        return skepticism;
+    private double generateSkepticism(final double minRational, final double maxRational) {
+        return Random.generateDouble(minRational, maxRational);
     }
 
     private double generateEconomicWellness(double lowProb, double midProb, double highProb) {
@@ -81,6 +80,10 @@ public class Profile {
 
     public String getName() {
         return name;
+    }
+
+    public ProfileOracle getOracle() {
+        return oracle;
     }
 
     public Economic getEconomic() {

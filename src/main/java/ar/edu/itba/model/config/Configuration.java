@@ -6,7 +6,6 @@ import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.config.profile.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jdk.jshell.spi.ExecutionControlProvider;
 
 import java.io.*;
 import java.util.*;
@@ -31,6 +30,7 @@ public class Configuration {
         Media.setSources(inputData.getMedia(), inputData.getSubjects());
         Profiler.setProfiles(generateProfilerMap());
         ar.edu.itba.model.Election.setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
+        ar.edu.itba.model.handlers.Oracle.getInstance().setParams(inputData.getOracle().getProb(), inputData.getOracle().getNewsTolerance());
     }
     
     private Map<Profile, Integer> generateProfilerMap() {
@@ -48,6 +48,7 @@ public class Configuration {
         validateElection();
         validateParties();
         validateMedia();
+        validateOracle();
         validateSubjects();
         validateProfiles();
     }
@@ -107,6 +108,13 @@ public class Configuration {
         }
     }
 
+    private void validateOracle() throws Exception {
+        final Oracle oracle = inputData.getOracle();
+        validateRational(oracle.getProb());
+        if (oracle.getNewsTolerance() <= 0)
+            throw new Exception("Invalid oracle tolerance");
+    }
+
     private void validateSubjects() throws Exception {
         validateNoRep(inputData.getSubjects(), "Subjects can not be repeated");
     }
@@ -119,6 +127,7 @@ public class Configuration {
                     throw new Exception("Profiles can be repeated");
                 names.add(p.getName());
 
+                validateProfileOracle(p.getOracle());
                 validateProfileEconomic(p.getEconomic());
                 validateProfileParties(p.getParties());
                 validateProfileMediaTrust(p.getMediaTrust());
@@ -129,6 +138,13 @@ public class Configuration {
                 throw new Exception("Profile " + p.getName() + " is invalid");
             }
         }
+    }
+
+    private void validateProfileOracle(final ProfileOracle oracle) throws Exception {
+        validateRational(oracle.getMinRational());
+        validateRational(oracle.getMaxRational());
+        if (oracle.getMinRational() > oracle.getMaxRational())
+            throw new Exception("Profile ProfileOracle max rational must be greater or equal than min rational");
     }
 
     private void validateProfileEconomic(final Economic e) throws Exception {
@@ -142,7 +158,7 @@ public class Configuration {
             if (!inputData.getParties().contains(p.getName()))
                 throw new Exception("Profile ProfileParty name " + p.getName() + " does not belong to an available party");
             if (p.getMinScore() > p.getMaxScore())
-                throw new Exception("Profile ProfileParty max score must be greater than min score");
+                throw new Exception("Profile ProfileParty max score must be greater or equal than min score");
         }
     }
 

@@ -75,6 +75,10 @@
 			]
 		}
 	],
+	"oracle": {
+		"prob": 0.5,
+		"newsTolerance": 5
+	},
 	"subjects": [
 		"medical",
 		"education",
@@ -84,6 +88,10 @@
 	"profiles": [
 		{
 			"name": "undecided",
+			"oracle": {
+				"minRational": 0,
+				"maxRational": 1
+			},
 			"economic": {
 				"lowProb": 0,
 				"midProb": 1,

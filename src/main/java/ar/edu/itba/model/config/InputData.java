@@ -1,6 +1,5 @@
 package ar.edu.itba.model.config;
 
-import ar.edu.itba.model.config.profile.ConfigAction;
 import ar.edu.itba.model.config.profile.Profile;
 
 import java.util.List;
@@ -13,6 +12,7 @@ public class InputData {
     private Election election;
     private List<String> parties;
     private List<ConfigMedia> media;
+    private Oracle oracle;
     private List<String> subjects;
     private List<Profile> profiles;
 
@@ -40,6 +40,10 @@ public class InputData {
 
     public List<String> getMediaNames() {
         return media.stream().map(m -> m.getName()).collect(Collectors.toList());
+    }
+
+    public Oracle getOracle() {
+        return oracle;
     }
 
     public List<String> getSubjects() {
