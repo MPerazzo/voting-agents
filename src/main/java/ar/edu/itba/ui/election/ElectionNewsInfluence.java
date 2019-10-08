@@ -8,10 +8,8 @@ public class ElectionNewsInfluence extends JFrame {
 
     private static int electionCount = 1;
 
-    private static double newsPartyScoreChartUpperBoundMax = 0;
-    private static double newsPartyRealScoreChartUpperBoundMax = 0;
-    private static double partyScoreChartUpperBoundMax = 0;
-    private static double friendScoreChartUpperBoundMax = 0;
+    private static double scoreChartUpperBoundMax = 0;
+    private static double partyCountChartUpperBoundMax = 0;
 
     private NewsPaperPartyScoreChart newsPaperPartyScoreChart;
     private NewsPaperPartyRealScoreChart newsPaperPartyRealScoreChart;
@@ -42,27 +40,27 @@ public class ElectionNewsInfluence extends JFrame {
 
     private void updateBounds() {
         double upperBound = newsPaperPartyScoreChart.getChartHeight();
-        if (upperBound > newsPartyScoreChartUpperBoundMax)
-            newsPartyScoreChartUpperBoundMax = upperBound;
+        if (upperBound > scoreChartUpperBoundMax)
+            scoreChartUpperBoundMax = upperBound;
 
         upperBound = newsPaperPartyRealScoreChart.getChartHeight();
-        if (upperBound > newsPartyRealScoreChartUpperBoundMax)
-            newsPartyRealScoreChartUpperBoundMax = upperBound;
+        if (upperBound > scoreChartUpperBoundMax)
+            scoreChartUpperBoundMax = upperBound;
 
         upperBound = friendScoreChart.getChartHeight();
-        if (upperBound > friendScoreChartUpperBoundMax)
-            friendScoreChartUpperBoundMax = upperBound;
+        if (upperBound > scoreChartUpperBoundMax)
+            scoreChartUpperBoundMax = upperBound;
 
         upperBound = partyCountChart.getChartHeight();
-        if (upperBound > partyScoreChartUpperBoundMax)
-            partyScoreChartUpperBoundMax = upperBound;
+        if (upperBound > partyCountChartUpperBoundMax)
+            partyCountChartUpperBoundMax = upperBound;
     }
 
     public void showOnScreen() {
-        newsPaperPartyScoreChart.setChartHeight(newsPartyScoreChartUpperBoundMax);
-        newsPaperPartyRealScoreChart.setChartHeight(newsPartyRealScoreChartUpperBoundMax);
-        friendScoreChart.setChartHeight(friendScoreChartUpperBoundMax);
-        partyCountChart.setChartHeight(partyScoreChartUpperBoundMax);
+        newsPaperPartyScoreChart.setChartHeight(scoreChartUpperBoundMax);
+        newsPaperPartyRealScoreChart.setChartHeight(scoreChartUpperBoundMax);
+        friendScoreChart.setChartHeight(scoreChartUpperBoundMax);
+        partyCountChart.setChartHeight(partyCountChartUpperBoundMax);
         RefineryUtilities.centerFrameOnScreen(this);
         this.setVisible(true);
     }

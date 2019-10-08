@@ -30,7 +30,7 @@ public class PartyCountChart extends BaseFlatChart {
 
     @Override
     protected JFreeChart createChart(CategoryDataset dataset) throws Exception {
-        return createChart(dataset, "Party", "Score", new Color(140, 140, 140));
+        return createChart(dataset, "Party", "Voters", new Color(140, 140, 140));
     }
 }
 
