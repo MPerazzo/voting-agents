@@ -4,7 +4,7 @@ public class Random {
 
     final static java.util.Random r = new java.util.Random();
 
-    private Random() {
+    public Random() {
 
     }
 

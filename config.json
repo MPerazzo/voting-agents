@@ -77,7 +77,22 @@
 	],
 	"oracle": {
 		"prob": 0.5,
-		"newsTolerance": 5
+		"newsTolerance": 5,
+		"impactTolerance": 0.1,
+		"parties": [
+			{
+				"name": "bakongo",
+				"prob": 0.33
+			},
+			{
+				"name": "lumumbista",
+				"prob": 0.33
+			},
+			{
+				"name": "simba",
+				"prob": 0.34
+			}
+		]
 	},
 	"subjects": [
 		"medical",

@@ -33,7 +33,7 @@ public class Main {
         while (currentTime < executionTime) {
             Metrics.printPartiesState(persons);
 
-            final List<News> news = Media.generateNews();
+            final List<News> news = Media.generateNews(currentTime);
             if (!news.isEmpty()) {
                 u.updatePersons(news);
                 u.updatePersons();

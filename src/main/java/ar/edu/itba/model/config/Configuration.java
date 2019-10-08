@@ -30,9 +30,9 @@ public class Configuration {
         Media.setSources(inputData.getMedia(), inputData.getSubjects());
         Profiler.setProfiles(generateProfilerMap());
         ar.edu.itba.model.Election.setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
-        ar.edu.itba.model.handlers.Oracle.getInstance().setParams(inputData.getOracle().getProb(), inputData.getOracle().getNewsTolerance());
+        ar.edu.itba.model.handlers.Oracle.getInstance(inputData.getOracle().getProb(), inputData.getOracle().getNewsTolerance(), inputData.getOracle().getImpactTolerance(),inputData.getOracle().getMinPercentage(),inputData.getOracle().getMaxPercentage(), inputData.getOracle().getParties(), inputData.getSubjects());
     }
-    
+
     private Map<Profile, Integer> generateProfilerMap() {
         final Map<Profile, Integer> m = new HashMap<>();
         final List<Profile> profiles = inputData.getProfiles();
@@ -113,6 +113,28 @@ public class Configuration {
         validateRational(oracle.getProb());
         if (oracle.getNewsTolerance() <= 0)
             throw new Exception("Invalid oracle tolerance");
+        try {
+            final double minPercentage = oracle.getMinPercentage();
+            final double maxPercentage = oracle.getMaxPercentage();
+            validatePercentage(minPercentage);
+            validatePercentage(maxPercentage);
+            if (minPercentage > maxPercentage)
+                throw new Exception("max percentage must be greater or equal than min percentage");
+            validateRational(oracle.getProb());
+            validateNoRep(oracle.getParties().stream().map(p -> p.getName()).collect(Collectors.toList()), "Media parties can not have elements repeated");
+            double probSum = 0;
+            for (final MediaParty p : oracle.getParties()) {
+                if (!inputData.getParties().contains(p.getName()))
+                    throw new Exception("Media party " + p.getName() + " does not belong to an available party");
+                probSum += p.getProb();
+            }
+            if (Math.abs(probSum - 1D) > EPSILON)
+                throw new Exception("Sum of parties probability must be 1");
+        }
+        catch (final Exception e) {
+            e.printStackTrace();
+            throw new Exception("Oracle is invalid");
+        }
     }
 
     private void validateSubjects() throws Exception {

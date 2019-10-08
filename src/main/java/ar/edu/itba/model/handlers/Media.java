@@ -20,10 +20,10 @@ public class Media {
                     m.getParties(), subjects));
     }
 
-    public static List<News> generateNews() throws Exception {
+    public static List<News> generateNews(int time) throws Exception {
         final List<News> news = new LinkedList<>();
         for (NewsPaper p : sources) {
-            final Optional<News> n = p.generateNews();
+            final Optional<News> n = p.generateNews(time);
             if (n.isPresent())
                 news.add(n.get());
         }

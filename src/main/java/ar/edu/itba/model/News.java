@@ -13,16 +13,16 @@ public class News {
     private double totalImpact;
     private double realImpact;
 
-    private final LocalDate date;
+    private final Integer date;
 
-    public News(final String subject, final String media, final String party, final double impact, final LocalDate date) {
+    public News(final String subject, final String media, final String party, final double impact, final Integer date) {
         this.subject = subject;
         this.media = media;
         this.party = party;
         this.impact = impact;
         this.date = date;
     }
-    public LocalDate getDate(){ return date; }
+    public Integer getDate(){ return date; }
 
     public String getSubject() {
         return subject;
