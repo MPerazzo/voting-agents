@@ -10,14 +10,16 @@ import java.util.Map;
 
 public class Profiler {
 
-    private static int id = 1;
-    private static Map<Profile, Integer> profiles;
-    private static final List<Person> persons = new LinkedList<>();
+    private int id = 1;
+    private Map<Profile, Integer> profiles;
+    private final List<Person> persons = new LinkedList<>();
+
+    private static final Profiler instance = new Profiler();
 
     private Profiler() {
     }
 
-    public static List<Person> generatePersons() throws Exception {
+    public List<Person> generatePersons() throws Exception {
         final Map<Profile, List<Person>> m = new HashMap<>();
         for (final Map.Entry<Profile, Integer> e : profiles.entrySet()) {
             final List<Person> profilePersons = e.getKey().generatePersons(e.getValue(), id);
@@ -29,11 +31,15 @@ public class Profiler {
         return persons;
     }
 
-    public static List<Person> getPersons() {
+    public List<Person> getPersons() {
         return persons;
     }
 
-    public static void setProfiles(final Map<Profile, Integer> l) {
+    public static Profiler getInstance() {
+        return instance;
+    }
+
+    public void setProfiles(final Map<Profile, Integer> l) {
         profiles = l;
     }
 }

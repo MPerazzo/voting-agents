@@ -6,20 +6,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Election {
-    private static String ruler;
-    private static int period;
-    private static List<String> partiesList;
+    private String ruler;
+    private int period;
+    private List<String> partiesList;
+
+    private static final Election instance = new Election();
 
     private Election() {
     }
 
-    public static void setProperties(final String r, final int p, final List<String> parties) {
+    public void setProperties(final String r, final int p, final List<String> parties) {
         ruler = r;
         period = p;
-       partiesList = parties;
+        partiesList = parties;
     }
 
-    public static Optional<String> generateElection(final List<Person> persons, final long executionTime) {
+    public Optional<String> generateElection(final List<Person> persons, final long executionTime) {
         if (executionTime % period != 0)
             return Optional.empty();
         final Map<String, Long> parties = persons.stream().collect(Collectors.groupingBy(Person::getPoliticalParty, Collectors.counting()));
@@ -28,13 +30,9 @@ public class Election {
         return Optional.of(electedParty);
     }
 
-    public static String getRuler() {
-        return ruler;
+    public static Election getInstance() {
+        return instance;
     }
 
-    public static int getPeriod() {
-        return period;
-    }
-
-    public static List<String> getPartiesList(){ return partiesList;}
+    public List<String> getPartiesList(){ return partiesList;}
 }

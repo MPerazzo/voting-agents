@@ -2,86 +2,87 @@ package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Event;
 import ar.edu.itba.model.News;
-import ar.edu.itba.model.config.profile.MediaParty;
 import ar.edu.itba.utils.Random;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Oracle extends Creator{
+public class Oracle {
 
 
-    private static Oracle instance = null;
+    private static Oracle instance = new Oracle();
 
-    private static final Map<Integer, List<Event>> events = new HashMap<>();
-    private static final List<Integer> dates = new ArrayList<>();
+    private static final Map<Integer, Event> events = new LinkedHashMap<>();
 
-    private final int dayTolerance; //tolerancia de dias, es decir ultimas N noticias
-    private final double impactTolerance; //tolerancia
+    private double prob;
+    private double minPercentage;
+    private double maxPercentage;
 
-    private Oracle(final double prob, final int dayTolerance,final double impactTolerance, final double minPercentage, final double maxPercentage, final List<MediaParty> parties, final List<String> subjects) {
-        super(parties,subjects,minPercentage,maxPercentage,prob);
-        this.dayTolerance= dayTolerance;
-        this.impactTolerance= impactTolerance;
-    }
+    private int dayTolerance;
+    private double impactTolerance;
 
-    public static Oracle getInstance() throws IllegalStateException{
-        if (instance == null){
-            throw new IllegalStateException();
-        }
-        return instance;
-    }
+    private List<String> parties;
+    private List<String> subjects;
 
-    public static Oracle getInstance(final double prob, final int dayTolerance,final double impactTolerance, final double minPercentage, final double maxPercentage, final List<MediaParty> parties, final List<String> subjects) {
-        if (instance == null){
-            instance = new Oracle(prob, dayTolerance, impactTolerance, minPercentage, maxPercentage, parties, subjects);
-        }
-        return instance;
-    }
-
-     public void generateEvent(int time) throws Exception {
+     public void generateEvent(final int time) {
         final double r = Random.generateDouble();
         if (r > prob)
             return;
         final String subject = getRandomSubject();
         final double impact = generateImpact();
-        final String party = generateParty();
-        final Integer date = time;
+        final String party = getRandomParty();
 
-        final Event e = new Event(subject, party, impact, date);
-
-        if(events.containsKey(time)){
-            events.get(time).add(e);
-        }else{
-            List<Event> dayList = new ArrayList<>();
-            dayList.add(e);
-            dates.add(time);
-            events.put(time,dayList);
-        }
-
+        final Event e = new Event(subject, party, impact, time);
+        events.put(time, e);
     }
 
-    public boolean checkIfTrueNews(News news){
+    private String getRandomSubject() {
+        return subjects.get(Random.generateInt(0, subjects.size() - 1));
+    }
 
-        List<Integer> lastN = dates.subList(Math.max(dates.size() - dayTolerance, 0), dates.size());
-        for(Integer date : lastN){
-            for (Event e : events.get(dates.get(date))){
-                if(compareImpact(e.getImpact(),news.getImpact()) &&
-                        e.getParty().equals(news.getParty()) &&
-                        e.getSubject().equals(news.getSubject())){
-                    return true;
-                }
-            }
-        }
-        return false;
+    private String getRandomParty() {
+        return parties.get(Random.generateInt(0, parties.size() - 1));
+    }
+
+    public Event getToleratedEvent() {
+        return getEvent(dayTolerance);
+    }
+
+    public Event getEvent(final int tolerance) {
+        final Integer lastEventTime = events.entrySet().stream().collect(Collectors.toList()).get(events.size() - 1).getKey();
+        final List<Event> filteredEvents = events.entrySet().stream().filter(e -> e.getKey() >= lastEventTime - tolerance).map(e -> e.getValue()).collect(Collectors.toList());
+        return filteredEvents.get(Random.generateInt(0, filteredEvents.size() - 1));
+    }
+
+    public boolean checkIfTrueNews(final News news){
+        final Event newsEvent = news.getEvent();
+        return news.getSubject().equals(newsEvent.getSubject()) && news.getParty().equals(newsEvent.getParty()) &&
+                compareImpact(newsEvent.getImpact(), news.getImpact());
     }
 
     public boolean compareImpact(double eventImpact, double newsImpact){
-        if (Math.abs(eventImpact-newsImpact)<=impactTolerance) return true;
+        if (Math.abs(eventImpact - newsImpact) <= impactTolerance)
+            return true;
         return false;
     }
 
-    public static Map<Integer, List<Event>> getEvents() {
-        return events;
+    public void setProperties(final double prob, final double minPercentage, final double maxPercentage,
+                              final int dayTolerance,final double impactTolerance, final List<String> parties, final List<String> subjects) {
+        this.prob = prob;
+        this.parties = parties;
+        this.subjects = subjects;
+        this.minPercentage = minPercentage;
+        this.maxPercentage = maxPercentage;
+        this.dayTolerance = dayTolerance;
+        this.impactTolerance = impactTolerance;
+    }
+
+    protected double generateImpact(){
+        return Random.generateDouble(minPercentage, maxPercentage);
+    }
+
+    public static Oracle getInstance() {
+        return instance;
     }
 }

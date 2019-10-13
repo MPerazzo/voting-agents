@@ -1,7 +1,9 @@
 package ar.edu.itba.model.config;
 
 
+import ar.edu.itba.model.Election;
 import ar.edu.itba.model.handlers.Media;
+import ar.edu.itba.model.handlers.Oracle;
 import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.model.config.profile.*;
 import com.google.gson.Gson;
@@ -27,10 +29,10 @@ public class Configuration {
     }
 
     public void init() {
-        Media.setSources(inputData.getMedia(), inputData.getSubjects());
-        Profiler.setProfiles(generateProfilerMap());
-        ar.edu.itba.model.Election.setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
-        ar.edu.itba.model.handlers.Oracle.getInstance(inputData.getOracle().getProb(), inputData.getOracle().getNewsTolerance(), inputData.getOracle().getImpactTolerance(),inputData.getOracle().getMinPercentage(),inputData.getOracle().getMaxPercentage(), inputData.getOracle().getParties(), inputData.getSubjects());
+        Media.getInstance().setSources(inputData.getMedia(), inputData.getSubjects());
+        Profiler.getInstance().setProfiles(generateProfilerMap());
+        Election.getInstance().setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
+        Oracle.getInstance().setProperties(inputData.getOracle().getProb(), inputData.getOracle().getMinPercentage(),inputData.getOracle().getMaxPercentage(), inputData.getOracle().getTimeTolerance(), inputData.getOracle().getImpactTolerance(), inputData.getParties(), inputData.getSubjects());
     }
 
     private Map<Profile, Integer> generateProfilerMap() {
@@ -68,7 +70,7 @@ public class Configuration {
     }
 
     private void validateElection() throws Exception {
-        final Election election = inputData.getElection();
+        final ConfigElection election = inputData.getElection();
         if (!inputData.getParties().contains(election.getInitialRuler()))
             throw new Exception("InitialParty " + election.getInitialRuler() + " does not belong to an available party");
         if (election.getPeriod() <= 0)
@@ -84,14 +86,15 @@ public class Configuration {
         validateNoRep(media.stream().map(m -> m.getName()).collect(Collectors.toList()), "Media can not be repeated");
         for (final ConfigMedia m : media) {
             try {
-                final double minPercentage = m.getMinPercentage();
-                final double maxPercentage = m.getMaxPercentage();
-                validatePercentage(minPercentage);
-                validatePercentage(maxPercentage);
-                if (minPercentage > maxPercentage)
-                    throw new Exception("max percentage must be greater or equal than min percentage");
-                validateRational(m.getProb());
+                validateRational(m.getNewsProb());
+                validateRational(m.getLieProb());
                 validateNoRep(m.getParties().stream().map(p -> p.getName()).collect(Collectors.toList()), "Media parties can not have elements repeated");
+                validatePercentage(m.getMinPercentage());
+                validatePercentage(m.getMaxPercentage());
+                if (m.getMinPercentage() > m.getMaxPercentage())
+                    throw new Exception("Max percentage must be greater or equal than min percentage");
+                if (m.getTimeTolerance() <= 0)
+                    throw new Exception("Time tolerance must be greater than zero");
                 double probSum = 0;
                 for (final MediaParty p : m.getParties()) {
                     if (!inputData.getParties().contains(p.getName()))
@@ -109,32 +112,20 @@ public class Configuration {
     }
 
     private void validateOracle() throws Exception {
-        final Oracle oracle = inputData.getOracle();
+        final ConfigOracle oracle = inputData.getOracle();
         validateRational(oracle.getProb());
-        if (oracle.getNewsTolerance() <= 0)
-            throw new Exception("Invalid oracle tolerance");
-        try {
-            final double minPercentage = oracle.getMinPercentage();
-            final double maxPercentage = oracle.getMaxPercentage();
-            validatePercentage(minPercentage);
-            validatePercentage(maxPercentage);
-            if (minPercentage > maxPercentage)
-                throw new Exception("max percentage must be greater or equal than min percentage");
-            validateRational(oracle.getProb());
-            validateNoRep(oracle.getParties().stream().map(p -> p.getName()).collect(Collectors.toList()), "Media parties can not have elements repeated");
-            double probSum = 0;
-            for (final MediaParty p : oracle.getParties()) {
-                if (!inputData.getParties().contains(p.getName()))
-                    throw new Exception("Media party " + p.getName() + " does not belong to an available party");
-                probSum += p.getProb();
-            }
-            if (Math.abs(probSum - 1D) > EPSILON)
-                throw new Exception("Sum of parties probability must be 1");
-        }
-        catch (final Exception e) {
-            e.printStackTrace();
-            throw new Exception("Oracle is invalid");
-        }
+        if (oracle.getTimeTolerance() <= 0)
+            throw new Exception("Invalid oracle news tolerance");
+        if (oracle.getImpactTolerance() <= 0)
+            throw new Exception("Invalid oracle impact tolerance");
+
+        final double minPercentage = oracle.getMinPercentage();
+        final double maxPercentage = oracle.getMaxPercentage();
+        validatePercentage(minPercentage);
+        validatePercentage(maxPercentage);
+        if (minPercentage > maxPercentage)
+            throw new Exception("Max percentage must be greater or equal than min percentage");
+        validateRational(oracle.getProb());
     }
 
     private void validateSubjects() throws Exception {
@@ -163,10 +154,12 @@ public class Configuration {
     }
 
     private void validateProfileOracle(final ProfileOracle oracle) throws Exception {
-        validateRational(oracle.getMinRational());
-        validateRational(oracle.getMaxRational());
-        if (oracle.getMinRational() > oracle.getMaxRational())
+        validateRational(oracle.getMinProb());
+        validateRational(oracle.getMaxProb());
+        if (oracle.getMinProb() > oracle.getMaxProb())
             throw new Exception("Profile ProfileOracle max rational must be greater or equal than min rational");
+        validateRational(oracle.getLiePenalty());
+        validateRational(oracle.getTrueReward());
     }
 
     private void validateProfileEconomic(final Economic e) throws Exception {

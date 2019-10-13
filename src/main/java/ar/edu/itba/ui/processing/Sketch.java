@@ -1,4 +1,4 @@
-package ar.edu.itba.ui;
+package ar.edu.itba.ui.processing;
 
 import ar.edu.itba.model.Election;
 import ar.edu.itba.model.Person;
@@ -22,7 +22,7 @@ public class Sketch extends PApplet {
     PFont f;
 
     /*public static void main(String[] args){
-        PApplet.main("ar.edu.itba.ui.Sketch", args);
+        PApplet.main("ar.edu.itba.ui.processing.Sketch", args);
     }*/
 
 
@@ -30,7 +30,7 @@ public class Sketch extends PApplet {
     public void draw(){
 
         //DRAW PERSONS
-        List<Person> personList = Profiler.getPersons();
+        List<Person> personList = Profiler.getInstance().getPersons();
         Map<String, Long> parties = personList.stream().collect(Collectors.groupingBy(Person::getPoliticalParty, Collectors.counting()));
         int  j=0;
 
@@ -55,7 +55,7 @@ public class Sketch extends PApplet {
         //DRAW PERSONS
 
         //DRAW MEDIA
-        List<NewsPaper> newsPapersList = Media.getSources();
+        List<NewsPaper> newsPapersList = Media.getInstance().getSources();
         Map<String,Integer> typeOfNews = new HashMap<>();
         for(NewsPaper np : newsPapersList){
             for (int i=0 ; i<np.getNews().size() ; i++  ){
@@ -112,7 +112,7 @@ public class Sketch extends PApplet {
     }
 
     public void setup(){
-        partiesList = Election.getPartiesList();
+        partiesList = Election.getInstance().getPartiesList();
         colorMap = assignColor(partiesList);
         f = createFont("Arial",16,true);
     }

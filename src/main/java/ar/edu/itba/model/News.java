@@ -1,10 +1,12 @@
 package ar.edu.itba.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 
 public class News {
+
+    private final Event event;
+
     private final String subject;
     private final String media;
     private final String party;
@@ -13,16 +15,25 @@ public class News {
     private double totalImpact;
     private double realImpact;
 
-    private final Integer date;
+    private final int time;
 
-    public News(final String subject, final String media, final String party, final double impact, final Integer date) {
+    public News(final Event event, final String media, final int time) {
+        this(event.getSubject(), media, event.getParty(), event.getImpact(), time, event);
+    }
+
+    public News(final String subject, final String media, final String party, final double impact, final Integer time,
+                final Event event) {
         this.subject = subject;
         this.media = media;
         this.party = party;
         this.impact = impact;
-        this.date = date;
+        this.time = time;
+        this.event = event;
     }
-    public Integer getDate(){ return date; }
+
+    public Event getEvent() {
+        return event;
+    }
 
     public String getSubject() {
         return subject;
@@ -63,11 +74,11 @@ public class News {
                 Objects.equals(subject, news.subject) &&
                 Objects.equals(media, news.media) &&
                 Objects.equals(party, news.party) &&
-                Objects.equals(date, news.date);
+                Objects.equals(time, news.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subject, media, party, impact, date);
+        return Objects.hash(subject, media, party, impact, time);
     }
 }

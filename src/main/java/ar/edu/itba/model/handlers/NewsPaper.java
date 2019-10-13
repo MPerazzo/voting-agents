@@ -7,63 +7,74 @@ import ar.edu.itba.utils.Random;
 
 import java.util.*;
 
-public class NewsPaper extends Creator{
+public class NewsPaper {
 
     private final String name;
-    private final double lieProbability = 0.5;
+    private final double newsProb;
+    private final double lieProb;
+    private final double minPercentage;
+    private final double maxPercentage;
+    private final int timeTolerance;
 
-
+    private final List<MediaParty> parties;
+    private final List<String> subjects;
     private final List<News> news = new LinkedList<>();
 
-    public NewsPaper(final String name, final double prob, final double minPercentage, final double maxPercentage,
-                     final List<MediaParty> parties, final List<String> subjects) {
-        super(parties,subjects,minPercentage,maxPercentage,prob);
+    private final Oracle oracle = Oracle.getInstance();
+
+    public NewsPaper(final String name, final double newsProb, final double lieProb, final double minPercentage, final double maxPercentage,
+                     final int timeTolerance, final List<MediaParty> parties, final List<String> subjects) {
         this.name = name;
+        this.newsProb = newsProb;
+        this.lieProb = lieProb;
+        this.minPercentage = minPercentage;
+        this.maxPercentage = maxPercentage;
+        this.timeTolerance = timeTolerance;
+        this.parties = parties;
+        this.subjects = subjects;
     }
 
-    public Optional<News> generateNews(int time) throws Exception{
-        final double r = Random.generateDouble();
-        Optional<News> n;
-        if (r>lieProbability){
-            n = generateEventBasedNews(time);
-        }else{
-            n = generateRandomNews(time);
-        }
-        return n;
-    }
-
-    public Optional<News> generateRandomNews(int time)throws Exception{
-        final double r = Random.generateDouble();
-        if (r > prob)
+    public Optional<News> generateNews(final int time) {
+        final double r1 = Random.generateDouble();
+        if (r1 > newsProb)
             return Optional.empty();
+
+        final double r2 = Random.generateDouble();
+        Optional<News> news;
+        if (r2 > lieProb)
+            news = generateNonBiasedNews(time);
+        else
+            news = generateBiasedNews(time);
+        this.news.add(news.get());
+        return news;
+    }
+
+    private Optional<News> generateBiasedNews(final int time) {
+        final Event e = oracle.getEvent(timeTolerance);
         final String subject = getRandomSubject();
-        final double impact = generateImpact();
-        final String party = generateParty();
-        final int date = time;
-
-        final News n = new News(subject, name, party, impact, date);
-        news.add(n);
-
-        return Optional.of(n);
+        final String party = getParty();
+        final double impact = Random.generateDouble(e.getImpact() + minPercentage, e.getImpact() + maxPercentage);
+        return Optional.of(new News(subject, name, party, impact, time, e));
     }
 
-    public Optional<News> generateEventBasedNews(int time){
+    public Optional<News> generateNonBiasedNews(final int time) {
+        return Optional.of(new News(oracle.getToleratedEvent(), name, time));
+    }
+
+    private String getRandomSubject() {
+        return subjects.get(Random.generateInt(0, subjects.size() - 1));
+    }
+
+    private String getParty() {
+        double probSum = 0;
+        String party = null;
         final double r = Random.generateDouble();
-        if (r > prob)
-            return Optional.empty();
-
-        Random random = new Random();
-        Event e = Oracle.getInstance().getEvents().get(time).get(random.generateInt(0, Oracle.getInstance().getEvents().get(time).size()));
-        
-        final String subject = e.getSubject();
-        final String party = e.getParty();
-        final int date = e.getDate();
-        final double impact = e.getImpact(); //ACA AGREGAR LOGICA DE GENERACION DE IMPACTO, ES DECIR, VER SI FAVORECER AL PARTIDO O NO ETC
-
-        final News n = new News(subject, name, party, impact, date);
-        news.add(n);
-
-        return Optional.of(n);
+        for (final MediaParty p : parties) {
+            probSum += p.getProb();
+            if (r <= probSum)
+                party = p.getName();
+        }
+        return party;
     }
 
     public String getName() {

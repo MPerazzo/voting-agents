@@ -32,8 +32,8 @@ public class Profile {
         final Map<String, Double> politicalOrientation = generatePoliticalOrientation();
         final Map<String, Double> mediaTrust = generateMediaTrust();
         final Map<String, Double> interests = generateInterests();
-        final double skepticism = generateSkepticism(oracle.getMinRational(), oracle.getMaxRational());
-        return new Person(id, economicWellness, politicalOrientation, mediaTrust, interests, skepticism);
+        final double skepticism = generateSkepticism(oracle.getMinProb(), oracle.getMaxProb());
+        return new Person(id, economicWellness, politicalOrientation, mediaTrust, interests, skepticism, oracle.getLiePenalty(), oracle.getTrueReward());
     }
 
     private double generateSkepticism(final double minRational, final double maxRational) {

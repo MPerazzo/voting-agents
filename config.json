@@ -16,9 +16,11 @@
 	"media": [
 		{
 			"name": "potentiel",
-			"prob": 0.5,
+			"newsProb": 0.5,
+			"lieProb": 0.5,
 			"minPercentage": 0,
-			"maxPercentage": 1,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
 			"parties": [
 				{
 					"name": "bakongo",
@@ -36,9 +38,11 @@
 		},
 		{
 			"name": "palmares",
-			"prob": 0.5,
+			"newsProb": 0.5,
+			"lieProb": 0.5,
 			"minPercentage": 0,
-			"maxPercentage": 1,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
 			"parties": [
 				{
 					"name": "bakongo",
@@ -56,9 +60,11 @@
 		},
 		{
 			"name": "avenir",
-			"prob": 0.5,
+			"newsProb": 0.5,
+			"lieProb": 0.5,
 			"minPercentage": 0,
-			"maxPercentage": 1,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
 			"parties": [
 				{
 					"name": "bakongo",
@@ -76,23 +82,11 @@
 		}
 	],
 	"oracle": {
-		"prob": 0.5,
-		"newsTolerance": 5,
+		"prob": 0.7,
+		"timeTolerance": 5,
 		"impactTolerance": 0.1,
-		"parties": [
-			{
-				"name": "bakongo",
-				"prob": 0.33
-			},
-			{
-				"name": "lumumbista",
-				"prob": 0.33
-			},
-			{
-				"name": "simba",
-				"prob": 0.34
-			}
-		]
+		"minPercentage": 0,
+		"maxPercentage": 1
 	},
 	"subjects": [
 		"medical",
@@ -104,8 +98,10 @@
 		{
 			"name": "undecided",
 			"oracle": {
-				"minRational": 0,
-				"maxRational": 1
+				"minProb": 0,
+				"maxProb": 1,
+				"liePenalty": 0.025,
+				"trueReward": 0.01
 			},
 			"economic": {
 				"lowProb": 0,

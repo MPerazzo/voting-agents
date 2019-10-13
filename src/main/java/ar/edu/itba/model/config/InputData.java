@@ -9,10 +9,10 @@ public class InputData {
     private int executionTime;
     private int dt;
     private List<Integer> population;
-    private Election election;
+    private ConfigElection election;
     private List<String> parties;
     private List<ConfigMedia> media;
-    private Oracle oracle;
+    private ConfigOracle oracle;
     private List<String> subjects;
     private List<Profile> profiles;
 
@@ -24,7 +24,7 @@ public class InputData {
         return dt;
     }
 
-    public Election getElection() {
+    public ConfigElection getElection() {
         return election;
     }
 
@@ -42,7 +42,7 @@ public class InputData {
         return media.stream().map(m -> m.getName()).collect(Collectors.toList());
     }
 
-    public Oracle getOracle() {
+    public ConfigOracle getOracle() {
         return oracle;
     }
 

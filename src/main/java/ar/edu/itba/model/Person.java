@@ -2,6 +2,9 @@ package ar.edu.itba.model;
 
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.Friendship;
+import ar.edu.itba.model.handlers.Oracle;
+import ar.edu.itba.utils.Random;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,9 +14,13 @@ import static java.util.stream.Collectors.toMap;
 
 public class Person {
 
-    final static double EPSILON = 0.01;
-    final static double MAX = 100;
-    final static double MIN = 0;
+    private final static double EPSILON = 0.01;
+
+    private final static double IMPACT_MIN = 0D;
+    private final static double IMPACT_MAX = 100D;
+
+    private final static double MEDIA_TRUST_MIN = 0D;
+    private final static double MEDIA_TRUST_MAX = 1D;
 
     //Internal Status
     private final int id;
@@ -26,10 +33,15 @@ public class Person {
     private Map<Person, Double> friendsTrust;
     private final Map<String, Double> interests;
 
+    private final Oracle oracle = Oracle.getInstance();
+
     private final double skepticism;
+    private final double liePenalty;
+    private final double trueReward;
 
     public Person(final int id, final double economicWellness, final Map<String, Double> politicalOrientation,
-                  final Map<String, Double> mediaTrust, final Map<String, Double> interests, final double skepticism) throws Exception {
+                  final Map<String, Double> mediaTrust, final Map<String, Double> interests,
+                  final double skepticism, final double liePenalty, final double trueReward) throws Exception {
         this.id = id;
         this.economicWellness = economicWellness;
         this.socialClass = SocialClass.getSocialClass(economicWellness);
@@ -37,6 +49,8 @@ public class Person {
         this.mediaTrust = mediaTrust;
         this.interests = interests;
         this.skepticism = skepticism;
+        this.liePenalty = liePenalty;
+        this.trueReward = trueReward;
     }
 
     //only called once
@@ -80,20 +94,28 @@ public class Person {
     }
 
     private double impactThreshold(final Map<String, Double> m, final String party, final double impact) {
-        if (m.get(party) + impact > MAX)
-            return MAX - m.get(party);
-        if (m.get(party) + impact < MIN)
+        if (m.get(party) + impact > IMPACT_MAX)
+            return IMPACT_MAX - m.get(party);
+        if (m.get(party) + impact < IMPACT_MIN)
             return - m.get(party);
         return impact;
     }
 
+    private double mediaTrustThreshold(final double trust) {
+        if (trust > MEDIA_TRUST_MAX)
+            return MEDIA_TRUST_MAX;
+        else if (trust < MEDIA_TRUST_MIN)
+            return MEDIA_TRUST_MIN;
+        return trust;
+    }
+
     private boolean isBetweenBounds(final double value) {
-        return value >= MIN
-                || value <= MAX;
+        return value >= IMPACT_MIN
+                || value <= IMPACT_MAX;
     }
 
     private boolean isInBounds(final double value) {
-        if (!(Math.abs(value - MAX) <= EPSILON || Math.abs(value) <= EPSILON))
+        if (!(Math.abs(value - IMPACT_MAX) <= EPSILON || Math.abs(value) <= EPSILON))
             return true;
         return false;
     }
@@ -115,6 +137,18 @@ public class Person {
     }
 
     public void update(final News n) throws Exception {
+        final double r = Random.generateDouble();
+        if (r <= skepticism) {
+            if (oracle.checkIfTrueNews(n)) {
+                final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) + trueReward);
+                mediaTrust.put(n.getParty(), trust);
+            }
+            else {
+                final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) - liePenalty);
+                mediaTrust.put(n.getParty(), trust);
+                return;
+            }
+        }
         final String s = n.getSubject();
         final String mediaId = n.getMedia();
         final String party = n.getParty();
@@ -139,7 +173,7 @@ public class Person {
 
     private void verify(final Map<String, Double> m) throws Exception {
         final double sum = m.values().stream().reduce(0D, Double::sum);
-        if (Math.abs(sum - MAX) > EPSILON)
+        if (Math.abs(sum - IMPACT_MAX) > EPSILON)
             throw new Exception("Illegal state");
     }
 

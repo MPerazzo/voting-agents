@@ -1,6 +1,6 @@
 package ar.edu.itba.model.config;
 
-public class Election {
+public class ConfigElection {
     private String initialRuler;
     private int period;
 

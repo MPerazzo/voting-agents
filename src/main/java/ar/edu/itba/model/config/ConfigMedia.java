@@ -6,17 +6,23 @@ import java.util.List;
 
 public class ConfigMedia {
     private String name;
-    private double prob;
+    private double newsProb;
+    private double lieProb;
     private double minPercentage;
     private double maxPercentage;
+    private int timeTolerance;
     private List<MediaParty> parties;
 
     public String getName() {
         return name;
     }
 
-    public double getProb() {
-        return prob;
+    public double getNewsProb() {
+        return newsProb;
+    }
+
+    public double getLieProb() {
+        return lieProb;
     }
 
     public double getMinPercentage() {
@@ -25,6 +31,10 @@ public class ConfigMedia {
 
     public double getMaxPercentage() {
         return maxPercentage;
+    }
+
+    public int getTimeTolerance() {
+        return timeTolerance;
     }
 
     public List<MediaParty> getParties() {

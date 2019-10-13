@@ -1,14 +1,24 @@
 package ar.edu.itba.model.config.profile;
 
 public class ProfileOracle {
-    private double minRational;
-    private double maxRational;
+    private double minProb;
+    private double maxProb;
+    private double liePenalty;
+    private double trueReward;
 
-    public double getMinRational() {
-        return minRational;
+    public double getMinProb() {
+        return minProb;
     }
 
-    public double getMaxRational() {
-        return maxRational;
+    public double getMaxProb() {
+        return maxProb;
+    }
+
+    public double getLiePenalty() {
+        return liePenalty;
+    }
+
+    public double getTrueReward() {
+        return trueReward;
     }
 }

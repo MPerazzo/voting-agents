@@ -4,10 +4,7 @@ import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.config.Configuration;
-import ar.edu.itba.model.handlers.Friendship;
-import ar.edu.itba.model.handlers.Media;
-import ar.edu.itba.model.handlers.Profiler;
-import ar.edu.itba.model.handlers.UpdateManager;
+import ar.edu.itba.model.handlers.*;
 import ar.edu.itba.ui.election.ElectionNewsInfluence;
 import ar.edu.itba.utils.Metrics;
 
@@ -24,7 +21,7 @@ public class Main {
 
         init();
 
-        final List<Person> persons = Profiler.generatePersons();
+        final List<Person> persons = Profiler.getInstance().generatePersons();
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
 
@@ -33,19 +30,20 @@ public class Main {
         while (currentTime < executionTime) {
             Metrics.printPartiesState(persons);
 
-            final List<News> news = Media.generateNews(currentTime);
+            Oracle.getInstance().generateEvent(currentTime);
+            final List<News> news = Media.getInstance().generateNews(currentTime);
             if (!news.isEmpty()) {
                 u.updatePersons(news);
                 u.updatePersons();
             }
             currentTime += dt;
 
-            Optional<String> result = Election.generateElection(persons, currentTime);
+            Optional<String> result = Election.getInstance().generateElection(persons, currentTime);
             if (!result.isEmpty()) {
                 final ElectionNewsInfluence electionUI = new ElectionNewsInfluence();
                 electionUI.compute();
                 electionsUI.add(electionUI);
-                Media.clear();
+                Media.getInstance().clear();
                 Friendship.clear();
             }
         }

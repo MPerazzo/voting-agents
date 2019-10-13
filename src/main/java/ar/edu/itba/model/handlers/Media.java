@@ -8,19 +8,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class Media {
-    private final static List<NewsPaper> sources = new LinkedList<>();
+    private final List<NewsPaper> sources = new LinkedList<>();
+
+    private static final Media instance = new Media();
 
     private Media () {
 
     }
 
-    public static void setSources(final List<ConfigMedia> media, final List<String> subjects) {
+    public void setSources(final List<ConfigMedia> media, final List<String> subjects) {
         for (final ConfigMedia m : media)
-            sources.add(new NewsPaper(m.getName(), m.getProb(), m.getMinPercentage(), m.getMaxPercentage(),
-                    m.getParties(), subjects));
+            sources.add(new NewsPaper(m.getName(), m.getNewsProb(), m.getLieProb(), m.getMinPercentage(),
+                    m.getMaxPercentage(), m.getTimeTolerance(), m.getParties(), subjects));
     }
 
-    public static List<News> generateNews(int time) throws Exception {
+    public List<News> generateNews(int time) {
         final List<News> news = new LinkedList<>();
         for (NewsPaper p : sources) {
             final Optional<News> n = p.generateNews(time);
@@ -30,9 +32,13 @@ public class Media {
         return news;
     }
 
-    public static List<NewsPaper> getSources(){ return sources;}
+    public List<NewsPaper> getSources(){ return sources;}
 
-    public static void clear() {
+    public static Media getInstance() {
+        return instance;
+    }
+
+    public void clear() {
         for (final NewsPaper newsPaper : sources)
             newsPaper.getNews().clear();
     }

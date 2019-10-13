@@ -23,7 +23,7 @@ public abstract class NewsPaperPartyBaseScoreChart extends BaseStackedChart {
 
     protected CategoryDataset createDataset(final Function<News, Double> f) throws Exception {
         final int politicalParties = Configuration.getInstance().getPoliticalParties().size();
-        final List<NewsPaper> newsPapers = Media.getSources();
+        final List<NewsPaper> newsPapers = Media.getInstance().getSources();
         final double[][] data = new double[newsPapers.size()][politicalParties];
 
         int i = 0;

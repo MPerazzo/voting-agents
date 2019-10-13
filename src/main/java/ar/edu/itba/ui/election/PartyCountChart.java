@@ -19,7 +19,7 @@ public class PartyCountChart extends BaseFlatChart {
     @Override
     protected CategoryDataset createDataset() throws Exception {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        final Map<String, Long> partyVoters = Profiler.getPersons().stream().map(p -> p.getPoliticalParty())
+        final Map<String, Long> partyVoters = Profiler.getInstance().getPersons().stream().map(p -> p.getPoliticalParty())
         .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         normalizeLongMap(partyVoters);
 

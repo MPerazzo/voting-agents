@@ -1,23 +1,18 @@
 package ar.edu.itba.model.config;
 
-import ar.edu.itba.model.config.profile.MediaParty;
-
-import java.util.List;
-
-public class Oracle {
+public class ConfigOracle {
     private double prob;
-    private int newsTolerance;
+    private int timeTolerance;
     private double impactTolerance;
     private double minPercentage;
     private double maxPercentage;
-    private List<MediaParty> parties;
 
     public double getProb() {
         return prob;
     }
 
-    public int getNewsTolerance() {
-        return newsTolerance;
+    public int getTimeTolerance() {
+        return timeTolerance;
     }
 
     public double getImpactTolerance() {
@@ -30,9 +25,5 @@ public class Oracle {
 
     public double getMaxPercentage() {
         return maxPercentage;
-    }
-
-    public List<MediaParty> getParties() {
-        return parties;
     }
 }
