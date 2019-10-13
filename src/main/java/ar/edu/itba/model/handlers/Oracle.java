@@ -50,7 +50,7 @@ public class Oracle {
     }
 
     public Event getEvent(final int tolerance) {
-        final Integer lastEventTime = events.entrySet().stream().collect(Collectors.toList()).get(events.size() - 1).getKey();
+        final int lastEventTime = events.entrySet().stream().collect(Collectors.toList()).get(events.size() - 1).getKey();
         final List<Event> filteredEvents = events.entrySet().stream().filter(e -> e.getKey() >= lastEventTime - tolerance).map(e -> e.getValue()).collect(Collectors.toList());
         return filteredEvents.get(Random.generateInt(0, filteredEvents.size() - 1));
     }
@@ -58,14 +58,24 @@ public class Oracle {
     public boolean checkIfTrueNews(final News news){
         final Event newsEvent = news.getEvent();
         return news.getSubject().equals(newsEvent.getSubject()) && news.getParty().equals(newsEvent.getParty()) &&
-                compareImpact(newsEvent.getImpact(), news.getImpact());
+                validateImpact(newsEvent.getImpact(), news.getImpact()) && validateTime(news);
     }
 
-    public boolean compareImpact(double eventImpact, double newsImpact){
+    private boolean validateImpact(double eventImpact, double newsImpact){
         if (Math.abs(eventImpact - newsImpact) <= impactTolerance)
             return true;
         return false;
     }
+
+    private boolean validateTime(final News news) {
+        final int lastEventTime = events.entrySet().stream().collect(Collectors.toList()).get(events.size() - 1).getKey();
+        final int newsTime = news.getTime();
+        return lastEventTime - newsTime <= dayTolerance;
+     }
+
+     public boolean isEmpty() {
+         return events.size() == 0;
+     }
 
     public void setProperties(final double prob, final double minPercentage, final double maxPercentage,
                               final int dayTolerance,final double impactTolerance, final List<String> parties, final List<String> subjects) {

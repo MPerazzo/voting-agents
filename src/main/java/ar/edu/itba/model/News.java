@@ -57,6 +57,10 @@ public class News {
         return realImpact;
     }
 
+    public int getTime() {
+        return time;
+    }
+
     public void updateRealImpact(final double realImpact) {
         this.realImpact += realImpact;
     }

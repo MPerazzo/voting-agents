@@ -36,7 +36,7 @@ public class NewsPaper {
 
     public Optional<News> generateNews(final int time) {
         final double r1 = Random.generateDouble();
-        if (r1 > newsProb)
+        if (r1 > newsProb || oracle.isEmpty())
             return Optional.empty();
 
         final double r2 = Random.generateDouble();
