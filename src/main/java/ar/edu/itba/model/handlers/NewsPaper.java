@@ -34,7 +34,7 @@ public class NewsPaper {
         this.subjects = subjects;
     }
 
-    public Optional<News> generateNews(final int time) {
+    public Optional<News> generateNews(final int time) throws Exception {
         final double r1 = Random.generateDouble();
         if (r1 > newsProb || oracle.isEmpty())
             return Optional.empty();
@@ -49,7 +49,7 @@ public class NewsPaper {
         return news;
     }
 
-    private Optional<News> generateBiasedNews(final int time) {
+    private Optional<News> generateBiasedNews(final int time) throws Exception {
         final Event e = oracle.getEvent(timeTolerance);
         final String subject = getRandomSubject();
         final String party = getParty();
@@ -65,16 +65,15 @@ public class NewsPaper {
         return subjects.get(Random.generateInt(0, subjects.size() - 1));
     }
 
-    private String getParty() {
+    private String getParty() throws Exception {
         double probSum = 0;
-        String party = null;
         final double r = Random.generateDouble();
         for (final MediaParty p : parties) {
             probSum += p.getProb();
             if (r <= probSum)
-                party = p.getName();
+                return p.getName();
         }
-        return party;
+        throw new Exception("Should not happend");
     }
 
     public String getName() {

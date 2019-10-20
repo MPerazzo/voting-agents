@@ -22,7 +22,7 @@ public class Media {
                     m.getMaxPercentage(), m.getTimeTolerance(), m.getParties(), subjects));
     }
 
-    public List<News> generateNews(int time) {
+    public List<News> generateNews(int time) throws Exception {
         final List<News> news = new LinkedList<>();
         for (NewsPaper p : sources) {
             final Optional<News> n = p.generateNews(time);
