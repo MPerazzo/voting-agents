@@ -2,6 +2,7 @@ package ar.edu.itba.model.config;
 
 
 import ar.edu.itba.model.Election;
+import ar.edu.itba.model.handlers.EconomicMinistry;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Oracle;
 import ar.edu.itba.model.handlers.Profiler;
@@ -33,6 +34,7 @@ public class Configuration {
         Profiler.getInstance().setProfiles(generateProfilerMap());
         Election.getInstance().setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
         Oracle.getInstance().setProperties(inputData.getOracle().getProb(), inputData.getOracle().getMinPercentage(),inputData.getOracle().getMaxPercentage(), inputData.getOracle().getTimeTolerance(), inputData.getOracle().getImpactTolerance(), inputData.getParties(), inputData.getSubjects());
+        EconomicMinistry.getInstance().setProperties(inputData.getEconomicMinistry().getProb(), inputData.getEconomicMinistry().getMinRational(), inputData.getEconomicMinistry().getMaxRational(), inputData.getEconomicMinistry().getCompetence());
     }
 
     private Map<Profile, Integer> generateProfilerMap() {
@@ -53,6 +55,7 @@ public class Configuration {
         validateOracle();
         validateSubjects();
         validateProfiles();
+        validateEconomicMinistry();
     }
 
     private void validateSimulation() throws Exception {
@@ -125,7 +128,19 @@ public class Configuration {
         validatePercentage(maxPercentage);
         if (minPercentage > maxPercentage)
             throw new Exception("Max percentage must be greater or equal than min percentage");
-        validateRational(oracle.getProb());
+    }
+
+    private void validateEconomicMinistry() throws Exception{
+        final ConfigEconomicMinistry ministry = inputData.getEconomicMinistry();
+        validateRational(ministry.getProb());
+        validateRational(ministry.getCompetence());
+        final double minRational = ministry.getMinRational();
+        final double maxRational = ministry.getMaxRational();
+        validateRational(minRational);
+        validateRational(maxRational);
+        if (minRational > maxRational)
+            throw new Exception("Max percentage must be greater or equal than min percentage");
+
     }
 
     private void validateSubjects() throws Exception {

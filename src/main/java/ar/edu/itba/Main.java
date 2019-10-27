@@ -1,5 +1,6 @@
 package ar.edu.itba;
 
+import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
@@ -32,10 +33,21 @@ public class Main {
 
             Oracle.getInstance().generateEvent(currentTime);
             final List<News> news = Media.getInstance().generateNews(currentTime);
+            System.out.println (Election.getInstance().getRuler());
+            final List<EconomicAction> economicActions = EconomicMinistry.generateEconomicAction(Election.getInstance().getRuler());
+
+            /*for(EconomicAction e : economicActions){
+                System.out.println (e.getImpact());
+                System.out.println (e.getRuler());
+            }*/
+
             if (!news.isEmpty()) {
-                u.updatePersons(news);
-                u.updatePersons();
+                u.updatePersonsNews(news);
             }
+            if(!economicActions.isEmpty()){
+                u.updatePersonsEconomic(economicActions);
+            }
+            u.updatePersons();
             currentTime += dt;
 
             Optional<String> result = Election.getInstance().generateElection(persons, currentTime);

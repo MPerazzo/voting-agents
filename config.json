@@ -88,6 +88,12 @@
 		"minPercentage": 0,
 		"maxPercentage": 1
 	},
+	"economicMinistry": {
+		"prob": 0.5,
+		"minRational": 0.001,
+		"maxRational": 0.005,
+		"competence": 0
+	},
 	"subjects": [
 		"medical",
 		"education",
@@ -112,7 +118,7 @@
 				{
 					"name": "bakongo",
 					"minScore": 2,
-					"maxScore": 4
+					"maxScore": 7
 				},
 				{
 					"name": "lumumbista",

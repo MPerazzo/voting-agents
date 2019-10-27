@@ -15,6 +15,7 @@ public class InputData {
     private ConfigOracle oracle;
     private List<String> subjects;
     private List<Profile> profiles;
+    private ConfigEconomicMinistry economicMinistry;
 
     public int getExecutionTime() {
         return executionTime;
@@ -53,4 +54,6 @@ public class InputData {
     public List<Profile> getProfiles() {
         return profiles;
     }
+
+    public ConfigEconomicMinistry getEconomicMinistry() { return economicMinistry; }
 }

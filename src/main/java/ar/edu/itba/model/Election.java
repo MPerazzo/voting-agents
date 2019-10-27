@@ -35,4 +35,6 @@ public class Election {
     }
 
     public List<String> getPartiesList(){ return partiesList;}
+
+    public String getRuler() { return ruler; }
 }

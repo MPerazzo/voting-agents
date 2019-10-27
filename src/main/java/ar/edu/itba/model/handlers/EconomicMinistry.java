@@ -8,9 +8,12 @@ import java.util.*;
 
 public class EconomicMinistry {
 
+    private static EconomicMinistry instance = new EconomicMinistry();
+
     private static double prob;
-    private static double minScore;
-    private static double maxScore;
+    private static double minRational;
+    private static double maxRational;
+    private static double competence;
 
     private static final List<EconomicAction> actions = new LinkedList<>();
 
@@ -18,22 +21,41 @@ public class EconomicMinistry {
 
     }
 
-    public static void setProperties(final double p, final double mins, final double maxs) {
-        prob = p;
-        minScore = mins;
-        maxScore = maxs;
+    public void setProperties(final double prob, final double minRational, final double maxRational, final double competence) {
+        this.prob = prob;
+        this.minRational = minRational;
+        this.maxRational = maxRational;
+        this.competence = competence;
     }
 
-    public static Optional<EconomicAction> generateEconomicAction(final String ruler) {
+    public static List<EconomicAction> generateEconomicAction(final String ruler) {
 
         if (Random.generateDouble() > prob)
-            return Optional.empty();
+            return actions;
 
         Map<SocialClass, Double> impact = new HashMap<>();
-        for (final SocialClass s : SocialClass.values())
-            impact.put(s, Random.generateDoubleSigned(minScore, maxScore));
+        for (final SocialClass s : SocialClass.values()){
+
+           double effect = 1.0;
+
+           if (Random.generateDouble()>competence){
+               effect = -1.0;
+           }
+
+            impact.put(s, effect * Random.generateDouble(minRational, maxRational));
+            //System.out.println(impact.get(s));
+        }
         final EconomicAction e = new EconomicAction(ruler, impact);
         actions.add(e);
-        return Optional.of(e);
+        return actions;
     }
+
+
+
+    public static EconomicMinistry getInstance() {
+        return instance;
+    }
+
+
+
 }

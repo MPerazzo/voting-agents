@@ -26,16 +26,20 @@ public class UpdateManager {
         this.persons = persons;
     }
 
-    public void updatePersons(final List<News> news) throws Exception {
+    public void updatePersonsNews(final List<News> news) throws Exception {
         for (final Person p : persons) {
             for (final News n : news)
                 p.update(n);
         }
     }
 
-    public void updatePersons(final EconomicAction action) {
-        for (final Person p : persons)
-            p.update(action.getRuler(), action.getImpact());
+    public void updatePersonsEconomic(final List<EconomicAction> actions) throws Exception {
+        for (final Person p : persons){
+            for (final EconomicAction a : actions){
+                p.update(a.getRuler(), a.getImpact());
+            }
+        }
+
     }
 
     public void updatePersons() throws Exception {
