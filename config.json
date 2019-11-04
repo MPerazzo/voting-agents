@@ -88,12 +88,80 @@
 		"minPercentage": 0,
 		"maxPercentage": 1
 	},
-	"economicMinistry": {
-		"prob": 0.5,
-		"minRational": 0.001,
-		"maxRational": 0.005,
-		"competence": 0
-	},
+	"economicMinistry": [
+		{
+			"name": "bakongo",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0.8
+				},
+				{
+					"name": "mid",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0.4
+				},
+				{
+					"name": "high",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0
+				}
+			]
+		},
+		{
+			"name": "lumumbista",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0
+				},
+				{
+					"name": "mid",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0.3
+				},
+				{
+					"name": "high",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0.8
+				}
+			]
+		},
+		{
+			"name": "simba",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0
+				},
+				{
+					"name": "mid",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0.8
+				},
+				{
+					"name": "high",
+					"minRational": 0.001,
+					"maxRational": 0.005,
+					"competence": 0
+				}
+			]
+		}
+	],
 	"subjects": [
 		"medical",
 		"education",
@@ -118,7 +186,7 @@
 				{
 					"name": "bakongo",
 					"minScore": 2,
-					"maxScore": 7
+					"maxScore": 4
 				},
 				{
 					"name": "lumumbista",

@@ -15,7 +15,7 @@ public class InputData {
     private ConfigOracle oracle;
     private List<String> subjects;
     private List<Profile> profiles;
-    private ConfigEconomicMinistry economicMinistry;
+    private List<ConfigEconomicMinistry> economicMinistry;
 
     public int getExecutionTime() {
         return executionTime;
@@ -55,5 +55,5 @@ public class InputData {
         return profiles;
     }
 
-    public ConfigEconomicMinistry getEconomicMinistry() { return economicMinistry; }
+    public List<ConfigEconomicMinistry> getEconomicMinistry() { return economicMinistry; }
 }

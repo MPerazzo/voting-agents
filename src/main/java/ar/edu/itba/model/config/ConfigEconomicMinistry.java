@@ -1,22 +1,21 @@
 package ar.edu.itba.model.config;
 
+
+import ar.edu.itba.model.config.profile.MinistryPartyEconomic;
+
+import java.util.List;
+
+
 public class ConfigEconomicMinistry {
     private double prob;
-    private double minRational;
-    private double maxRational;
-    private double competence;
+    private String name;
+    private List<MinistryPartyEconomic> economic;
 
-    public double getProb() { return prob; }
+    public String getName() { return name; }
 
-    public double getMinRational() {
-        return minRational;
+    public double getProb() {
+        return prob;
     }
 
-    public double getMaxRational() {
-        return maxRational;
-    }
-
-    public double getCompetence() {
-        return competence;
-    }
+    public List<MinistryPartyEconomic> getEconomic() { return economic; }
 }

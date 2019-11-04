@@ -29,8 +29,8 @@ public class ElectionNewsInfluence extends JFrame {
         this.setLayout(new FlowLayout());
         this.getContentPane().add(newsPaperPartyScoreChart.generateChartPanel());
         this.getContentPane().add(newsPaperPartyRealScoreChart.generateChartPanel());
-        this.getContentPane().add(friendScoreChart.generateChartPanel());
         this.getContentPane().add(partyCountChart.generateChartPanel());
+        this.getContentPane().add(friendScoreChart.generateChartPanel());
         this.pack();
 
         updateBounds();

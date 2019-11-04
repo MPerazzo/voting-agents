@@ -2,6 +2,7 @@ package ar.edu.itba.model.config;
 
 
 import ar.edu.itba.model.Election;
+import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.EconomicMinistry;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Oracle;
@@ -34,7 +35,7 @@ public class Configuration {
         Profiler.getInstance().setProfiles(generateProfilerMap());
         Election.getInstance().setProperties(inputData.getElection().getInitialRuler(), inputData.getElection().getPeriod(), inputData.getParties());
         Oracle.getInstance().setProperties(inputData.getOracle().getProb(), inputData.getOracle().getMinPercentage(),inputData.getOracle().getMaxPercentage(), inputData.getOracle().getTimeTolerance(), inputData.getOracle().getImpactTolerance(), inputData.getParties(), inputData.getSubjects());
-        EconomicMinistry.getInstance().setProperties(inputData.getEconomicMinistry().getProb(), inputData.getEconomicMinistry().getMinRational(), inputData.getEconomicMinistry().getMaxRational(), inputData.getEconomicMinistry().getCompetence());
+        EconomicMinistry.getInstance().setProperties(inputData.getEconomicMinistry());
     }
 
     private Map<Profile, Integer> generateProfilerMap() {
@@ -131,16 +132,19 @@ public class Configuration {
     }
 
     private void validateEconomicMinistry() throws Exception{
-        final ConfigEconomicMinistry ministry = inputData.getEconomicMinistry();
-        validateRational(ministry.getProb());
-        validateRational(ministry.getCompetence());
-        final double minRational = ministry.getMinRational();
-        final double maxRational = ministry.getMaxRational();
-        validateRational(minRational);
-        validateRational(maxRational);
-        if (minRational > maxRational)
-            throw new Exception("Max percentage must be greater or equal than min percentage");
-
+        final List<ConfigEconomicMinistry> ministryList = inputData.getEconomicMinistry();
+        for(ConfigEconomicMinistry cem : ministryList){
+            validateRational(cem.getProb());
+            for(MinistryPartyEconomic mpe : cem.getEconomic()){
+                validateRational(mpe.getCompetence());
+                double min = mpe.getMaxRational();
+                double max = mpe.getMaxRational();
+                validateRational(min);
+                validateRational(max);
+                if (min > max)
+                    throw new Exception("Max percentage must be greater or equal than min percentage");
+            }
+        }
     }
 
     private void validateSubjects() throws Exception {

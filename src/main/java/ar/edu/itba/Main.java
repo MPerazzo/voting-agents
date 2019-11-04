@@ -5,6 +5,7 @@ import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.handlers.EconomicMinistry;
 import ar.edu.itba.model.handlers.*;
 import ar.edu.itba.ui.election.ElectionNewsInfluence;
 import ar.edu.itba.utils.Metrics;
