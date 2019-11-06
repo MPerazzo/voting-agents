@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class EconomicBaseActionChart extends BaseStackedChart {
+public abstract class EconomicActionBaseChart extends BaseStackedChart {
 
-    public EconomicBaseActionChart(String title) {
+    public EconomicActionBaseChart(String title) {
         super(title);
     }
 
@@ -45,7 +45,7 @@ public abstract class EconomicBaseActionChart extends BaseStackedChart {
 
         String[] politicalPartiesId = Configuration.getInstance().getPoliticalParties().stream().sorted()
                 .toArray(String[]::new);
-        String[] economicClass = {"LOW","MEDIUM","HIGH"};
+        String[] economicClass = {"Low","Medium","High"};
 
         return DatasetUtilities.createCategoryDataset(economicClass, politicalPartiesId, data);
     }

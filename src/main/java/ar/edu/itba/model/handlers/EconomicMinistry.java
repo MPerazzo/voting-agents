@@ -85,6 +85,7 @@ public class EconomicMinistry {
         return instance;
     }
 
-
-
+    public static List<EconomicAction> getActions() {
+        return actions;
+    }
 }

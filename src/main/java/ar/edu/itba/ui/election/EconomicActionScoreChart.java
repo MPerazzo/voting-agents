@@ -9,6 +9,6 @@ public class EconomicActionScoreChart extends EconomicActionBaseChart {
     }
 
     protected CategoryDataset createDataset() throws Exception {
-        return createDataset();
+        return super.createDataset();
     }
 }

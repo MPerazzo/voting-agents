@@ -15,6 +15,7 @@ public class ElectionNewsInfluence extends JFrame {
     private NewsPaperPartyRealScoreChart newsPaperPartyRealScoreChart;
     private FriendScoreChart friendScoreChart;
     private PartyCountChart partyCountChart;
+    private EconomicActionScoreChart economicActionScoreChart;
 
     public ElectionNewsInfluence() {
         super("Election " + electionCount + " - Details");
@@ -25,11 +26,13 @@ public class ElectionNewsInfluence extends JFrame {
         newsPaperPartyRealScoreChart = new NewsPaperPartyRealScoreChart("Election " + electionCount + " - real score by newspaper and party");
         friendScoreChart = new FriendScoreChart("Election " + electionCount + " - friendships influence");
         partyCountChart = new PartyCountChart("Election " + electionCount + " - party voters");
+        economicActionScoreChart = new EconomicActionScoreChart("Election " + electionCount + " - economic actions " );
 
         this.setLayout(new FlowLayout());
         this.getContentPane().add(newsPaperPartyScoreChart.generateChartPanel());
-        this.getContentPane().add(newsPaperPartyRealScoreChart.generateChartPanel());
+        this.getContentPane().add(economicActionScoreChart.generateChartPanel());
         this.getContentPane().add(partyCountChart.generateChartPanel());
+        this.getContentPane().add(newsPaperPartyRealScoreChart.generateChartPanel());
         this.getContentPane().add(friendScoreChart.generateChartPanel());
         this.pack();
 
@@ -54,11 +57,17 @@ public class ElectionNewsInfluence extends JFrame {
         upperBound = partyCountChart.getChartHeight();
         if (upperBound > partyCountChartUpperBoundMax)
             partyCountChartUpperBoundMax = upperBound;
+
+        upperBound = economicActionScoreChart.getChartHeight();
+        if (upperBound > scoreChartUpperBoundMax)
+            scoreChartUpperBoundMax = upperBound;
+
     }
 
     public void showOnScreen() {
         newsPaperPartyScoreChart.setChartHeight(scoreChartUpperBoundMax);
         newsPaperPartyRealScoreChart.setChartHeight(scoreChartUpperBoundMax);
+        //economicActionScoreChart.setChartHeight(scoreChartUpperBoundMax);
         friendScoreChart.setChartHeight(scoreChartUpperBoundMax);
         partyCountChart.setChartHeight(partyCountChartUpperBoundMax);
         RefineryUtilities.centerFrameOnScreen(this);
