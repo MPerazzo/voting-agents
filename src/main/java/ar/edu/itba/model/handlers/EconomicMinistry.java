@@ -2,6 +2,7 @@ package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.config.ConfigEconomicMinistry;
+import ar.edu.itba.model.config.profile.Economic;
 import ar.edu.itba.model.config.profile.MinistryPartyEconomic;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.utils.Random;
@@ -13,8 +14,8 @@ public class EconomicMinistry {
     private static EconomicMinistry instance = new EconomicMinistry();
 
     private static Map<String, Double> prob = new HashMap<>();
-    private static Map<String, Map<SocialClass, Double>> minRational = new HashMap<>();
-    private static Map<String, Map<SocialClass, Double>> maxRational = new HashMap<>();
+    private static Map<String, Map<SocialClass, Double>> minImpact = new HashMap<>();
+    private static Map<String, Map<SocialClass, Double>> maxImpact = new HashMap<>();
     private static Map<String, Map<SocialClass, Double>> competence = new HashMap<>();
 
     private static final List<EconomicAction> actions = new LinkedList<>();
@@ -49,37 +50,39 @@ public class EconomicMinistry {
                     competenceAux.put(SocialClass.HIGH,mpe.getCompetence());
                 }
             }
-            minRational.put(e.getName(),minAux);
-            maxRational.put(e.getName(),maxAux);
+            minImpact.put(e.getName(),minAux);
+            maxImpact.put(e.getName(),maxAux);
             competence.put(e.getName(),competenceAux);
         }
 
     }
 
 
-    public static List<EconomicAction> generateEconomicAction(final String ruler) {
+    public static Optional<EconomicAction> generateEconomicAction(final String ruler) {
 
         if (Random.generateDouble() > prob.get(ruler))
-            return actions;
+            return Optional.empty();
 
         Map<SocialClass, Double> impact = new HashMap<>();
         for (final SocialClass s : SocialClass.values()){
 
            double effect = 1.0;
 
-           if (Random.generateDouble()>competence.get(ruler).get(s)){
+           if (Random.generateDouble() > competence.get(ruler).get(s)){
                effect = -1.0;
            }
 
-            impact.put(s, effect * Random.generateDouble(minRational.get(ruler).get(s), maxRational.get(ruler).get(s)));
+            impact.put(s, effect * Random.generateDouble(minImpact.get(ruler).get(s), maxImpact.get(ruler).get(s)));
             //System.out.println(impact.get(s));
         }
         final EconomicAction e = new EconomicAction(ruler, impact);
         actions.add(e);
-        return actions;
+        return Optional.of(e);
     }
 
-
+    public static void clear() {
+        actions.clear();
+    }
 
     public static EconomicMinistry getInstance() {
         return instance;

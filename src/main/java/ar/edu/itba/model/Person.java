@@ -14,6 +14,8 @@ import static java.util.stream.Collectors.toMap;
 
 public class Person {
 
+    private final static double ECONOMIC_TO_IMPACT = 100;
+
     private final static double EPSILON = 0.1;
 
     private final static double IMPACT_MIN = 0D;
@@ -69,13 +71,12 @@ public class Person {
         int divisor = m.size() - 1;
         double remaining = thresholdImpact;
 
-        final double sign = Math.signum(thresholdImpact);
         for (final String p : sortKeys(m, Math.signum(thresholdImpact))) {
             if (p.equals(party)){
                 //System.out.println("Thresh: " + thresholdImpact);
                 netImpact.put(p, thresholdImpact);
             }else {
-                final double differential = impactThreshold(m, p, -1.0 * sign * remaining / divisor);
+                final double differential = impactThreshold(m, p, -1.0 * remaining / divisor);
                 //System.out.println("diff: " + differential);
                 netImpact.put(p, differential);
                 remaining += differential;
@@ -145,7 +146,7 @@ public class Person {
         if (r <= skepticism) {
             if (oracle.checkIfTrueNews(n)) {
                 final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) + trueReward);
-                mediaTrust.put(n.getParty(), trust);
+                mediaTrust.put(n.getMedia(), trust);
             }
             else {
                 final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) - liePenalty);
@@ -156,9 +157,9 @@ public class Person {
         final String s = n.getSubject();
         final String mediaId = n.getMedia();
         final String party = n.getParty();
-        final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
+//        final double multiplier = interests.get(s) * mediaTrust.get(mediaId);
+        final double multiplier = mediaTrust.get(mediaId);
         final double thresholdImpact = impactThreshold(politicalOrientation, party, n.getImpact());
-        //System.out.println("nesw impact: " + n.getImpact());
         final double realImpact = thresholdImpact * multiplier;
 
         if (!interests.containsKey(s) || !mediaTrust.containsKey(mediaId))
@@ -178,48 +179,25 @@ public class Person {
 
     private void verify(final Map<String, Double> m) throws Exception {
         final double sum = m.values().stream().reduce(0D, Double::sum);
-       // System.out.println("sum:" + sum);
         if (Math.abs(sum - IMPACT_MAX) > EPSILON)
             throw new Exception("Illegal state");
     }
 
-    public void update(final String ruler, final Map<SocialClass, Double> impact) throws Exception {
-        final double newValue = impact.get(socialClass);
-       // System.out.println("new value: " + newValue);
-        final double thresholdImpact = impactThreshold(politicalOrientation, ruler, newValue);
-       /* System.out.println(impact);
-        System.out.println(politicalOrientation);
-        System.out.println(ruler);
-        System.out.println(thresholdImpact);*/
+    public void update(final EconomicAction e) throws Exception {
 
-        final Map<String, Double> netImpact = new HashMap<>();
+        final double economicThreshold = SocialClass.economicThreshold(economicWellness, e.getImpact().get(socialClass));
 
-        int divisor = politicalOrientation.size() - 1;
-        double remaining = thresholdImpact;
-        final double sign = Math.signum(thresholdImpact);
-        for (final String p : sortKeys(politicalOrientation, Math.signum(thresholdImpact))) {
-            if (p.equals(ruler))
-                netImpact.put(p, thresholdImpact);
-            else {
-                final double differential = -thresholdImpact / 2;
-               // System.out.println(differential);
-                netImpact.put(p, differential);
+        final double impactThreshold = impactThreshold(politicalOrientation, e.getRuler(), e.getImpact().get(socialClass) * ECONOMIC_TO_IMPACT);
+        final Map<String, Double> impact = getImpact(politicalOrientation, e.getRuler(), impactThreshold);
 
-            }
+        for (final Map.Entry<String, Double> entry : impact.entrySet()) {
+            final double oldValue = politicalOrientation.get(entry.getKey());
+            politicalOrientation.put(entry.getKey(), oldValue + entry.getValue());
         }
+        e.update(socialClass, impactThreshold);
 
-
-        for (final Map.Entry<String, Double> e : netImpact.entrySet()) {
-            final double oldValue = politicalOrientation.get(e.getKey());
-            politicalOrientation.put(e.getKey(), oldValue + e.getValue());
-        }
-        /*for(Map.Entry<String, Double> e : politicalOrientation.entrySet()){
-            System.out.println(e.getValue());
-        }*/
-
-        //verify(politicalOrientation);
-
-
+        economicWellness += economicThreshold;
+        this.socialClass = SocialClass.getSocialClass(economicWellness);
     }
 
     public Map<String, Double> update() throws Exception {
@@ -240,6 +218,10 @@ public class Person {
         }
         verify(m);
         return m;
+    }
+
+    public SocialClass getSocialClass() {
+        return socialClass;
     }
 
     @Override

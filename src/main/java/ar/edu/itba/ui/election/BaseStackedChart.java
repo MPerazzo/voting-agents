@@ -1,6 +1,5 @@
 package ar.edu.itba.ui.election;
 
-import ar.edu.itba.model.config.Configuration;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,11 +11,10 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class BaseStackedChart extends BaseChart {
-    private static final List<Color> colors = generateColors();
+    private List<Color> colors = generateColors();
 
     public BaseStackedChart(final String title) {
         super(title);
@@ -28,7 +26,7 @@ public abstract class BaseStackedChart extends BaseChart {
     }
 
     protected JFreeChart createChart(final CategoryDataset dataset, final String title, final String labelX,
-                                     final String labelY) throws Exception {
+                                     final String labelY) {
 
         //Default theme (bar colors, etc)
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
@@ -42,17 +40,11 @@ public abstract class BaseStackedChart extends BaseChart {
 
         CategoryPlot plot = chart.getCategoryPlot();
 
-        for (int i = 0; i < Configuration.getInstance().getPoliticalParties().size() ; i++)
+        for (int i = 0; i < dataset.getRowCount() ; i++)
             plot.getRenderer().setSeriesPaint(i, colors.get(i));
 
         return chart;
     }
 
-    private static java.util.List<Color> generateColors() {
-        final List<Color> colors = new LinkedList<>();
-        colors.add(new Color(0, 0, 128));
-        colors.add(new Color(128, 0, 0));
-        colors.add(new Color(200, 200, 0));
-        return colors;
-    }
+    protected abstract List<Color> generateColors();
 }

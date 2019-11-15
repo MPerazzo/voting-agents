@@ -2,7 +2,7 @@ package ar.edu.itba.utils;
 
 public class Random {
 
-    final static java.util.Random r = new java.util.Random(1);
+    final static java.util.Random r = new java.util.Random();
 
     public Random() {
 

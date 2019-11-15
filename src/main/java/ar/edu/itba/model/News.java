@@ -57,6 +57,8 @@ public class News {
         return realImpact;
     }
 
+    public double getImpactDifference() { return totalImpact - realImpact; }
+
     public int getTime() {
         return time;
     }

@@ -33,11 +33,9 @@ public class UpdateManager {
         }
     }
 
-    public void updatePersonsEconomic(final List<EconomicAction> actions) throws Exception {
+    public void updatePersonsEconomic(final EconomicAction economicAction) throws Exception {
         for (final Person p : persons){
-            for (final EconomicAction a : actions){
-                p.update(a.getRuler(), a.getImpact());
-            }
+            p.update(economicAction);
         }
 
     }
