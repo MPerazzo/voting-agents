@@ -53,22 +53,28 @@ public class Main {
 
             Optional<String> result = Election.getInstance().generateElection(persons, currentTime);
             if (!result.isEmpty()) {
-                electionsUI.add(computeElectionUI());
-                if (DEBUG)
-                    electionsDebugUI.add(computeElectionDebugUI());
+                ElectionUI electionUI = computeElectionUI();
+                electionsUI.add(electionUI);
+                electionUI.showOnScreen();
+                if (DEBUG) {
+                    ElectionDebugUI electionDebugUI = computeElectionDebugUI();
+                    electionsDebugUI.add(electionDebugUI);
+                    electionDebugUI.showOnScreen();
+                }
+
+                for (int i = 0; i < electionsUI.size(); i++)
+                    electionsUI.get(i).updateGraphs();
+
                 clearMetricsUI();
 
-                System.out.println("Desea realizar modificaciones en la simulación?");
-                Scanner in = new Scanner(System.in);
-                String s = in.nextLine().toLowerCase();
-                if (s.contains("si"))
-                    new RunConfiguration().overrideConfiguration();
+                if (currentTime != executionTime) {
+                    System.out.println("Desea realizar modificaciones en la simulación?");
+                    Scanner in = new Scanner(System.in);
+                    String s = in.nextLine().toLowerCase();
+                    if (s.contains("si"))
+                        new RunConfiguration().overrideConfiguration();
+                }
             }
-        }
-        for (int i = electionsUI.size() - 1 ; i >= 0 ; i--) {
-            electionsUI.get(i).showOnScreen();
-            if (DEBUG)
-                electionsDebugUI.get(i).showOnScreen();
         }
     }
 

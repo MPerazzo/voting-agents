@@ -20,6 +20,8 @@ public class ElectionUI extends JFrame {
 
     private static double scoreChartUpperBoundMax = 0;
     private static double partyCountChartUpperBoundMax = 0;
+    private static double economicTransitionLowerBoundMin = 0;
+    private static double economicTransitionUpperBoundMax = 0;
 
     private NewsPaperPartyScoreChart newsPaperPartyScoreChart;
     private PartyCountChart partyCountChart;
@@ -59,18 +61,32 @@ public class ElectionUI extends JFrame {
         if (height > partyCountChartUpperBoundMax)
             partyCountChartUpperBoundMax = height;
 
+        height = economicClassChart.chart.getCategoryPlot().getRangeAxis().getUpperBound();
+        if (height > economicTransitionUpperBoundMax)
+            economicTransitionUpperBoundMax = height;
+
+        height = economicClassChart.chart.getCategoryPlot().getRangeAxis().getLowerBound();
+        if (height < economicTransitionLowerBoundMin)
+            economicTransitionLowerBoundMin = height;
+
         height = getElectionChartHeight();
         if (height > scoreChartUpperBoundMax)
             scoreChartUpperBoundMax = height;
     }
 
     public void showOnScreen() {
+        RefineryUtilities.centerFrameOnScreen(this);
+        this.setVisible(true);
+    }
+
+    public void updateGraphs() {
+        this.setVisible(false);
         newsPaperPartyScoreChart.setChartHeight(scoreChartUpperBoundMax);
         partyCountChart.setChartHeight(partyCountChartUpperBoundMax);
         setElectionChartBounds();
         ((BarRenderer) economicActionScoreChart.chart.getCategoryPlot().getRenderer()).setMaximumBarWidth(.25);
-
-        RefineryUtilities.centerFrameOnScreen(this);
+        economicClassChart.chart.getCategoryPlot().getRangeAxis().setUpperBound(economicTransitionUpperBoundMax);
+        economicClassChart.chart.getCategoryPlot().getRangeAxis().setLowerBound(economicTransitionLowerBoundMin);
         this.setVisible(true);
     }
 
