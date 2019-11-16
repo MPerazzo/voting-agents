@@ -202,15 +202,18 @@
 			"mediaTrust": [
 				{
 					"name": "potentiel",
-					"rational": 1
+					"minRational": 0.8,
+					"maxRational": 0.9
 				},
 				{
 					"name": "palmares",
-					"rational": 0.5
+					"minRational": 0.4,
+					"maxRational": 0.5
 				},
 				{
 					"name": "avenir",
-					"rational": 0.2
+					"minRational": 0.2,
+					"maxRational": 0.25
 				}
 			],
 			"friendshipConfig": {

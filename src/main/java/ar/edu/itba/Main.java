@@ -102,4 +102,8 @@ public class Main {
         executionTime = initialConfiguration.getExecutionTime();
         dt = initialConfiguration.getDt();
     }
+
+    public static void setExecutionTime(final long value) {
+        executionTime = value;
+    }
 }

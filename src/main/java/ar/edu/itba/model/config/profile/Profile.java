@@ -66,7 +66,7 @@ public class Profile {
     private Map<String, Double> generateMediaTrust() {
         final Map<String, Double> mediaTrust = new HashMap<>();
         for (final MediaTrust mt : this.mediaTrust)
-            mediaTrust.put(mt.getName(), mt.getRational());
+            mediaTrust.put(mt.getName(), Random.generateDouble(mt.getMinRational(), mt.getMaxRational()));
         return mediaTrust;
     }
 

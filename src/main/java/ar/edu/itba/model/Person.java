@@ -31,7 +31,7 @@ public class Person {
     private Map<String, Double> politicalOrientation;
 
     //Multipliers
-    private final Map<String, Double> mediaTrust;
+    private Map<String, Double> mediaTrust;
     private Map<Person, Double> friendsTrust;
     private final Map<String, Double> interests;
 
@@ -224,6 +224,10 @@ public class Person {
         this.skepticism = skepticism;
         this.liePenalty = liePenalty;
         this.trueReward = trueReward;
+    }
+
+    public void setParams(final Map<String, Double> mediaTrust) {
+        this.mediaTrust = mediaTrust;
     }
 
     public SocialClass getSocialClass() {

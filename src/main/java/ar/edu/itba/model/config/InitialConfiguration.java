@@ -127,7 +127,10 @@ public class InitialConfiguration extends BaseConfiguration {
         for (final MediaTrust m : mediaTrusts) {
             if (!initialInputData.getMediaNames().contains(m.getName()))
                 throw new Exception("Profile MediaTrust name " + m.getName() + " does not belong to an available media");
-            validateRational(m.getRational());
+            validateRational(m.getMinRational());
+            validateRational(m.getMaxRational());
+            if (m.getMinRational() > m.getMaxRational())
+                throw new Exception("Media Trust min must be greater than max");
         }
     }
 
