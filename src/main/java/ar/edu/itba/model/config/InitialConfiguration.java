@@ -176,4 +176,7 @@ public class InitialConfiguration extends BaseConfiguration {
         return initialInputData.getSubjects();
     }
 
+    public List<String> getMediaNames() {
+        return initialInputData.getMediaNames();
+    }
 }

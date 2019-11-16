@@ -102,7 +102,14 @@ public class ElectionUI extends JFrame {
     }
 
     public static void setPreviousCount(final List<Person> persons) {
-        previousCount = persons.stream().collect(Collectors.groupingBy(Person::getSocialClass, Collectors.counting()));
+        previousCount.put(SocialClass.LOW, 0L);
+        previousCount.put(SocialClass.MID, 0L);
+        previousCount.put(SocialClass.HIGH, 0L);
+
+        final Map<SocialClass, Long> count = persons.stream().collect(Collectors.groupingBy(Person::getSocialClass, Collectors.counting()));
+        previousCount.put(SocialClass.LOW, count.get(SocialClass.LOW));
+        previousCount.put(SocialClass.MID, count.get(SocialClass.MID));
+        previousCount.put(SocialClass.HIGH, count.get(SocialClass.HIGH));
     }
 
     public static Map<SocialClass, Long> getPreviousCount() {

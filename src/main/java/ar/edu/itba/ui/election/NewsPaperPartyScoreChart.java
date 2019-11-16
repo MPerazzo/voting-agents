@@ -33,7 +33,7 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
 
             final Map<String, Double> partiesImpactDifferential = newsPaper.getNews().stream().
                     collect(Collectors.toMap(News::getParty, News::getImpactDifference, (v1, v2) -> v1 + v2));
-            normalizeDoubleMap(partiesRealImpact);
+            normalizeDoubleMap(partiesImpactDifferential);
 
             data[i++] = partiesRealImpact.entrySet().stream().sorted(Map.Entry.comparingByKey()).mapToDouble(e -> e.getValue()).toArray();
             data[i++] = partiesImpactDifferential.entrySet().stream().sorted(Map.Entry.comparingByKey()).mapToDouble(e -> e.getValue()).toArray();

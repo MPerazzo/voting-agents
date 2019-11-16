@@ -24,15 +24,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0.34
+					"prob": 0
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.33
+					"prob": 0.5
 				},
 				{
 					"name": "simba",
-					"prob": 0.33
+					"prob": 0.5
 				}
 			]
 		},
@@ -46,15 +46,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0.33
+					"prob": 0
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.34
+					"prob": 0.5
 				},
 				{
 					"name": "simba",
-					"prob": 0.33
+					"prob": 0.5
 				}
 			]
 		},
@@ -68,15 +68,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0.33
+					"prob": 0
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.33
+					"prob": 0.5
 				},
 				{
 					"name": "simba",
-					"prob": 0.34
+					"prob": 0.5
 				}
 			]
 		}

@@ -154,6 +154,10 @@ public class Person {
                 return;
             }
         }
+        else {
+            final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) + trueReward);
+            mediaTrust.put(n.getMedia(), trust);
+        }
         final String s = n.getSubject();
         final String mediaId = n.getMedia();
         final String party = n.getParty();

@@ -71,7 +71,7 @@ public class Main {
                     System.out.println("Desea realizar modificaciones en la simulación?");
                     Scanner in = new Scanner(System.in);
                     String s = in.nextLine().toLowerCase();
-                    if (s.contains("si"))
+                    if (s.contains("s"))
                         new RunConfiguration().overrideConfiguration();
                 }
             }

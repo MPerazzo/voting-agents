@@ -18,6 +18,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RunConfiguration extends BaseConfiguration {
     private RunInputData runInputData;
@@ -43,13 +44,28 @@ public class RunConfiguration extends BaseConfiguration {
         if (runInputData.getProfileOracle() != null)
             validateProfileOracle(runInputData.getProfileOracle());
 
-        if (runInputData.getMediaTrust() != null)
+        if (runInputData.getEconomicMinistry() != null)
             validateEconomicMinistry(runInputData.getEconomicMinistry());
+
+        if (runInputData.getMediaTrust() != null)
+            validateProfileMediaTrust(runInputData.getMediaTrust());
     }
 
     private void validateSimulation() throws Exception {
         if (runInputData.getExecutionTime() <= 0)
             throw new Exception("Execution time must be greater than zero");
+    }
+
+    private void validateProfileMediaTrust(final List<MediaTrust> mediaTrusts) throws Exception {
+        validateNoRep(mediaTrusts.stream().map(m -> m.getName()).collect(Collectors.toList()), "Profile MediaTrust can not have elements repeated");
+        for (final MediaTrust m : mediaTrusts) {
+            if (!InitialConfiguration.getInstance().getMediaNames().contains(m.getName()))
+                throw new Exception("Profile MediaTrust name " + m.getName() + " does not belong to an available media");
+            validateRational(m.getMinRational());
+            validateRational(m.getMaxRational());
+            if (m.getMinRational() > m.getMaxRational())
+                throw new Exception("Media Trust min must be greater than max");
+        }
     }
 
     public void overrideConfiguration() throws Exception {
