@@ -1,6 +1,6 @@
 package ar.edu.itba.ui.election;
 
-import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.config.InitialConfiguration;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -40,7 +40,7 @@ public abstract class BaseFlatChart extends BaseChart {
 
         final BarRenderer br = (BarRenderer) chart.getCategoryPlot().getRenderer();
 
-        for (int i = 0; i < Configuration.getInstance().getPoliticalParties().size() ; i++)
+        for (int i = 0; i < InitialConfiguration.getInstance().getPoliticalParties().size() ; i++)
             br.setSeriesPaint(i++, barsColor);
         return chart;
     }

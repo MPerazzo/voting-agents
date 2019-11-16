@@ -1,8 +1,6 @@
 package ar.edu.itba.ui.election;
 
 import ar.edu.itba.model.EconomicAction;
-import ar.edu.itba.model.config.Configuration;
-import ar.edu.itba.model.config.profile.Economic;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.EconomicMinistry;
 import org.jfree.chart.JFreeChart;
@@ -10,13 +8,10 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 
 import java.awt.*;
-import java.security.Signature;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class EconomicActionScoreChart extends BaseStackedChart {
 

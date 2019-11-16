@@ -25,6 +25,10 @@ public class EconomicMinistry {
     }
 
     public void setProperties(final List<ConfigEconomicMinistry> economicMinistries) {
+        prob.clear();
+        minImpact.clear();
+        maxImpact.clear();
+        competence.clear();
 
         for (final ConfigEconomicMinistry e : economicMinistries){
             prob.put(e.getName(), e.getProb());

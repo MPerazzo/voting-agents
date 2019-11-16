@@ -1,7 +1,6 @@
 package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.config.Configuration;
 import ar.edu.itba.model.config.profile.FriendshipConfig;
 import ar.edu.itba.model.config.profile.Profile;
 import ar.edu.itba.utils.Random;

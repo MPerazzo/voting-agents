@@ -5,7 +5,7 @@ import ar.edu.itba.model.config.profile.Profile;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InputData {
+public class InitialInputData {
     private int executionTime;
     private int dt;
     private List<Integer> population;

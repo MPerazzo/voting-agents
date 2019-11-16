@@ -1,7 +1,7 @@
 package ar.edu.itba.utils;
 
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.config.InitialConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Metrics {
 
     public static void printPartiesState(final List<Person> persons) throws Exception {
         final Map<String, Integer> m = new HashMap<>();
-        for (final String p : Configuration.getInstance().getPoliticalParties())
+        for (final String p : InitialConfiguration.getInstance().getPoliticalParties())
             m.put(p, 0);
 
         for (final Person p : persons)

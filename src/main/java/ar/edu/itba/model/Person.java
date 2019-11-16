@@ -37,9 +37,9 @@ public class Person {
 
     private final Oracle oracle = Oracle.getInstance();
 
-    private final double skepticism;
-    private final double liePenalty;
-    private final double trueReward;
+    private double skepticism;
+    private double liePenalty;
+    private double trueReward;
 
     public Person(final int id, final double economicWellness, final Map<String, Double> politicalOrientation,
                   final Map<String, Double> mediaTrust, final Map<String, Double> interests,
@@ -218,6 +218,12 @@ public class Person {
         }
         verify(m);
         return m;
+    }
+
+    public void setParams(final double skepticism, final double liePenalty, final double trueReward) {
+        this.skepticism = skepticism;
+        this.liePenalty = liePenalty;
+        this.trueReward = trueReward;
     }
 
     public SocialClass getSocialClass() {

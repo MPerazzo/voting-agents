@@ -17,6 +17,7 @@ public class Media {
     }
 
     public void setSources(final List<ConfigMedia> media, final List<String> subjects) {
+        sources.clear();
         for (final ConfigMedia m : media)
             sources.add(new NewsPaper(m.getName(), m.getNewsProb(), m.getLieProb(), m.getMinPercentage(),
                     m.getMaxPercentage(), m.getTimeTolerance(), m.getParties(), subjects));

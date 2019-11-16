@@ -4,18 +4,18 @@ import ar.edu.itba.model.EconomicAction;
 import ar.edu.itba.model.Election;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.config.InitialConfiguration;
+import ar.edu.itba.model.config.RunConfiguration;
 import ar.edu.itba.model.handlers.EconomicMinistry;
 import ar.edu.itba.model.handlers.*;
 import ar.edu.itba.ui.election.ElectionDebugUI;
 import ar.edu.itba.ui.election.ElectionUI;
 import ar.edu.itba.utils.Metrics;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Scanner;
 
 public class Main {
 
@@ -57,6 +57,12 @@ public class Main {
                 if (DEBUG)
                     electionsDebugUI.add(computeElectionDebugUI());
                 clearMetricsUI();
+
+                System.out.println("Desea realizar modificaciones en la simulación?");
+                Scanner in = new Scanner(System.in);
+                String s = in.nextLine().toLowerCase();
+                if (s.contains("si"))
+                    new RunConfiguration().overrideConfiguration();
             }
         }
         for (int i = electionsUI.size() - 1 ; i >= 0 ; i--) {
@@ -85,9 +91,9 @@ public class Main {
     }
 
     private static void init() throws Exception {
-        final Configuration configuration = Configuration.getInstance();
-        configuration.init();
-        executionTime = configuration.getExecutionTime();
-        dt = configuration.getDt();
+        final InitialConfiguration initialConfiguration = InitialConfiguration.getInstance();
+        initialConfiguration.init();
+        executionTime = initialConfiguration.getExecutionTime();
+        dt = initialConfiguration.getDt();
     }
 }

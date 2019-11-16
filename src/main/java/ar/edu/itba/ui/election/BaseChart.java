@@ -1,6 +1,6 @@
 package ar.edu.itba.ui.election;
 
-import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.config.InitialConfiguration;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -56,14 +56,14 @@ public abstract class BaseChart {
     }
 
     protected void normalizeDoubleMap(final Map<String, Double> map) throws Exception {
-        for (final String party : Configuration.getInstance().getPoliticalParties()) {
+        for (final String party : InitialConfiguration.getInstance().getPoliticalParties()) {
             if (!map.containsKey(party))
                 map.put(party, 0D);
         }
     }
 
     protected void normalizeLongMap(final Map<String, Long> map) throws Exception {
-        for (final String party : Configuration.getInstance().getPoliticalParties()) {
+        for (final String party : InitialConfiguration.getInstance().getPoliticalParties()) {
             if (!map.containsKey(party))
                 map.put(party, 0L);
         }

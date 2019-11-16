@@ -1,16 +1,11 @@
 package ar.edu.itba.ui.election;
 
-import ar.edu.itba.model.News;
 import ar.edu.itba.model.Person;
-import ar.edu.itba.model.config.Configuration;
 import ar.edu.itba.model.enums.SocialClass;
-import ar.edu.itba.model.handlers.Media;
-import ar.edu.itba.model.handlers.NewsPaper;
 import ar.edu.itba.model.handlers.Profiler;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
 
 import java.awt.*;
 import java.util.HashMap;

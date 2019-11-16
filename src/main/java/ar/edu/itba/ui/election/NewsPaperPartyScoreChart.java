@@ -1,7 +1,7 @@
 package ar.edu.itba.ui.election;
 
 import ar.edu.itba.model.News;
-import ar.edu.itba.model.config.Configuration;
+import ar.edu.itba.model.config.InitialConfiguration;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.NewsPaper;
 import org.jfree.chart.JFreeChart;
@@ -21,7 +21,7 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
     }
 
     protected CategoryDataset createDataset() throws Exception {
-        final int politicalParties = Configuration.getInstance().getPoliticalParties().size();
+        final int politicalParties = InitialConfiguration.getInstance().getPoliticalParties().size();
         final List<NewsPaper> newsPapers = Media.getInstance().getSources();
         final double[][] data = new double[6][politicalParties];
 
@@ -39,7 +39,7 @@ public class NewsPaperPartyScoreChart extends BaseStackedChart {
             data[i++] = partiesImpactDifferential.entrySet().stream().sorted(Map.Entry.comparingByKey()).mapToDouble(e -> e.getValue()).toArray();
         }
 
-        String[] politicalPartiesId = Configuration.getInstance().getPoliticalParties().stream().sorted()
+        String[] politicalPartiesId = InitialConfiguration.getInstance().getPoliticalParties().stream().sorted()
                 .toArray(String[]::new);
         String[] newsPapersId = {"potentiel r", "potentiel t", "palmares r", "palmares t", "avenir r", "avenir t"};
         //String[] newsPapersId = newsPapers.stream().map(newsPaper -> newsPaper.getName()).toArray(String[]::new);
