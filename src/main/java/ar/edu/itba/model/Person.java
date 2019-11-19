@@ -3,6 +3,7 @@ package ar.edu.itba.model;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.Friendship;
 import ar.edu.itba.model.handlers.Oracle;
+import ar.edu.itba.model.handlers.Profiler;
 import ar.edu.itba.utils.Random;
 
 
@@ -222,6 +223,19 @@ public class Person {
         }
         verify(m);
         return m;
+    }
+
+    public void setFriends(final double minRational, final double maxRational, final int minFriends,
+                           final int maxFriends) {
+        final int friends = Random.generateInt(minFriends, maxFriends);
+        final Map<Person, Double> friendTrust = new HashMap<>();
+        final List<Person> persons = Profiler.getInstance().getPersons();
+        for (int i = 0 ; i < friends ; i++) {
+            final double trust = Random.generateDouble(minRational, maxRational);
+            final Person friend = persons.get(Random.generateInt(0, persons.size() - 1));
+            friendTrust.put(friend, trust);
+        }
+        this.friendsTrust = friendTrust;
     }
 
     public void setParams(final double skepticism, final double liePenalty, final double trueReward) {

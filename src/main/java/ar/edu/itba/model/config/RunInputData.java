@@ -1,5 +1,6 @@
 package ar.edu.itba.model.config;
 
+import ar.edu.itba.model.config.profile.FriendshipConfig;
 import ar.edu.itba.model.config.profile.MediaTrust;
 import ar.edu.itba.model.config.profile.ProfileOracle;
 
@@ -12,6 +13,7 @@ public class RunInputData {
     private ProfileOracle profileOracle;
     private List<ConfigEconomicMinistry> economicMinistry;
     private List<MediaTrust> mediaTrust;
+    private FriendshipConfig friendshipConfig;
 
 
     public int getExecutionTime() {
@@ -30,5 +32,9 @@ public class RunInputData {
 
     public List<MediaTrust> getMediaTrust() {
         return mediaTrust;
+    }
+
+    public FriendshipConfig getFriendshipConfig() {
+        return friendshipConfig;
     }
 }

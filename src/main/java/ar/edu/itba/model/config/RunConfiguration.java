@@ -98,5 +98,12 @@ public class RunConfiguration extends BaseConfiguration {
             for (Person p : Profiler.getInstance().getPersons())
                 p.setParams(mapMediaTrust);
         }
+
+        if (runInputData.getFriendshipConfig() != null) {
+            for (final Person p : Profiler.getInstance().getPersons()) {
+                p.setFriends(runInputData.getFriendshipConfig().getMinRational(), runInputData.getFriendshipConfig().getMaxRational(),
+                        runInputData.getFriendshipConfig().getMinFriends(), runInputData.getFriendshipConfig().getMaxFriends());
+            }
+        }
     }
 }
