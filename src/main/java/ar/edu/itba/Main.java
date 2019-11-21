@@ -30,7 +30,7 @@ public class Main {
         final UpdateManager u = UpdateManager.getInstance();
         u.setPersons(persons);
 
-        ElectionUI.setPreviousCount(Profiler.getInstance().getPersons());
+        ElectionUI.init();
 
         int currentTime = 0;
         final List<ElectionUI> electionsUI = new LinkedList<>();

@@ -47,8 +47,6 @@ public class ElectionUI extends JFrame {
 
         updateBounds();
 
-        setPreviousCount(Profiler.getInstance().getPersons());
-
         electionCount++;
     }
 
@@ -101,18 +99,26 @@ public class ElectionUI extends JFrame {
                 Math.abs(economicActionScoreChart.chart.getCategoryPlot().getRangeAxis().getLowerBound());
     }
 
-    public static void setPreviousCount(final List<Person> persons) {
-        previousCount.put(SocialClass.LOW, 0L);
-        previousCount.put(SocialClass.MID, 0L);
-        previousCount.put(SocialClass.HIGH, 0L);
-
-        final Map<SocialClass, Long> count = persons.stream().collect(Collectors.groupingBy(Person::getSocialClass, Collectors.counting()));
-        previousCount.put(SocialClass.LOW, count.get(SocialClass.LOW));
-        previousCount.put(SocialClass.MID, count.get(SocialClass.MID));
-        previousCount.put(SocialClass.HIGH, count.get(SocialClass.HIGH));
+    public static void setPreviousCount(final Map<SocialClass, Long> prevCount) {
+        previousCount = prevCount;
     }
 
     public static Map<SocialClass, Long> getPreviousCount() {
         return previousCount;
+    }
+
+
+    public static Map<SocialClass, Long> calculateEconomicTransition(final List<Person> persons) {
+        final Map<SocialClass, Long> count = persons.stream().collect(Collectors.groupingBy(Person::getSocialClass, Collectors.counting()));
+
+        for (SocialClass s : SocialClass.values()) {
+            if (!count.containsKey(s) || count.get(s) == null)
+                count.put(s, 0L);
+        }
+        return count;
+    }
+
+    public static void init() {
+        setPreviousCount(calculateEconomicTransition(Profiler.getInstance().getPersons()));
     }
 }

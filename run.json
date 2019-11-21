@@ -1,2 +1,8 @@
 {
+  "friendshipConfig": {
+    "minRational": 0,
+    "maxRational": 0,
+    "minFriends": 2,
+    "maxFriends": 6
+  }
 }

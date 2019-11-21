@@ -20,14 +20,15 @@ public class EconomicClassChart extends BaseFlatChart {
 
     protected CategoryDataset createDataset() {
 
-        final Map<SocialClass, Long> newCount = Profiler.getInstance().getPersons().stream().collect(Collectors.groupingBy(Person::getSocialClass,
-                Collectors.counting()));
+        final Map<SocialClass, Long> newCount = ElectionUI.calculateEconomicTransition(Profiler.getInstance().getPersons());
         final Map<SocialClass, Long> oldCount = ElectionUI.getPreviousCount();
 
         final Map<SocialClass, Long> differential = new HashMap<>();
         differential.put(SocialClass.LOW, newCount.get(SocialClass.LOW) - oldCount.get(SocialClass.LOW));
         differential.put(SocialClass.MID, newCount.get(SocialClass.MID) - oldCount.get(SocialClass.MID));
         differential.put(SocialClass.HIGH, newCount.get(SocialClass.HIGH) - oldCount.get(SocialClass.HIGH));
+
+        ElectionUI.setPreviousCount(newCount);
 
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.addValue(differential.get(SocialClass.LOW), "", SocialClass.LOW.getName());
@@ -38,6 +39,6 @@ public class EconomicClassChart extends BaseFlatChart {
 
     @Override
     protected JFreeChart createChart(CategoryDataset dataset) throws Exception {
-        return createChart(dataset, "Party", "Score", new Color(0, 143, 122));
+        return createChart(dataset, "Party", "Voters", new Color(0, 143, 122));
     }
 }

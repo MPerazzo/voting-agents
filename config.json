@@ -1,5 +1,5 @@
 {
-	"executionTime": 300,
+	"executionTime": 1000,
 	"dt": 1,
 	"population": [
 		1000
@@ -24,15 +24,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0
+					"prob": 0.33
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.5
+					"prob": 0.34
 				},
 				{
 					"name": "simba",
-					"prob": 0.5
+					"prob": 0.33
 				}
 			]
 		},
@@ -46,15 +46,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0
+					"prob": 0.34
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.5
+					"prob": 0.33
 				},
 				{
 					"name": "simba",
-					"prob": 0.5
+					"prob": 0.33
 				}
 			]
 		},
@@ -68,15 +68,15 @@
 			"parties": [
 				{
 					"name": "bakongo",
-					"prob": 0
+					"prob": 0.33
 				},
 				{
 					"name": "lumumbista",
-					"prob": 0.5
+					"prob": 0.33
 				},
 				{
 					"name": "simba",
-					"prob": 0.5
+					"prob": 0.34
 				}
 			]
 		}
@@ -178,9 +178,9 @@
 				"trueReward": 0.001
 			},
 			"economic": {
-				"lowProb": 0.25,
-				"midProb": 0.5,
-				"highProb": 0.25
+				"lowProb": 0.15,
+				"midProb": 0.75,
+				"highProb": 0.10
 			},
 			"parties": [
 				{
@@ -202,23 +202,23 @@
 			"mediaTrust": [
 				{
 					"name": "potentiel",
-					"minRational": 0.8,
-					"maxRational": 0.9
+					"minRational": 0.2,
+					"maxRational": 0.3
 				},
 				{
 					"name": "palmares",
-					"minRational": 0.4,
-					"maxRational": 0.5
+					"minRational": 0.2,
+					"maxRational": 0.3
 				},
 				{
 					"name": "avenir",
 					"minRational": 0.2,
-					"maxRational": 0.25
+					"maxRational": 0.3
 				}
 			],
 			"friendshipConfig": {
-				"minRational": 0.0002,
-				"maxRational": 0.001,
+				"minRational": 0,
+				"maxRational": 0,
 				"minFriends": 2,
 				"maxFriends": 6
 			},
