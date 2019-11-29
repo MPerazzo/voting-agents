@@ -55,14 +55,12 @@ public class Main {
             if (!result.isEmpty()) {
                 ElectionUI electionUI = computeElectionUI();
                 electionsUI.add(electionUI);
-                electionUI.showOnScreen();
                 if (DEBUG) {
                     ElectionDebugUI electionDebugUI = computeElectionDebugUI();
                     electionsDebugUI.add(electionDebugUI);
-                    electionDebugUI.showOnScreen();
                 }
 
-                for (int i = 0; i < electionsUI.size(); i++)
+                for (int i = 0; i < electionsUI.size() - 1; i++)
                     electionsUI.get(i).updateGraphs();
 
                 clearMetricsUI();

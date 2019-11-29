@@ -33,6 +33,7 @@ hs_err_pid*
 # Project Directories
 target/
 database/
+resources/
 
 # Neo4J Docker Data
 # plugins/

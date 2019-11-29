@@ -1,12 +1,17 @@
 package ar.edu.itba.ui.election;
 
+import org.apache.commons.io.FileUtils;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.Profiler;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.ui.RefineryUtilities;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +22,7 @@ public class ElectionUI extends JFrame {
     private static Map<SocialClass, Long> previousCount = new HashMap<>();
 
     private static int electionCount = 1;
+    private int electionNumber;
 
     private static double scoreChartUpperBoundMax = 0;
     private static double partyCountChartUpperBoundMax = 0;
@@ -47,6 +53,10 @@ public class ElectionUI extends JFrame {
 
         updateBounds();
 
+        electionNumber = electionCount;
+
+        updateGraphs();
+
         electionCount++;
     }
 
@@ -72,20 +82,15 @@ public class ElectionUI extends JFrame {
             scoreChartUpperBoundMax = height;
     }
 
-    public void showOnScreen() {
-        RefineryUtilities.centerFrameOnScreen(this);
-        this.setVisible(true);
-    }
-
-    public void updateGraphs() {
-        this.setVisible(false);
+    public void updateGraphs() throws IOException {
         newsPaperPartyScoreChart.setChartHeight(scoreChartUpperBoundMax);
         partyCountChart.setChartHeight(partyCountChartUpperBoundMax);
         setElectionChartBounds();
         ((BarRenderer) economicActionScoreChart.chart.getCategoryPlot().getRenderer()).setMaximumBarWidth(.25);
         economicClassChart.chart.getCategoryPlot().getRangeAxis().setUpperBound(economicTransitionUpperBoundMax);
         economicClassChart.chart.getCategoryPlot().getRangeAxis().setLowerBound(economicTransitionLowerBoundMin);
-        this.setVisible(true);
+
+        generateOutputImages();
     }
 
     private void setElectionChartBounds() {
@@ -97,6 +102,19 @@ public class ElectionUI extends JFrame {
     private double getElectionChartHeight() {
         return Math.abs(economicActionScoreChart.chart.getCategoryPlot().getRangeAxis().getUpperBound()) +
                 Math.abs(economicActionScoreChart.chart.getCategoryPlot().getRangeAxis().getLowerBound());
+    }
+
+    private void generateOutputImages() throws IOException {
+        generateOutputImage(economicActionScoreChart.chart, "economicActions");
+        generateOutputImage(economicClassChart.chart, "economicTransitions");
+        generateOutputImage(partyCountChart.chart, "partyCount");
+        generateOutputImage(newsPaperPartyScoreChart.chart, "newsPapers");
+    }
+
+    private void generateOutputImage(final JFreeChart chart, final String name) throws IOException {
+        File outputFile = new File("resources/" + name + electionNumber + ".png");
+        if (!ImageIO.write(chart.createBufferedImage(600, 600), "png", outputFile))
+            throw new IOException("Couldnt write chart to image");
     }
 
     public static void setPreviousCount(final Map<SocialClass, Long> prevCount) {
@@ -118,7 +136,12 @@ public class ElectionUI extends JFrame {
         return count;
     }
 
-    public static void init() {
+    public static void init() throws IOException {
+        clearAllImages();
         setPreviousCount(calculateEconomicTransition(Profiler.getInstance().getPersons()));
+    }
+
+    private static void clearAllImages() throws IOException {
+        FileUtils.cleanDirectory(new File("resources"));
     }
 }
