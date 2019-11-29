@@ -8,6 +8,7 @@ import ar.edu.itba.model.handlers.EconomicMinistry;
 import ar.edu.itba.model.handlers.Media;
 import ar.edu.itba.model.handlers.Oracle;
 import ar.edu.itba.model.handlers.Profiler;
+import ar.edu.itba.utils.ConfigRandom;
 import ar.edu.itba.utils.Random;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 
 public class RunConfiguration extends BaseConfiguration {
     private RunInputData runInputData;
+
+    private ConfigRandom r = ConfigRandom.getInstance();
 
     public RunConfiguration() throws Exception {
         Reader reader = new InputStreamReader(new FileInputStream("run.json"));
@@ -85,7 +88,7 @@ public class RunConfiguration extends BaseConfiguration {
         if (runInputData.getProfileOracle() != null) {
             ProfileOracle profileOracle = runInputData.getProfileOracle();
             for (Person p : Profiler.getInstance().getPersons()) {
-                final double skepticism = Random.generateDouble(profileOracle.getMinProb(), profileOracle.getMaxProb());
+                final double skepticism = r.generateDouble(profileOracle.getMinProb(), profileOracle.getMaxProb());
                 p.setParams(skepticism, profileOracle.getLiePenalty(), profileOracle.getTrueReward());
             }
         }
@@ -94,7 +97,7 @@ public class RunConfiguration extends BaseConfiguration {
             final List<MediaTrust> mediaTrust = runInputData.getMediaTrust();
             final Map<String, Double> mapMediaTrust = new HashMap<>();
             for (final MediaTrust mt : mediaTrust)
-                mapMediaTrust.put(mt.getName(), Random.generateDouble(mt.getMinRational(), mt.getMaxRational()));
+                mapMediaTrust.put(mt.getName(), r.generateDouble(mt.getMinRational(), mt.getMaxRational()));
             for (Person p : Profiler.getInstance().getPersons())
                 p.setParams(mapMediaTrust);
         }

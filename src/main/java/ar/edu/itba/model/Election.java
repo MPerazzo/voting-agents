@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Election {
+    private String prevRuler;
     private String ruler;
     private int period;
     private List<String> partiesList;
@@ -27,6 +28,7 @@ public class Election {
             return Optional.empty();
         final Map<String, Long> parties = persons.stream().collect(Collectors.groupingBy(Person::getPoliticalParty, Collectors.counting()));
         final String electedParty = parties.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+        prevRuler = ruler;
         ruler = electedParty;
         return Optional.of(electedParty);
     }
@@ -38,4 +40,8 @@ public class Election {
     public List<String> getPartiesList(){ return partiesList;}
 
     public String getRuler() { return ruler; }
+
+    public String getPrevRuler() {
+        return prevRuler;
+    }
 }

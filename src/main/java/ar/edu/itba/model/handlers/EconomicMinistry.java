@@ -5,6 +5,7 @@ import ar.edu.itba.model.config.ConfigEconomicMinistry;
 import ar.edu.itba.model.config.profile.Economic;
 import ar.edu.itba.model.config.profile.MinistryPartyEconomic;
 import ar.edu.itba.model.enums.SocialClass;
+import ar.edu.itba.utils.EconomicRandom;
 import ar.edu.itba.utils.Random;
 
 import java.util.*;
@@ -19,6 +20,8 @@ public class EconomicMinistry {
     private static Map<String, Map<SocialClass, Double>> competence = new HashMap<>();
 
     private static final List<EconomicAction> actions = new LinkedList<>();
+
+    private static Random r = EconomicRandom.getInstance();
 
     private EconomicMinistry() {
 
@@ -64,7 +67,7 @@ public class EconomicMinistry {
 
     public static Optional<EconomicAction> generateEconomicAction(final String ruler) {
 
-        if (Random.generateDouble() > prob.get(ruler))
+        if (r.generateDouble() > prob.get(ruler))
             return Optional.empty();
 
         Map<SocialClass, Double> impact = new HashMap<>();
@@ -72,11 +75,11 @@ public class EconomicMinistry {
 
            double effect = 1.0;
 
-           if (Random.generateDouble() > competence.get(ruler).get(s)){
+           if (r.generateDouble() > competence.get(ruler).get(s)){
                effect = -1.0;
            }
 
-            impact.put(s, effect * Random.generateDouble(minImpact.get(ruler).get(s), maxImpact.get(ruler).get(s)));
+            impact.put(s, effect * r.generateDouble(minImpact.get(ruler).get(s), maxImpact.get(ruler).get(s)));
             //System.out.println(impact.get(s));
         }
         final EconomicAction e = new EconomicAction(ruler, impact);

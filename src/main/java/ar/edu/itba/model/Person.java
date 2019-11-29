@@ -4,7 +4,8 @@ import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.Friendship;
 import ar.edu.itba.model.handlers.Oracle;
 import ar.edu.itba.model.handlers.Profiler;
-import ar.edu.itba.utils.Random;
+import ar.edu.itba.utils.ConfigRandom;
+import ar.edu.itba.utils.PersonRandom;
 
 
 import java.util.*;
@@ -41,6 +42,9 @@ public class Person {
     private double skepticism;
     private double liePenalty;
     private double trueReward;
+
+    private static PersonRandom r = PersonRandom.getInstance();
+    private static ConfigRandom configRandom = ConfigRandom.getInstance();
 
     public Person(final int id, final double economicWellness, final Map<String, Double> politicalOrientation,
                   final Map<String, Double> mediaTrust, final Map<String, Double> interests,
@@ -143,7 +147,7 @@ public class Person {
     }
 
     public void update(final News n) throws Exception {
-        final double r = Random.generateDouble();
+        final double r = this.r.generateDouble();
         if (r <= skepticism) {
             if (oracle.checkIfTrueNews(n)) {
                 final double trust = mediaTrustThreshold(mediaTrust.get(n.getMedia()) + trueReward);
@@ -227,12 +231,12 @@ public class Person {
 
     public void setFriends(final double minRational, final double maxRational, final int minFriends,
                            final int maxFriends) {
-        final int friends = Random.generateInt(minFriends, maxFriends);
+        final int friends = configRandom.generateInt(minFriends, maxFriends);
         final Map<Person, Double> friendTrust = new HashMap<>();
         final List<Person> persons = Profiler.getInstance().getPersons();
         for (int i = 0 ; i < friends ; i++) {
-            final double trust = Random.generateDouble(minRational, maxRational);
-            final Person friend = persons.get(Random.generateInt(0, persons.size() - 1));
+            final double trust = configRandom.generateDouble(minRational, maxRational);
+            final Person friend = persons.get(configRandom.generateInt(0, persons.size() - 1));
             friendTrust.put(friend, trust);
         }
         this.friendsTrust = friendTrust;

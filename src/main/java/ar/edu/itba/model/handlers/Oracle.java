@@ -2,6 +2,7 @@ package ar.edu.itba.model.handlers;
 
 import ar.edu.itba.model.Event;
 import ar.edu.itba.model.News;
+import ar.edu.itba.utils.MediaRandom;
 import ar.edu.itba.utils.Random;
 
 
@@ -25,8 +26,10 @@ public class Oracle {
     private List<String> parties;
     private List<String> subjects;
 
+    private Random r = MediaRandom.getInstance();
+
      public void generateEvent(final int time) {
-        final double r = Random.generateDouble();
+        final double r = this.r.generateDouble();
         if (r > prob)
             return;
         final String subject = getRandomSubject();
@@ -38,11 +41,11 @@ public class Oracle {
     }
 
     private String getRandomSubject() {
-        return subjects.get(Random.generateInt(0, subjects.size() - 1));
+        return subjects.get(r.generateInt(0, subjects.size() - 1));
     }
 
     private String getRandomParty() {
-        return parties.get(Random.generateInt(0, parties.size() - 1));
+        return parties.get(r.generateInt(0, parties.size() - 1));
     }
 
     public Event getToleratedEvent() {
@@ -52,7 +55,7 @@ public class Oracle {
     public Event getEvent(final int tolerance) {
         final int lastEventTime = events.entrySet().stream().collect(Collectors.toList()).get(events.size() - 1).getKey();
         final List<Event> filteredEvents = events.entrySet().stream().filter(e -> e.getKey() >= lastEventTime - tolerance).map(e -> e.getValue()).collect(Collectors.toList());
-        return filteredEvents.get(Random.generateInt(0, filteredEvents.size() - 1));
+        return filteredEvents.get(r.generateInt(0, filteredEvents.size() - 1));
     }
 
     public boolean checkIfTrueNews(final News news){
@@ -89,7 +92,7 @@ public class Oracle {
     }
 
     protected double generateImpact(){
-        return Random.generateDouble(minPercentage, maxPercentage);
+        return r.generateDouble(minPercentage, maxPercentage);
     }
 
     public static Oracle getInstance() {

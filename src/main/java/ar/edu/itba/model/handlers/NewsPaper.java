@@ -3,6 +3,7 @@ package ar.edu.itba.model.handlers;
 import ar.edu.itba.model.Event;
 import ar.edu.itba.model.News;
 import ar.edu.itba.model.config.profile.MediaParty;
+import ar.edu.itba.utils.MediaRandom;
 import ar.edu.itba.utils.Random;
 
 import java.util.*;
@@ -22,6 +23,8 @@ public class NewsPaper {
 
     private final Oracle oracle = Oracle.getInstance();
 
+    private final Random r = MediaRandom.getInstance();
+
     public NewsPaper(final String name, final double newsProb, final double lieProb, final double minPercentage, final double maxPercentage,
                      final int timeTolerance, final List<MediaParty> parties, final List<String> subjects) {
         this.name = name;
@@ -35,11 +38,11 @@ public class NewsPaper {
     }
 
     public Optional<News> generateNews(final int time) throws Exception {
-        final double r1 = Random.generateDouble();
+        final double r1 = r.generateDouble();
         if (r1 > newsProb || oracle.isEmpty())
             return Optional.empty();
 
-        final double r2 = Random.generateDouble();
+        final double r2 = r.generateDouble();
         Optional<News> news;
         if (r2 > lieProb)
             news = generateNonBiasedNews(time);
@@ -53,7 +56,7 @@ public class NewsPaper {
         final Event e = oracle.getEvent(timeTolerance);
         final String subject = getRandomSubject();
         final String party = getParty();
-        final double impact = Random.generateDouble(e.getImpact() + minPercentage, e.getImpact() + maxPercentage);
+        final double impact = r.generateDouble(e.getImpact() + minPercentage, e.getImpact() + maxPercentage);
         return Optional.of(new News(subject, name, party, impact, time, e));
     }
 
@@ -62,12 +65,12 @@ public class NewsPaper {
     }
 
     private String getRandomSubject() {
-        return subjects.get(Random.generateInt(0, subjects.size() - 1));
+        return subjects.get(r.generateInt(0, subjects.size() - 1));
     }
 
     private String getParty() throws Exception {
         double probSum = 0;
-        final double r = Random.generateDouble();
+        final double r = this.r.generateDouble();
         for (final MediaParty p : parties) {
             probSum += p.getProb();
             if (r <= probSum)

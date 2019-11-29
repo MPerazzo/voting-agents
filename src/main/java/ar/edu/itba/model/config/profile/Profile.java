@@ -2,6 +2,7 @@ package ar.edu.itba.model.config.profile;
 
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.enums.SocialClass;
+import ar.edu.itba.utils.ConfigRandom;
 import ar.edu.itba.utils.Random;
 
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class Profile {
     private List<MediaTrust> mediaTrust;
     private FriendshipConfig friendshipConfig;
     private List<Interest> interests;
+
+    private ConfigRandom r = ConfigRandom.getInstance();
 
     public List<Person> generatePersons(final int n, int idStart) throws Exception {
         int i = 0;
@@ -37,36 +40,36 @@ public class Profile {
     }
 
     private double generateSkepticism(final double minRational, final double maxRational) {
-        return Random.generateDouble(minRational, maxRational);
+        return r.generateDouble(minRational, maxRational);
     }
 
     private double generateEconomicWellness(double lowProb, double midProb, double highProb) {
 
         midProb = lowProb + midProb;
 
-        final double rand = Random.generateDouble();
+        final double rand = r.generateDouble();
         final double wellness;
 
         if (rand >= 0 && rand < lowProb)
-            wellness = Random.generateDouble(SocialClass.LOW.getStart(), SocialClass.LOW.getEnd());
+            wellness = r.generateDouble(SocialClass.LOW.getStart(), SocialClass.LOW.getEnd());
         else if (rand >= lowProb && rand < midProb)
-            wellness = Random.generateDouble(SocialClass.MID.getStart(), SocialClass.MID.getEnd());
+            wellness = r.generateDouble(SocialClass.MID.getStart(), SocialClass.MID.getEnd());
         else
-            wellness = Random.generateDouble(SocialClass.HIGH.getStart(), SocialClass.HIGH.getEnd());
+            wellness = r.generateDouble(SocialClass.HIGH.getStart(), SocialClass.HIGH.getEnd());
         return wellness;
     }
 
     private Map<String, Double> generatePoliticalOrientation()  {
         final Map<String, Double> politicalOrientation = new HashMap();
         for (final ProfileParty p : parties)
-            politicalOrientation.put(p.getName(), Random.generateDouble(p.getMinScore(), p.getMaxScore()));
+            politicalOrientation.put(p.getName(), r.generateDouble(p.getMinScore(), p.getMaxScore()));
         return politicalOrientation;
     }
 
     private Map<String, Double> generateMediaTrust() {
         final Map<String, Double> mediaTrust = new HashMap<>();
         for (final MediaTrust mt : this.mediaTrust)
-            mediaTrust.put(mt.getName(), Random.generateDouble(mt.getMinRational(), mt.getMaxRational()));
+            mediaTrust.put(mt.getName(), r.generateDouble(mt.getMinRational(), mt.getMaxRational()));
         return mediaTrust;
     }
 

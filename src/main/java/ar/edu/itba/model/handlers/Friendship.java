@@ -3,6 +3,7 @@ package ar.edu.itba.model.handlers;
 import ar.edu.itba.model.Person;
 import ar.edu.itba.model.config.profile.FriendshipConfig;
 import ar.edu.itba.model.config.profile.Profile;
+import ar.edu.itba.utils.ConfigRandom;
 import ar.edu.itba.utils.Random;
 
 import java.util.HashMap;
@@ -12,6 +13,8 @@ import java.util.Map;
 public class Friendship {
 
     private static final Map<String, Double> friendshipScores = new HashMap<>();
+
+    private static final ConfigRandom r = ConfigRandom.getInstance();
 
     private Friendship() {
     }
@@ -26,13 +29,13 @@ public class Friendship {
     private static Map<Person, Double> generateFriendships(final Person p, final List<Person> persons,
                                                            final FriendshipConfig friendshipConfig) {
         final Map<Person, Double> friendsTrust = new HashMap<>();
-        final int f = Random.generateInt(friendshipConfig.getMinFriends(), friendshipConfig.getMaxFriends());
+        final int f = r.generateInt(friendshipConfig.getMinFriends(), friendshipConfig.getMaxFriends());
         for (int i = 0 ; i < f ; i++) {
             Person friend;
             do {
-                 friend = persons.get(Random.generateInt(0, persons.size() - 1));
+                 friend = persons.get(r.generateInt(0, persons.size() - 1));
             } while(friendsTrust.containsKey(friend) || friend.equals(p));
-            friendsTrust.put(friend, Random.generateDouble(friendshipConfig.getMinRational(), friendshipConfig.getMaxRational()));
+            friendsTrust.put(friend, r.generateDouble(friendshipConfig.getMinRational(), friendshipConfig.getMaxRational()));
         }
         return friendsTrust;
     }

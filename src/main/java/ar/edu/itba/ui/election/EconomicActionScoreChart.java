@@ -1,6 +1,7 @@
 package ar.edu.itba.ui.election;
 
 import ar.edu.itba.model.EconomicAction;
+import ar.edu.itba.model.Election;
 import ar.edu.itba.model.enums.SocialClass;
 import ar.edu.itba.model.handlers.EconomicMinistry;
 import org.jfree.chart.JFreeChart;
@@ -35,7 +36,7 @@ public class EconomicActionScoreChart extends BaseStackedChart {
         }
 
         String[] ruler = new String[1];
-        ruler[0] = economicActions.get(0).getRuler();
+        ruler[0] = Election.getInstance().getPrevRuler();
         String[] economicClass = {"high","mid","low"};
 
         data[0][0] = totalImpact.get("high");

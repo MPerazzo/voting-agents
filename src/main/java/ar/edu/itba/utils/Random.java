@@ -1,29 +1,27 @@
 package ar.edu.itba.utils;
 
-public class Random {
+public abstract class Random {
 
-    final static java.util.Random r = new java.util.Random(1);
-
-    public Random() {
+    protected Random() {
 
     }
 
-    public static double generateDouble(final double min, final double max) {
+    protected double generateDouble(final double min, final double max, final java.util.Random r) {
         if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
         }
         return min + (max - min) * r.nextDouble();
     }
 
-    public static double generateDoubleSigned(final double min, final double max) {
-        return (r.nextBoolean() ? 1 : -1) * generateDouble(min, max);
+    protected double generateDoubleSigned(final double min, final double max, final java.util.Random r) {
+        return (r.nextBoolean() ? 1 : -1) * generateDouble(min, max, r);
     }
 
-    public static double generateDouble() {
+    protected double generateDouble(final java.util.Random r) {
         return r.nextDouble();
     }
 
-    public static int generateInt(int min, int max) {
+    protected int generateInt(int min, int max, final java.util.Random r) {
 
         if (min > max) {
             throw new IllegalArgumentException("max must be greater than min");
@@ -31,4 +29,12 @@ public class Random {
 
         return r.nextInt((max - min) + 1) + min;
     }
+
+    public abstract double generateDouble(final double min, final double max);
+
+    public abstract double generateDoubleSigned(final double min, final double max);
+
+    public abstract double generateDouble();
+
+    public abstract int generateInt(int min, int max);
 }
