@@ -1,0 +1,246 @@
+{
+	"executionTime": 1000,
+	"dt": 1,
+	"population": [
+		1000
+	],
+	"election": {
+		"initialRuler": "bakongo",
+		"period": 100
+	},
+	"parties": [
+		"bakongo",
+		"lumumbista",
+		"simba"
+	],
+	"media": [
+		{
+			"name": "potentiel",
+			"newsProb": 0.5,
+			"lieProb": 0.2,
+			"minPercentage": 0,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
+			"parties": [
+				{
+					"name": "bakongo",
+					"prob": 0.33
+				},
+				{
+					"name": "lumumbista",
+					"prob": 0.34
+				},
+				{
+					"name": "simba",
+					"prob": 0.33
+				}
+			]
+		},
+		{
+			"name": "palmares",
+			"newsProb": 0.5,
+			"lieProb": 0.2,
+			"minPercentage": 0,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
+			"parties": [
+				{
+					"name": "bakongo",
+					"prob": 0.34
+				},
+				{
+					"name": "lumumbista",
+					"prob": 0.33
+				},
+				{
+					"name": "simba",
+					"prob": 0.33
+				}
+			]
+		},
+		{
+			"name": "avenir",
+			"newsProb": 0.5,
+			"lieProb": 0.2,
+			"minPercentage": 0,
+			"maxPercentage": 0.25,
+			"timeTolerance": 10,
+			"parties": [
+				{
+					"name": "bakongo",
+					"prob": 0.33
+				},
+				{
+					"name": "lumumbista",
+					"prob": 0.33
+				},
+				{
+					"name": "simba",
+					"prob": 0.34
+				}
+			]
+		}
+	],
+	"oracle": {
+		"prob": 0.7,
+		"timeTolerance": 5,
+		"impactTolerance": 0.1,
+		"minPercentage": 0,
+		"maxPercentage": 1
+	},
+	"economicMinistry": [
+		{
+			"name": "bakongo",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "mid",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "high",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				}
+			]
+		},
+		{
+			"name": "lumumbista",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "mid",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "high",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				}
+			]
+		},
+		{
+			"name": "simba",
+			"prob": 0.5,
+			"economic": [
+				{
+					"name": "low",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "mid",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				},
+				{
+					"name": "high",
+					"minRational": 0.01,
+					"maxRational": 0.05,
+					"competence": 0.5
+				}
+			]
+		}
+	],
+	"subjects": [
+		"medical",
+		"education",
+		"cultural",
+		"economic"
+	],
+	"profiles": [
+		{
+			"name": "undecided",
+			"oracle": {
+				"minProb": 0,
+				"maxProb": 1,
+				"liePenalty": 0.05,
+				"trueReward": 0.001
+			},
+			"economic": {
+				"lowProb": 0.15,
+				"midProb": 0.75,
+				"highProb": 0.10
+			},
+			"parties": [
+				{
+					"name": "bakongo",
+					"minScore": 2,
+					"maxScore": 4
+				},
+				{
+					"name": "lumumbista",
+					"minScore": 2,
+					"maxScore": 4
+				},
+				{
+					"name": "simba",
+					"minScore": 2,
+					"maxScore": 4
+				}
+			],
+			"mediaTrust": [
+				{
+					"name": "potentiel",
+					"minRational": 0.2,
+					"maxRational": 0.3
+				},
+				{
+					"name": "palmares",
+					"minRational": 0.2,
+					"maxRational": 0.3
+				},
+				{
+					"name": "avenir",
+					"minRational": 0.2,
+					"maxRational": 0.3
+				}
+			],
+			"friendshipConfig": {
+				"minRational": 0,
+				"maxRational": 0,
+				"minFriends": 2,
+				"maxFriends": 6
+			},
+			"interests": [
+				{
+					"name": "medical",
+					"rational": 0.5
+				},
+				{
+					"name": "education",
+					"rational": 0.5
+				},
+				{
+					"name": "cultural",
+					"rational": 0.5
+				},
+				{
+					"name": "economic",
+					"rational": 0.5
+				}
+			]
+		}
+
+	]
+}
