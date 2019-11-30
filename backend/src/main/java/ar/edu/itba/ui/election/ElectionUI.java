@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class ElectionUI extends JFrame {
 
-    private static String OUTPUT_PATH = "../frontend/resources/";
+    private static String OUTPUT_PATH = "../frontend/src/main/resources/image/";
 
     private static Map<SocialClass, Long> previousCount = new HashMap<>();
 
@@ -41,10 +41,10 @@ public class ElectionUI extends JFrame {
     }
 
     public void compute() throws Exception {
-        newsPaperPartyScoreChart = new NewsPaperPartyScoreChart("Election " + electionCount + " - score by newspaper and party");
-        partyCountChart = new PartyCountChart("Election " + electionCount + " - party voters");
-        economicClassChart = new EconomicClassChart("Election " + electionCount + " - voters economic transition");
-        economicActionScoreChart = new EconomicActionScoreChart("Election " + electionCount + " - economic actions " );
+        newsPaperPartyScoreChart = new NewsPaperPartyScoreChart("Score by newspaper and party");
+        partyCountChart = new PartyCountChart("Party voters");
+        economicClassChart = new EconomicClassChart("Voters economic transition");
+        economicActionScoreChart = new EconomicActionScoreChart("Economic actions " );
 
         this.setLayout(new FlowLayout());
         this.getContentPane().add(economicActionScoreChart.generateChartPanel());
@@ -52,6 +52,9 @@ public class ElectionUI extends JFrame {
         this.getContentPane().add(partyCountChart.generateChartPanel());
         this.getContentPane().add(newsPaperPartyScoreChart.generateChartPanel());
         this.pack();
+
+        newsPaperPartyScoreChart.chart.removeLegend();
+        economicActionScoreChart.chart.removeLegend();
 
         updateBounds();
 
@@ -115,7 +118,7 @@ public class ElectionUI extends JFrame {
 
     private void generateOutputImage(final JFreeChart chart, final String name) throws IOException {
         File outputFile = new File(OUTPUT_PATH + name + electionNumber + ".png");
-        if (!ImageIO.write(chart.createBufferedImage(600, 600), "png", outputFile))
+        if (!ImageIO.write(chart.createBufferedImage(300, 300), "png", outputFile))
             throw new IOException("Couldnt write chart to image");
     }
 

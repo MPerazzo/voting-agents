@@ -52,9 +52,9 @@ public class EconomicActionScoreChart extends BaseStackedChart {
 
     protected List<Color> generateColors() {
         final List<Color> colors = new LinkedList<>();
-        colors.add(new Color(244, 89, 5));
-        colors.add(new Color(251, 146, 36));
-        colors.add(new Color(251, 229, 85));
+        colors.add(new Color(124, 10, 2));
+        colors.add(new Color(178, 34, 34));
+        colors.add(new Color(226, 88, 34));
         return colors;
     }
 }
