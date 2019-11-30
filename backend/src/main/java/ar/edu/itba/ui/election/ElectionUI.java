@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class ElectionUI extends JFrame {
 
-    private static String OUTPUT_PATH = "../frontend/resources";
+    private static String OUTPUT_PATH = "../frontend/resources/";
 
     private static Map<SocialClass, Long> previousCount = new HashMap<>();
 
