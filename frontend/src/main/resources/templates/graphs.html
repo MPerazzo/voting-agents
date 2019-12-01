@@ -11,9 +11,9 @@
             <div th:each="election, key : ${graphs.elections}">
                 <div style="margin-top: 20px; margin-left: 20px">
                     <h3 th:text="|Election ${key.index + 1}|"></h3>
-                    <img th:attr="src=@{|/image/${election.economicActions}|}"/>
-                    <img th:attr="src=@{|/image/${election.economicTransitions}|}"/>
-                    <img th:attr="src=@{|/image/${election.newsPapers}|}"/>
+                    <img th:attr="src=@{|/image/${election.economicActions}|}" style="margin-right: 10px"/>
+                    <img th:attr="src=@{|/image/${election.economicTransitions}|}" style="margin-right: 10px"/>
+                    <img th:attr="src=@{|/image/${election.newsPapers}|}" style="margin-right: 10px"/>
                     <img th:attr="src=@{|/image/${election.voters}|}"/>
                 </div>
             </div>
